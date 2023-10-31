@@ -1,0 +1,45 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "../protos/Sojourner.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/microsoft/protos/Kinect.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/tdk/protos/Mpu-9250.proto"
+
+WorldInfo {
+  gpsCoordinateSystem "WGS84"
+  gpsReference 40.015 -105.27 0
+}
+Viewpoint {
+  orientation -0.271931177726677 0.0014689192972897776 0.9623155806991178 3.131206662641195
+  position 2.265749624515305 0.3330387529149936 1.687210016668392
+  follow "Sojourner"
+  followType "Mounted Shot"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 10 10
+}
+Sojourner {
+  extensionSlot [
+    GPS {
+      translation 0.23 -0.2 0.64
+      rotation 0 0 1 1.01503e-06
+    }
+    Mpu-9250 {
+      translation 0 0 0.09
+      rotation 0 0 1 7.33682e-06
+      name "imu"
+      includeInertialUnit TRUE
+    }
+    Kinect {
+      translation 0.22 -1.93709e-06 0.07
+      rotation -3.4468886243836845e-09 -0.0026073289594429508 0.9999966009120719 -5.307179586466759e-06
+      maxRange 5
+    }
+  ]
+}
