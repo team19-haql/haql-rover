@@ -5,7 +5,7 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
 EXTERNPROTO "../protos/Sojourner.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/microsoft/protos/Kinect.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/tdk/protos/Mpu-9250.proto"
+EXTERNPROTO "../protos/Mpu-9250.proto"
 
 WorldInfo {
   gpsCoordinateSystem "WGS84"
