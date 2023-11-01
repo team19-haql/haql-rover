@@ -34,18 +34,23 @@ def generate_launch_description():
     world = LaunchConfiguration('world')
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
 
+    simulation_server_ip = 'host.docker.internal' if 'ROS_DOCKER_MAC' in os.environ else None
     webots = WebotsLauncher(
         world=PathJoinSubstitution([package_dir, 'worlds', world]),
-        simulation_server_ip='host.docker.internal',
+        simulation_server_ip=simulation_server_ip,
         ros2_supervisor=True,
     )
 
     robot_description_path = os.path.join(package_dir, 'resource', 'rbot.urdf')
     ros2_control_params = os.path.join(package_dir, 'resource', 'ros2_control.yml')
-    mappings = [('/diffdrive_controller/cmd_vel_unstamped', '/cmd_vel'), ('/diffdrive_controller/odom', '/odometry/wheel')]
+    mappings = [
+        ('/diffdrive_controller/cmd_vel_unstamped', '/cmd_vel'),
+        ('/diffdrive_controller/odom', '/odometry/wheel'),
+        ('/imu', '/imu_no_noise'),
+    ]
     rbot_driver = WebotsController(
         robot_name='Sojourner',
-        ip_address='host.docker.internal',
+        ip_address=simulation_server_ip,
         parameters=[
             {
                 'robot_description': robot_description_path,
@@ -56,6 +61,11 @@ def generate_launch_description():
         ],
         remappings=mappings,
         respawn=True
+    )
+    imu_noise = Node(
+        package='webots_dev',
+        executable='add_noise_imu',
+        output='screen',
     )
 
     robot_state_publisher = Node(
@@ -108,10 +118,15 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'world',
             default_value='flat_test.wbt',
-            description='Choose one of the world files from `/webots_dev/worlds` directory'
+            description='Choose one of the world files from `/webots_dev/worlds` directory',
+        ),
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='true',
         ),
         webots,
         webots._supervisor,
+        imu_noise,
         rbot_driver,
         robot_state_publisher,
         footprint_publisher,
