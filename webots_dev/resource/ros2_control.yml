@@ -28,7 +28,8 @@ diffdrive_controller:
     use_stamped_vel: false
     base_frame_id: base_link
     odom_frame_id: odom
-    # open_loop: true
+    open_loop: false
+    position_feedback: true
     enable_odom_tf: false
 
     # cmd_vel_timeout: 500 # ms
