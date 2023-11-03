@@ -8,6 +8,7 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "../protos/Mpu-9250.proto"
 
 WorldInfo {
+  basicTimeStep 16
   gpsCoordinateSystem "WGS84"
   gpsReference 40.015 -105.27 0
 }
@@ -23,7 +24,7 @@ TexturedBackgroundLight {
 }
 RectangleArena {
   floorSize 10 10
-  floorTileSize 1 1
+  floorTileSize 2 2
   wallThickness 0.2
   wallHeight 0.2
 }

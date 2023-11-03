@@ -36,6 +36,7 @@ def generate_launch_description():
 
     simulation_server_ip = 'host.docker.internal' if 'ROS_DOCKER_MAC' in os.environ else None
     webots = WebotsLauncher(
+        gui=False,
         world=PathJoinSubstitution([package_dir, 'worlds', world]),
         simulation_server_ip=simulation_server_ip,
         ros2_supervisor=True,
