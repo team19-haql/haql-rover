@@ -23,7 +23,7 @@ diffdrive_controller:
     twist_covariance_diagonal: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01]
 
     # The real separation between wheels is not resulting in a perfect odometry
-    wheel_separation_multiplier: 1.095
+    wheel_separation_multiplier: 1.5
 
     use_stamped_vel: false
     base_frame_id: base_link

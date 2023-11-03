@@ -24,6 +24,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'calibrate_striaght = boden_bringup.calibrate_straight:main',
+            'calibrate_box = boden_bringup.calibrate_box:main',
         ],
     },
 )
