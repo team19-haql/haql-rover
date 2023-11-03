@@ -39,7 +39,7 @@ def generate_launch_description():
                 {'use_sim_time': use_sim_time },
                 robot_localization_params],
             remappings=[('odometry/filtered', 'odometry/local'),
-                        ('imu', 'imu/data')]
+                        ('imu/data', 'imu')]
         ),
         Node(
             package='robot_localization',
@@ -49,7 +49,7 @@ def generate_launch_description():
                 {'use_sim_time': use_sim_time },
                 robot_localization_params],
             remappings=[('odometry/filtered', 'odometry/global'),
-                        ('imu', 'imu/data')]
+                        ('imu/data', 'imu')]
         ),
         Node(
             package='robot_localization',
@@ -58,8 +58,8 @@ def generate_launch_description():
             parameters=[
                 {'use_sim_time': use_sim_time },
                 robot_localization_params],
-            remappings=[('imu', 'imu/data'),
-                        ('gps', 'gps/fix'), 
+            remappings=[('imu/data', 'imu'),
+                        ('gps/fix', 'gps'), 
                         ('gps/filtered', 'gps/filtered'),
                         ('odometry/gps', 'odometry/gps'),
                         ('odometry/filtered', 'odometry/global')]
