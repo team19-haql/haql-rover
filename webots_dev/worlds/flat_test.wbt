@@ -12,10 +12,10 @@ WorldInfo {
   gpsReference 40.015 -105.27 0
 }
 Viewpoint {
-  orientation -0.271931177726677 0.0014689192972897776 0.9623155806991178 3.131206662641195
-  position 2.265749624515305 0.3330387529149936 1.687210016668392
+  orientation -0.006194988210898009 -0.9999321260854491 0.009867387866108407 5.162325050337116
+  position -5.548780397527242 -0.6449842670202883 11.812372350414678
   follow "Sojourner"
-  followType "Mounted Shot"
+  followType "None"
 }
 TexturedBackground {
 }
@@ -23,6 +23,9 @@ TexturedBackgroundLight {
 }
 RectangleArena {
   floorSize 10 10
+  floorTileSize 1 1
+  wallThickness 0.2
+  wallHeight 0.2
 }
 Sojourner {
   extensionSlot [
