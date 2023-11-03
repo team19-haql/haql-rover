@@ -15,7 +15,7 @@ class ImuNoiseNode(Node):
 
     def imu_noise_callback(self, msg):
         # Add noise to the IMU data here
-        msg.orientation_covariance = np.diag(np.repeat(0.05, 3)).reshape(-1)
+        msg.orientation_covariance = np.diag(np.repeat(0.005, 3)).reshape(-1)
         msg.angular_velocity_covariance = np.diag(np.repeat(0.001, 3)).reshape(-1)
         msg.linear_acceleration_covariance = np.diag(np.repeat(0.05, 3)).reshape(-1)
 
