@@ -3,9 +3,21 @@
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/garden/protos/PicketFence.proto"
 EXTERNPROTO "../protos/Sojourner.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/devices/microsoft/protos/Kinect.proto"
 EXTERNPROTO "../protos/Mpu-9250.proto"
+EXTERNPROTO "../protos/Kinect.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/UnevenTerrain.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/obstacles/protos/Ramp30deg.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/Wall.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/stairs/protos/StraightStairs.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/obstacles/protos/OilBarrel.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/street_furniture/protos/Atm.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/plants/protos/PottedTree.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/containers/protos/CardboardBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/trees/protos/BigSassafras.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/trees/protos/Pine.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/traffic/protos/WorkBarrier.proto"
 
 WorldInfo {
   basicTimeStep 16
@@ -13,20 +25,13 @@ WorldInfo {
   gpsReference 40.015 -105.27 0
 }
 Viewpoint {
-  orientation -0.006194988210898009 -0.9999321260854491 0.009867387866108407 5.162325050337116
-  position -5.548780397527242 -0.6449842670202883 11.812372350414678
-  follow "Sojourner"
+  orientation -0.17795872967446213 -0.858818245687417 0.4803768431211469 5.468717192784937
+  position -11.293002832562806 5.2736850885778 11.116965884315126
   followType "None"
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
-}
-RectangleArena {
-  floorSize 10 10
-  floorTileSize 2 2
-  wallThickness 0.2
-  wallHeight 0.2
 }
 Sojourner {
   extensionSlot [
@@ -41,9 +46,125 @@ Sojourner {
       includeInertialUnit TRUE
     }
     Kinect {
-      translation 0.22 -1.93709e-06 0.07
-      rotation -3.4468886243836845e-09 -0.0026073289594429508 0.9999966009120719 -5.307179586466759e-06
+      translation 0.26 -2.14937e-06 0.08
+      rotation -2.6535799994516353e-06 -0.9999999997933491 2.0155899995834768e-05 -0.261795307179586
       maxRange 5
     }
   ]
+}
+RectangleArena {
+  floorSize 10 20
+  floorTileSize 2 2
+  wallThickness 0.2
+  wallHeight 0.2
+}
+PicketFence {
+  translation -3.46 2.95 0
+  rotation 0 0 1 -1.5707953071795862
+}
+PicketFence {
+  translation -1.74 2.95 0
+  rotation 0 0 1 -1.5707953071795862
+  name "picket fence(1)"
+}
+PicketFence {
+  translation -0.06 2.95 0
+  rotation 0 0 1 -1.5707953071795862
+  name "picket fence(2)"
+}
+PicketFence {
+  translation 3.32 2.95 0
+  rotation 0 0 1 1.5708
+  name "picket fence(3)"
+}
+PicketFence {
+  translation 1.6 2.95 0
+  rotation 0 0 1 1.5708
+  name "picket fence(4)"
+}
+UnevenTerrain {
+  translation 0 11.89 -0.75
+  size 10 10 3
+  xDimension 30
+  yDimension 30
+  perlinNOctaves 5
+}
+Ramp30deg {
+  translation -1.51001 7.59 -0.52
+  rotation 0 0 1 -1.5707953071795862
+}
+Wall {
+  translation 2.11 6.16 0
+  rotation 0 0 1 1.5708
+  size 0.2 6 2.4
+}
+Wall {
+  translation -3.61 6.16 0
+  rotation 0 0 1 1.5708
+  name "wall(1)"
+  size 0.2 3 2.4
+}
+Ramp30deg {
+  translation -0.34001 -6.29 -0.43
+  rotation 0 0 1 3.14159
+  name "ramp 30 degrees(1)"
+}
+OilBarrel {
+  translation -2.98 -3.83 0.44
+}
+Atm {
+  translation -4.40098 -7.00259 0
+  rotation 0 0 1 1.0472
+}
+StraightStairs {
+  translation 2.35998 -6.28 0
+  rotation 0 0 1 3.14159
+  stepRise 0.12
+}
+PottedTree {
+  translation 4.08 2.27 0
+}
+CardboardBox {
+  translation 4.21 -2.69 0.3
+  rotation 0 0 1 1.309
+}
+CardboardBox {
+  translation 3.77221 -3.47344 0.3
+  rotation 0 0 1 2.0944
+  name "cardboard box(1)"
+}
+CardboardBox {
+  translation 4.53475 -3.41422 0.3
+  rotation 0 0 -1 -1.8326053071795858
+  name "cardboard box(2)"
+}
+CardboardBox {
+  translation 4.11294 -3.14346 0.87
+  rotation 0 0 -1 -1.5708053071795867
+  name "cardboard box(3)"
+}
+BigSassafras {
+  translation 4.12 -8.25 0
+}
+Pine {
+  translation -2.77 -8.58 0
+}
+WorkBarrier {
+  translation 0.580005 -5.16 0
+  rotation 0 0 1 -1.5707953071795862
+}
+WorkBarrier {
+  translation -0.879995 -5.16 0
+  rotation 0 0 1 -1.5707953071795862
+  name "work barrier(1)"
+}
+WorkBarrier {
+  translation -0.879995 -7.58 0
+  rotation 0 0 1 -1.5707953071795862
+  name "work barrier(2)"
+}
+WorkBarrier {
+  translation 0.520005 -7.58 0
+  rotation 0 0 1 -1.5707953071795862
+  name "work barrier(3)"
 }
