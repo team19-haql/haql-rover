@@ -67,6 +67,11 @@ def generate_launch_description():
         package='webots_dev',
         executable='add_noise_imu',
         output='screen',
+        parameters=[{
+            'orientation_cov_factor': 5.0,
+            'angular_velocity_cov_factor': 0.01,
+            'linear_acceleration_cov_factor': 0.15,
+        }],
     )
 
     robot_state_publisher = Node(
