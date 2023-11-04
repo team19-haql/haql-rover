@@ -28,9 +28,9 @@ def generate_launch_description():
             os.path.join(bringup_dir, 'launch', 'navigation_launch.py')
         ),
         launch_arguments={
-            'use_sim_time': 'True',
+            'use_sim_time': 'true',
             'params_file': configured_params,
-            'autostart': 'True',
+            'autostart': 'true',
         }.items(),
     )
 
