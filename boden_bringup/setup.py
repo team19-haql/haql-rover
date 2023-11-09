@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
             'calibrate_striaght = boden_bringup.calibrate_straight:main',
             'calibrate_box = boden_bringup.calibrate_box:main',
+            'gps_wpf = boden_bringup.gps_wpf:main',
         ],
     },
 )

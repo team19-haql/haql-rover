@@ -32,7 +32,7 @@ from webots_ros2_driver.wait_for_controller_connection import WaitForControllerC
 def generate_launch_description():
     package_dir = get_package_share_directory('webots_dev')
     world = LaunchConfiguration('world')
-    use_sim_time = LaunchConfiguration('use_sim_time', default=True)
+    use_sim_time = LaunchConfiguration('use_sim_time', default=False)
 
     simulation_server_ip = 'host.docker.internal' if 'ROS_DOCKER_MAC' in os.environ else None
     webots = WebotsLauncher(
@@ -79,6 +79,7 @@ def generate_launch_description():
         executable='robot_state_publisher',
         output='screen',
         parameters=[{
+            'use_sim_time': use_sim_time,
             'robot_description': '<robot name=""><link name=""/></robot>'
         }],
     )
@@ -87,6 +88,7 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         output='screen',
+        parameters=[{'use_sim_time': use_sim_time}],
         arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'base_footprint'],
     )
 
@@ -128,7 +130,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'use_sim_time',
-            default_value='true',
+            default_value='false',
         ),
         webots,
         webots._supervisor,

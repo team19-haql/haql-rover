@@ -27,10 +27,15 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     package_dir = get_package_share_directory('boden_bringup')
-    use_sim_time = LaunchConfiguration('use_sim_time', default=True)
+    use_sim_time = LaunchConfiguration('use_sim_time')
 
     robot_localization_params = os.path.join(package_dir, 'config', 'localization.yml')
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'use_sim_time',
+            default_value='False',
+            description='Use simulation clock if true',
+        ),
         Node(
             package='robot_localization',
             executable='ekf_node',

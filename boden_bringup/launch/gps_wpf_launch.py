@@ -21,6 +21,9 @@ def generate_launch_description():
 
     robot_localization_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(launch_dir, 'ekf_launch.py')),
+        launch_arguments={
+            'use_sim_time': 'False',
+        }.items(),
     )
 
     nav2_cmd = IncludeLaunchDescription(
@@ -28,7 +31,7 @@ def generate_launch_description():
             os.path.join(bringup_dir, 'launch', 'navigation_launch.py')
         ),
         launch_arguments={
-            'use_sim_time': 'true',
+            'use_sim_time': 'False',
             'params_file': configured_params,
             'autostart': 'true',
         }.items(),
