@@ -61,6 +61,21 @@ bool TraverseLayer::readParameters() {
 }
 
 void TraverseLayer::callback(const grid_map_msgs::msg::GridMap::SharedPtr msg) {
+    grid_map::GridMap inputMap;
+    grid_map::GridMapRosConverter::fromMessage(*msg, inputMap);
+
+    // Apply chain filter
+    grid_map::GridMap outputMap;
+    if (!filter_chain_.update(inputMap, outputMap)) {
+        RCLCPP_ERROR(this->get_logger(), "Failed to update filter chain.");
+        return;
+    }
+
+    RCLCPP_INFO(this->get_logger(), "Filter chain has been updated.");
+    // Publish output map
+    std::unique_ptr<grid_map_msgs::msg::GridMap> outputMessage;
+    outputMessage = grid_map::GridMapRosConverter::toMessage(outputMap);
+    publisher_->publish(std::move(outputMessage));
 }
 
 

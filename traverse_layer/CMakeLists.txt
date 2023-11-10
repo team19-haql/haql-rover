@@ -15,12 +15,39 @@ find_package(grid_map_msgs REQUIRED)
 find_package(grid_map_ros REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
-
+find_package(tf2_ros REQUIRED)
+find_package(tf2_sensor_msgs REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
+find_package(message_filters REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(map_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 # grid_map_packages()
+
+if(TARGET tf2_geometry_msgs::tf2_geometry_msgs)
+  get_target_property(_include_dirs tf2_geometry_msgs::tf2_geometry_msgs INTERFACE_INCLUDE_DIRECTORIES)
+else()
+  set(_include_dirs ${tf2_geometry_msgs_INCLUDE_DIRS})
+endif()
+
+find_file(TF2_CPP_HEADERS
+  NAMES tf2_geometry_msgs.hpp
+  PATHS ${_include_dirs}
+  NO_CACHE
+  PATH_SUFFIXES tf2_geometry_msgs
+)
 
 set(dependencies
     grid_map_msgs
     grid_map_ros
+    tf2_ros
+    tf2_sensor_msgs
+    tf2_geometry_msgs
+    tf2
+    sensor_msgs
+    map_msgs
+    geometry_msgs
+    cv_bridge
     rclcpp)
 
 
@@ -43,13 +70,29 @@ add_executable(
     src/TraverseLayer.cpp
 )
 
+add_executable(
+    pointcloud_to_gridmap_node
+    src/pointcloud_to_gridmap_node.cpp
+    src/PointcloudToGridMap.cpp
+)
+
 ament_target_dependencies(
     traverse_layer_node SYSTEM
     ${dependencies}
 )
 
+ament_target_dependencies(
+    pointcloud_to_gridmap_node SYSTEM
+    ${dependencies}
+)
+
+if(EXISTS ${TF2_CPP_HEADERS})
+  target_compile_definitions(pointcloud_to_gridmap_node PUBLIC -DTF2_CPP_HEADERS)
+endif()
+
 set(targets_list
     traverse_layer_node
+    pointcloud_to_gridmap_node
 )
 
 foreach(target ${targets_list})

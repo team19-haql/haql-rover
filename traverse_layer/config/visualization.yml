@@ -6,6 +6,19 @@ image_to_gridmap:
     min_height: -0.5
     max_height: 1.0
 
+pointcloud_to_gridmap:
+  ros__parameters:
+    input_topic: /Sojourner/kinect_range/point_cloud # pointcloud2
+    output_topic: /grid_map # gridmap
+    map_frame_id: odom
+
+    resolution: 0.02 # m/cell
+    world_size:
+      length: 5.0
+      width: 5.0
+
+    publish_rate: 1.0 # Hz
+
 grid_map_visualization:
   ros__parameters:
     grid_map_topic: /filtered_map
@@ -24,3 +37,15 @@ grid_map_visualization:
         layer: traversability
         data_min: 0.0
         data_max: 1.0
+    # grid_map_topic: /grid_map
+    # grid_map_visualizations: [elevation_points, map_region] 
+    # elevation_points:
+    #   type: point_cloud
+    #   params:
+    #     layer: elevation
+
+    # map_region:
+    #   type: map_region
+    #   params:
+    #     color: 3289650
+    #     line_width: 0.003

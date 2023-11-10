@@ -26,7 +26,7 @@ def generate_launch_description():
     declare_visualization_config_file_cmd = DeclareLaunchArgument(
         'visualization_config',
         default_value=os.path.join(
-            traverse_layer_dir, 'config', 'traverse_layer.yml'),
+            traverse_layer_dir, 'config', 'visualization.yml'),
         description='Full path to the Gridmap visualization config file to use')
 
     # Declare node actions
@@ -36,6 +36,14 @@ def generate_launch_description():
         name='traverse_layer',
         output='screen',
         parameters=[filters_config_file]
+    )
+
+    pointcloud_to_gridmap_node = Node(
+        package='traverse_layer',
+        executable='pointcloud_to_gridmap_node',
+        name='pointcloud_to_gridmap',
+        output='screen',
+        parameters=[visualization_config_file],
     )
 
     grid_map_visualization_node = Node(
@@ -55,6 +63,7 @@ def generate_launch_description():
 
     # Add node actions to the launch description
     ld.add_action(traverse_layer_node)
+    ld.add_action(pointcloud_to_gridmap_node)
     ld.add_action(grid_map_visualization_node)
 
     return ld
