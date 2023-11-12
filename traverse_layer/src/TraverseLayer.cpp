@@ -22,6 +22,9 @@ TraverseLayer::TraverseLayer() : Node("traverse_layer"), filter_chain_("grid_map
     publisher_ = this->create_publisher<grid_map_msgs::msg::GridMap>(
         output_topic_, rclcpp::QoS(1).transient_local());
 
+    costmap_publisher_ = this->create_publisher<nav2_msgs::msg::Costmap>(
+        costmap_topic_, rclcpp::QoS(1).transient_local());
+
     // setup filter chain
     if (filter_chain_.configure(
         filter_chain_parameter_name_, this->get_node_logging_interface(),
@@ -45,6 +48,11 @@ bool TraverseLayer::readParameters() {
     this->declare_parameter<std::string>("output_topic", "output_topic");
     this->declare_parameter<std::string>("filter_chain_parameter_name", "filters");
 
+    this->declare_parameter<std::string>("costmap.topic", "costmap_topic");
+    this->declare_parameter<std::string>("costmap.layer", "traversability");
+    this->declare_parameter<double>("costmap.min", 0.0);
+    this->declare_parameter<double>("costmap.max", 1.0);
+
     if (!this->get_parameter("input_topic", input_topic_)) {
         RCLCPP_ERROR(this->get_logger(), "Failed to get input_topic.");
         return false;
@@ -52,10 +60,15 @@ bool TraverseLayer::readParameters() {
 
     this->get_parameter("output_topic", output_topic_);
     this->get_parameter("filter_chain_parameter_name", filter_chain_parameter_name_);
+    this->get_parameter("costmap.topic", costmap_topic_);
+    this->get_parameter("costmap.layer", costmap_layer_);
+    this->get_parameter("costmap.min", costmap_min_);
+    this->get_parameter("costmap.max", costmap_max_);
 
     RCLCPP_INFO(this->get_logger(), "input_topic: %s", input_topic_.c_str());
     RCLCPP_INFO(this->get_logger(), "output_topic: %s", output_topic_.c_str());
     RCLCPP_INFO(this->get_logger(), "filter_chain_parameter_name: %s", filter_chain_parameter_name_.c_str());
+    RCLCPP_INFO(this->get_logger(), "costmap_topic: %s", costmap_topic_.c_str());
 
     return true;
 }
@@ -76,6 +89,12 @@ void TraverseLayer::callback(const grid_map_msgs::msg::GridMap::SharedPtr msg) {
     std::unique_ptr<grid_map_msgs::msg::GridMap> outputMessage;
     outputMessage = grid_map::GridMapRosConverter::toMessage(outputMap);
     publisher_->publish(std::move(outputMessage));
+
+    // Publish costmap
+    nav2_msgs::msg::Costmap costmapMessage;
+    grid_map::GridMapRosConverter::toCostmap(
+        outputMap, costmap_layer_, costmap_min_, costmap_max_, costmapMessage);
+    costmap_publisher_->publish(costmapMessage);
 }
 
 

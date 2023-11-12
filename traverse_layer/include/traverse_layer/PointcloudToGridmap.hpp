@@ -29,7 +29,11 @@ private:
     // Topic names
     std::string input_topic_;
     std::string output_topic_;
+
+    // frames
     std::string map_frame_id_;
+
+    double process_noise_;
 
     // resolution
     double resolution_;

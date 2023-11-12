@@ -5,6 +5,7 @@
 #include <filters/filter_chain.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <string>
+#include <nav2_msgs/msg/costmap.hpp>
 
 namespace traverse_layer
 {
@@ -23,10 +24,17 @@ private:
     // Topic names
     std::string input_topic_;
     std::string output_topic_;
+    std::string costmap_topic_;
+    
+    // Costmap parameters
+    std::string costmap_layer_;
+    double costmap_min_;
+    double costmap_max_;
 
     // Pub/Sub handles
     rclcpp::Subscription<grid_map_msgs::msg::GridMap>::SharedPtr subscriber_;
     rclcpp::Publisher<grid_map_msgs::msg::GridMap>::SharedPtr publisher_;
+    rclcpp::Publisher<nav2_msgs::msg::Costmap>::SharedPtr costmap_publisher_;
 
     // Filter chain
     filters::FilterChain<grid_map::GridMap> filter_chain_;

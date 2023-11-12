@@ -22,7 +22,8 @@
 namespace traverse_layer
 {
 
-PointcloudToGridmap::PointcloudToGridmap() : Node("pointcloud_to_gridmap")
+PointcloudToGridmap::PointcloudToGridmap() : Node("pointcloud_to_gridmap"),
+    map_({"elevation", "cov"})
 {
     if (!read_parameters()) {
         RCLCPP_ERROR(this->get_logger(), "Failed to read parameters.");
@@ -35,7 +36,6 @@ PointcloudToGridmap::PointcloudToGridmap() : Node("pointcloud_to_gridmap")
 
     map_.setGeometry(mapLength, resolution_, mapPosition);
     map_.setFrameId(map_frame_id_);
-    map_.add("elevation");
 
     RCLCPP_INFO(
         this->get_logger(),
@@ -90,6 +90,7 @@ bool PointcloudToGridmap::read_parameters() {
     this->declare_parameter<double>("world_size.length", 10.0);
     this->declare_parameter<double>("world_size.width", 10.0);
     this->declare_parameter<double>("publish_rate", 1.0);
+    this->declare_parameter<double>("process_noise", 0.01);
 
     if (!this->get_parameter("input_topic", input_topic_)) {
         RCLCPP_ERROR(this->get_logger(), "Failed to get input_topic.");
@@ -125,6 +126,11 @@ bool PointcloudToGridmap::read_parameters() {
         return false;
     }
 
+    if (!this->get_parameter("process_noise", process_noise_)) {
+        RCLCPP_ERROR(this->get_logger(), "Failed to get process_noise.");
+        return false;
+    }
+
     return true;
 }
 
@@ -136,23 +142,17 @@ void PointcloudToGridmap::timer_callback() {
 }
 
 void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPtr msg) {
-    RCLCPP_INFO(this->get_logger(), "Received point cloud message.");
-
-    // if (!tf_buffer_->canTransform(
-    //         msg->header.frame_id, map_.getFrameId(),
-    //         tf2_ros::fromMsg(msg->header.stamp),
-    //         tf2::TimePointZero)) {
-    //     RCLCPP_WARN(
-    //         this->get_logger(),
-    //         "Transform from %s to %s not available, skipping point cloud.",
-    //         msg->header.frame_id.c_str(), map_.getFrameId().c_str());
-    // }
-
     // Convert point cloud to grid map frame
     sensor_msgs::msg::PointCloud2 cloud;
+    geometry_msgs::msg::TransformStamped transform;
 
     try {
         tf_buffer_->transform(*msg, cloud, map_.getFrameId());
+
+        transform = tf_buffer_->lookupTransform(
+            map_.getFrameId(), msg->header.frame_id,
+            tf2::TimePointZero);
+
     } catch (tf2::TransformException &ex) {
         RCLCPP_WARN(
             this->get_logger(),
@@ -160,6 +160,10 @@ void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPt
             msg->header.frame_id.c_str(), map_.getFrameId().c_str(), ex.what());
         return;
     }
+
+    // RCLCPP_INFO(
+    //     this->get_logger(),
+    //     "Translation: %f, %f, %f", transform.transform.translation.x, transform.transform.translation.y, transform.transform.translation.z);
 
     // create cloudpoint2 iterator
     sensor_msgs::PointCloud2ConstIterator<float> iter_x(cloud, "x");
@@ -172,12 +176,28 @@ void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPt
     for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z) {
         double px = *iter_x, py = *iter_y, pz = *iter_z;
 
+        double dx = px - transform.transform.translation.x;
+        double dy = py - transform.transform.translation.y;
+        double dz = pz - transform.transform.translation.z;
+
+        double distance = sqrt(dx * dx + dy * dy + dz * dz);
+        double R = distance / 4.0; // sensor covariance
+
         if (map_.getIndex(grid_map::Position(px, py), index)) {
-            float & elevation = map_.at("elevation", index);
+            float & x = map_.at("elevation", index);
+            float & P = map_.at("cov", index);
             // set point if elevation is nan float
             // set point if elevation is higher than previous
-            if (std::isnan(elevation) || pz > elevation) {
-                elevation = pz;
+            if (std::isnan(x)) {
+                x = pz;
+                P = R;
+            } else {
+                // simple kalman filter
+                P = P + process_noise_;
+                double S = P + R;
+                double K = P / S;
+                x = x + K * (pz - x);
+                P = (1.0 - K) * P;
             }
         }
     }

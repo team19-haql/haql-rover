@@ -116,7 +116,7 @@ install(
 
 # Mark other files for installation
 install(
-  DIRECTORY config launch
+  DIRECTORY config launch data
   DESTINATION share/${PROJECT_NAME}
 )
 
