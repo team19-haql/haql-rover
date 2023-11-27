@@ -10,11 +10,10 @@ from launch.conditions import IfCondition
 from nav2_common.launch import RewrittenYaml
 
 def generate_launch_description():
-    bringup_dir = get_package_share_directory('nav2_bringup')
     boden_dir = get_package_share_directory('boden_bringup')
     launch_dir = os.path.join(boden_dir, 'launch')
     params_dir = os.path.join(boden_dir, 'config')
-    nav2_params = os.path.join(params_dir, 'nav2_no_map_params.yml')
+    nav2_params = os.path.join(params_dir, 'nav2_params.yml')
     configured_params = RewrittenYaml(
         source_file=nav2_params, root_key='', param_rewrites='', convert_types=True
     )
@@ -28,7 +27,7 @@ def generate_launch_description():
 
     nav2_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(bringup_dir, 'launch', 'navigation_launch.py')
+            os.path.join(launch_dir, 'navigation_launch.py')
         ),
         launch_arguments={
             'use_sim_time': 'False',

@@ -91,10 +91,10 @@ void TraverseLayer::callback(const grid_map_msgs::msg::GridMap::SharedPtr msg) {
     publisher_->publish(std::move(outputMessage));
 
     // Publish costmap
-    nav2_msgs::msg::Costmap costmapMessage;
-    grid_map::GridMapRosConverter::toCostmap(
-        outputMap, costmap_layer_, costmap_min_, costmap_max_, costmapMessage);
-    costmap_publisher_->publish(costmapMessage);
+    // nav2_msgs::msg::Costmap costmapMessage;
+    // grid_map::GridMapRosConverter::toCostmap(
+    //     outputMap, costmap_layer_, costmap_min_, costmap_max_, costmapMessage);
+    // costmap_publisher_->publish(costmapMessage);
 }
 
 

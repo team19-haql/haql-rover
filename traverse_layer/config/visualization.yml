@@ -2,7 +2,7 @@ pointcloud_to_gridmap:
   ros__parameters:
     input_topic: /Sojourner/kinect_range/point_cloud # pointcloud2
     output_topic: /grid_map # gridmap
-    map_frame_id: odom
+    map_frame_id: map
 
     resolution: 0.05 # m/cell
     world_size:
