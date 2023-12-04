@@ -68,7 +68,7 @@ def generate_launch_description():
         executable='add_noise_imu',
         output='screen',
         parameters=[{
-            'orientation_cov_factor': 5.0,
+            'orientation_cov_factor': 0.05,
             'angular_velocity_cov_factor': 0.01,
             'linear_acceleration_cov_factor': 0.15,
         }],
