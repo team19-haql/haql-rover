@@ -4,6 +4,8 @@ traverse_layer:
     input_topic: /grid_map
     output_topic: /filtered_map
 
+    publish_latency: true
+
     costmap:
       topic: /costmap
       layer: traversability

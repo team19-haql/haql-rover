@@ -6,6 +6,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <string>
 #include <nav2_msgs/msg/costmap.hpp>
+#include <std_msgs/msg/float64.hpp>
 
 namespace traverse_layer
 {
@@ -30,11 +31,15 @@ private:
     std::string costmap_layer_;
     double costmap_min_;
     double costmap_max_;
+    bool publish_latency_;
 
     // Pub/Sub handles
     rclcpp::Subscription<grid_map_msgs::msg::GridMap>::SharedPtr subscriber_;
     rclcpp::Publisher<grid_map_msgs::msg::GridMap>::SharedPtr publisher_;
     rclcpp::Publisher<nav2_msgs::msg::Costmap>::SharedPtr costmap_publisher_;
+
+    // latency
+    rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr latency_publisher_;
 
     // Filter chain
     filters::FilterChain<grid_map::GridMap> filter_chain_;

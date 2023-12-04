@@ -8,6 +8,7 @@
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 #include <tf2_ros/message_filter.h>
+#include <std_msgs/msg/float64.hpp>
 #include <message_filters/subscriber.h>
 
 namespace traverse_layer
@@ -35,6 +36,8 @@ private:
 
     double process_noise_;
 
+    bool publish_latency_;
+
     // resolution
     double resolution_;
     double world_length_;
@@ -52,6 +55,9 @@ private:
     // Pub/Sub handles
     // rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr subscriber_;
     rclcpp::Publisher<grid_map_msgs::msg::GridMap>::SharedPtr publisher_;
+
+    // latency
+    rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr latency_publisher_;
 
     // TF buffer
     std::unique_ptr<tf2_ros::Buffer> tf_buffer_;

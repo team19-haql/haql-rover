@@ -18,6 +18,7 @@
   #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
   #include <tf2_sensor_msgs/tf2_sensor_msgs.h>
 #endif
+#include <chrono>
 
 namespace traverse_layer
 {
@@ -74,6 +75,9 @@ PointcloudToGridmap::PointcloudToGridmap() : Node("pointcloud_to_gridmap"),
     publish_timer_ = this->create_wall_timer(
         std::chrono::milliseconds(static_cast<int>(1000.0 / publish_rate_)),
         std::bind(&PointcloudToGridmap::timer_callback, this));
+
+    latency_publisher_ = this->create_publisher<std_msgs::msg::Float64>(
+        "point_to_grid/latency", rclcpp::QoS(1).transient_local());
 }
 
 PointcloudToGridmap::~PointcloudToGridmap()
@@ -91,6 +95,7 @@ bool PointcloudToGridmap::read_parameters() {
     this->declare_parameter<double>("world_size.width", 10.0);
     this->declare_parameter<double>("publish_rate", 1.0);
     this->declare_parameter<double>("process_noise", 0.01);
+    this->declare_parameter<bool>("publish_latency", false);
 
     if (!this->get_parameter("input_topic", input_topic_)) {
         RCLCPP_ERROR(this->get_logger(), "Failed to get input_topic.");
@@ -131,6 +136,11 @@ bool PointcloudToGridmap::read_parameters() {
         return false;
     }
 
+    if (!this->get_parameter("publish_latency", publish_latency_)) {
+        RCLCPP_ERROR(this->get_logger(), "Failed to get publish_latency.");
+        return false;
+    }
+
     return true;
 }
 
@@ -145,6 +155,8 @@ void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPt
     // Convert point cloud to grid map frame
     sensor_msgs::msg::PointCloud2 cloud;
     geometry_msgs::msg::TransformStamped transform;
+
+    auto start = std::chrono::high_resolution_clock::now();
 
     try {
         tf_buffer_->transform(*msg, cloud, map_.getFrameId());
@@ -200,6 +212,14 @@ void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPt
                 P = (1.0 - K) * P;
             }
         }
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    if (publish_latency_) {
+        std_msgs::msg::Float64 latency;
+        latency.data = duration.count() / 1000.0;
+        latency_publisher_->publish(latency);
     }
 }
 
