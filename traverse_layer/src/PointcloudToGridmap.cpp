@@ -90,6 +90,7 @@ bool PointcloudToGridmap::read_parameters() {
     this->declare_parameter<std::string>("input_topic", "input_topic");
     this->declare_parameter<std::string>("output_topic", "output_topic");
     this->declare_parameter<std::string>("map_frame_id", "map");
+    this->declare_parameter<std::string>("center_frame_id", "base_link");
     this->declare_parameter<double>("resolution", 0.03);
     this->declare_parameter<double>("world_size.length", 10.0);
     this->declare_parameter<double>("world_size.width", 10.0);
@@ -141,14 +142,37 @@ bool PointcloudToGridmap::read_parameters() {
         return false;
     }
 
+    if (!this->get_parameter("center_frame_id", center_frame_id_)) {
+        RCLCPP_ERROR(this->get_logger(), "Failed to get center_frame_id.");
+        return false;
+    }
+
     return true;
 }
 
 void PointcloudToGridmap::timer_callback() {
-    RCLCPP_INFO(this->get_logger(), "Publishing grid map.");
+    // RCLCPP_INFO(this->get_logger(), "Publishing grid map.");
     std::unique_ptr<grid_map_msgs::msg::GridMap> message;
     message = grid_map::GridMapRosConverter::toMessage(map_);
     publisher_->publish(std::move(message));
+    try {
+        geometry_msgs::msg::TransformStamped transform;
+        transform = tf_buffer_->lookupTransform(
+            map_.getFrameId(), center_frame_id_,
+            tf2::TimePointZero
+        );
+        grid_map::Position newCenter(
+            transform.transform.translation.x,
+            transform.transform.translation.y
+        );
+        map_.move(newCenter);
+    } catch (tf2::TransformException &ex) {
+        RCLCPP_WARN(
+            this->get_logger(),
+            "Failed to center map. Could not find transform from %s to %s: %s",
+            map_.getFrameId().c_str(), center_frame_id_.c_str(), ex.what());
+        return;
+    }
 }
 
 void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPtr msg) {

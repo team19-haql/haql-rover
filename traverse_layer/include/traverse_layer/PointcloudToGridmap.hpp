@@ -33,6 +33,7 @@ private:
 
     // frames
     std::string map_frame_id_;
+    std::string center_frame_id_;
 
     double process_noise_;
 

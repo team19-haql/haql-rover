@@ -13,112 +13,99 @@ traverse_layer:
       max: 1.0
 
     filters:
-      filter1:
+      filter1: # 10 ms
         name: buffer_normalizer
         type: gridMapFilters/BufferNormalizerFilter
 
-      # filter2: # Duplicate layer.
-      #   name: duplicate
-      #   type: gridMapFilters/DuplicationFilter
-      #   params:
-      #     input_layer: ...
-      #     output_layer: ...
-
-      filter2:  # Fill holes in the map with inpainting.
-        name: inpaint
-        type: gridMapCv/InpaintFilter
-        params:
-          input_layer: elevation
-          output_layer: elevation_inpainted
-          radius: 0.05
-
-      filter3:  # Reduce noise with a radial blurring filter.
-        name: mean_in_radius
-        type: gridMapFilters/MeanInRadiusFilter
-        params:
-          input_layer: elevation_inpainted
-          output_layer: elevation_smooth
-          radius: 0.06
-
-      # filter5:  # Boxblur as an alternative to the inpaint and radial blurring filter above.
-      #   name: boxblur
-      #   type: gridMapFilters/SlidingWindowMathExpressionFilter
+      # filter2:  # Fill holes in the map with inpainting. # 50ms
+      #   name: inpaint
+      #   type: gridMapCv/InpaintFilter
       #   params:
       #     input_layer: elevation
-      #     output_layer: elevation_smooth
-      #     expression: meanOfFinites(elevation)
-      #     compute_empty_cells: true
-      #     edge_handling: crop # options: inside, crop, empty, mean
-      #     window_size: 5 # optional
+      #     output_layer: elevation_inpainted
+      #     radius: 0.15
 
-      filter4:  # Compute surface normals.
+      # filter3:  # Reduce noise with a radial blurring filter. # 400ms
+      #   name: mean_in_radius
+      #   type: gridMapFilters/MeanInRadiusFilter
+      #   params:
+      #     input_layer: elevation_inpainted
+      #     output_layer: elevation_smooth
+      #     radius: 0.16
+
+      filter2:  # Boxblur as an alternative to the inpaint and radial blurring filter above. # 170ms
+        name: boxblur
+        type: gridMapFilters/SlidingWindowMathExpressionFilter
+        params:
+          input_layer: elevation
+          output_layer: elevation_smooth
+          expression: meanOfFinites(elevation)
+          compute_empty_cells: true
+          edge_handling: crop # options: inside, crop, empty, mean
+          window_length: 0.5 # optional
+
+      filter3:  # Compute surface normals. # 10ms
         name: surface_normals
         type: gridMapFilters/NormalVectorsFilter
         params:
-          input_layer: elevation_inpainted
+          algorithm: raster # raster is much faster than area method
+          input_layer: elevation_smooth
+          parallelization_enabled: true
           output_layers_prefix: normal_vectors_
           radius: 0.35
           normal_vector_positive_axis: z
 
-      filter5:  # Add a color layer for visualization based on the surface normal.
+      filter4:  # Add a color layer for visualization based on the surface normal. # 10ms
         name: normal_color_map
         type: gridMapFilters/NormalColorMapFilter
         params:
           input_layers_prefix: normal_vectors_
           output_layer: normal_color
 
-      filter6:  # Compute slope from surface normal.
+      filter5:  # Compute slope from surface normal.
         name: slope
         type: gridMapFilters/MathExpressionFilter
         params:
           output_layer: slope
           expression: acos(normal_vectors_z)
 
-      filter7: # compute step size
+      filter6: # compute step size 600ms
         name: stepsize
         type: gridMapFilters/SlidingWindowMathExpressionFilter
         params:
-          input_layer: elevation_inpainted
+          input_layer: elevation
           output_layer: stepsize
-          expression: maxOfFinites(elevation_inpainted) - minOfFinites(elevation_inpainted)
+          expression: maxOfFinites(elevation) - minOfFinites(elevation)
           compute_empty_cells: false
           edge_handling: crop
           window_length: 1.0
 
-      # filter11: # Edge detection on elevation layer with convolution filter as alternative to filter above.
-      #   name: edge_detection
-      #   type: gridMapFilters/SlidingWindowMathExpressionFilter
-      #   params:
-      #     input_layer: elevation_inpainted
-      #     output_layer: edges
-      #     expression: 'sumOfFinites([0,1,0;1,-4,1;0,1,0].*elevation_inpainted)' # Edge detection.
-      #     # expression: 'sumOfFinites([0,-1,0;-1,5,-1;0,-1,0].*elevation_inpainted)' # Sharpen.
-      #     compute_empty_cells: false
-      #     edge_handling: mean # options: inside, crop, empty, mean
-      #     window_size: 3 # Make sure to make this compatible with the kernel matrix.
-
-      filter8: # calculate traversability from slope
+      filter7: # calculate traversability from slope
         name: traversability_slope
         type: gridMapFilters/MathExpressionFilter
         params:
           output_layer: traversability_slope
-          expression: slope / 0.436332 # 25 degrees
+          # [a, b] -> 0, 1 : (v-a) / (b-a)
+          expression: (slope - 0.174533) / 0.26179938779914946 # 10-25 degrees
 
-      filter9: # calculate traversability from stepsize
+      filter8: # calculate traversability from stepsize
         name: traversability_stepsize
         type: gridMapFilters/MathExpressionFilter
         params:
           output_layer: traversability_stepsize
-          expression: stepsize / 0.46630765815 # 25 degrees
+          # [a, b] -> 0, 1 : (v-a) / (b-a)
+          # critial degree step height is 0.46630765815 m
+          # safe step height is below 0.1763269807 m
+          expression: (stepsize - 0.1763269807) / 0.2899806774 # 25 degrees
 
-      filter10: # Compute traversability as normalized weighted sum of slope and roughness.
+      filter9: # Compute traversability as normalized weighted sum of slope and roughness.
         name: traversability
         type: gridMapFilters/MathExpressionFilter
         params:
           output_layer: traversability
           expression: cwiseMax(traversability_slope, traversability_stepsize) #, 0.7 * traversability_slope + 0.3 traversability_stepsize)
 
-      filter11:  # Set lower threshold on traversability.
+      filter10:  # Set lower threshold on traversability.
         name: traversability_lower_threshold
         type: gridMapFilters/ThresholdFilter
         params:
@@ -126,7 +113,7 @@ traverse_layer:
           lower_threshold: 0.0
           set_to: 0.0
 
-      filter12:  # Set upper threshold on traversability.
+      filter11:  # Set upper threshold on traversability.
         name: traversability_upper_threshold
         type: gridMapFilters/ThresholdFilter
         params:

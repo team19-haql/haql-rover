@@ -92,13 +92,14 @@ void TraverseLayer::callback(const grid_map_msgs::msg::GridMap::SharedPtr msg) {
         return;
     }
 
-    RCLCPP_INFO(this->get_logger(), "Filter chain has been updated.");
+    // RCLCPP_INFO(this->get_logger(), "Filter chain has been updated.");
     // Publish output map
     std::unique_ptr<grid_map_msgs::msg::GridMap> outputMessage;
     outputMessage = grid_map::GridMapRosConverter::toMessage(outputMap);
+    auto end = std::chrono::high_resolution_clock::now();
+
     publisher_->publish(std::move(outputMessage));
 
-    auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end-start);
     double latency = duration.count() / 1000.0;
     if (publish_latency_) {
