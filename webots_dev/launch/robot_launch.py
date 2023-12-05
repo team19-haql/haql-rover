@@ -19,7 +19,7 @@
 import os
 import launch
 from launch.substitutions import LaunchConfiguration
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, TimerAction
 from launch.substitutions.path_join_substitution import PathJoinSubstitution
 from launch import LaunchDescription
 from ament_index_python.packages import get_package_share_directory
@@ -132,12 +132,14 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
         ),
+        TimerAction(
+            period=3.0,
+            actions=[robot_state_publisher, footprint_publisher],
+        ),
         webots,
         webots._supervisor,
-        imu_noise,
         rbot_driver,
-        robot_state_publisher,
-        footprint_publisher,
+        imu_noise,
         waiting_nodes,
 
         # This action will kill all nodes once the Webots simulation has exited

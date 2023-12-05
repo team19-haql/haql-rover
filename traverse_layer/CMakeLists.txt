@@ -6,7 +6,6 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
-find_package(cv_bridge REQUIRED)
 find_package(filters REQUIRED)
 find_package(grid_map_cmake_helpers REQUIRED)
 find_package(grid_map_core REQUIRED)
@@ -95,12 +94,12 @@ set(targets_list
     pointcloud_to_gridmap_node
 )
 
-foreach(target ${targets_list})
-  if(CMAKE_COMPILER_IS_GNUCXX)
-    target_compile_options(${target} PRIVATE "SHELL:--param ggc-min-expand=1")
-    target_compile_options(${target} PRIVATE "SHELL:--param ggc-min-heapsize=32768")
-  endif()
-endforeach()
+# foreach(target ${targets_list})
+#   if(CMAKE_COMPILER_IS_GNUCXX)
+#     target_compile_options(${target} PRIVATE "SHELL:--param ggc-min-expand=1")
+#     target_compile_options(${target} PRIVATE "SHELL:--param ggc-min-heapsize=32768")
+#   endif()
+# endforeach()
 
 #############
 ## Install ##

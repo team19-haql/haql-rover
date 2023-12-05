@@ -46,10 +46,18 @@ def generate_launch_description():
         parameters=[visualization_config_file],
     )
 
-    grid_map_visualization_node = Node(
+    local_map_visualization_node = Node(
         package='grid_map_visualization',
         executable='grid_map_visualization',
-        name='grid_map_visualization',
+        name='local_map_visualization',
+        output='screen',
+        parameters=[visualization_config_file]
+    )
+
+    global_map_visualization_node = Node(
+        package='grid_map_visualization',
+        executable='grid_map_visualization',
+        name='global_map_visualization',
         output='screen',
         parameters=[visualization_config_file]
     )
@@ -64,6 +72,7 @@ def generate_launch_description():
     # Add node actions to the launch description
     ld.add_action(traverse_layer_node)
     ld.add_action(pointcloud_to_gridmap_node)
-    ld.add_action(grid_map_visualization_node)
+    ld.add_action(local_map_visualization_node)
+    ld.add_action(global_map_visualization_node)
 
     return ld

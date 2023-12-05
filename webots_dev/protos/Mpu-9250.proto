@@ -39,7 +39,7 @@ PROTO Mpu-9250 [
       %< if (fields.includeInertialUnit.value) { >%
         InertialUnit {
           name %<= '"' + fields.name.value + ' inertial_unit"' >%
-          noise 0.01
+          noise 0.001
         }
       %< } >%
     ]

@@ -13,19 +13,17 @@ pointcloud_to_gridmap:
 
     publish_rate: 1.0 # Hz
 
-grid_map_visualization:
+local_map_visualization:
   ros__parameters:
-    grid_map_topic: /filtered_map
-    # grid_map_topic: /grid_map
-    # grid_map_visualizations: [elevation_points, map_region] 
+    grid_map_topic: /local_map
     grid_map_visualizations:
-    - elevation_points
-    - map_region
-    - surface_normals
-    - traversability_grid
-    - traversability_step_grid
-    - traversability_slope_grid
-    surface_normals:
+    - local_elevation_points
+    - local_map_region
+    - local_surface_normals
+    - local_traversability_grid
+    # - traversability_step_grid
+    # - traversability_slope_grid
+    local_surface_normals:
       type: vectors
       params:
         layer_prefix: normal_vectors_
@@ -33,33 +31,71 @@ grid_map_visualization:
         scale: 0.06
         line_width: 0.005
         color: 15600153 # red
-    traversability_grid:
+    local_traversability_grid:
       type: occupancy_grid
       params:
         layer: traversability
         data_min: 0.0
         data_max: 1.0
 
-    traversability_step_grid:
-      type: occupancy_grid
-      params:
-        layer: traversability_stepsize
-        data_min: 0.0
-        data_max: 1.0
+    # local_traversability_step_grid:
+    #   type: occupancy_grid
+    #   params:
+    #     layer: traversability_stepsize
+    #     data_min: 0.0
+    #     data_max: 1.0
 
-    traversability_slope_grid:
-      type: occupancy_grid
-      params:
-        layer: traversability_slope
-        data_min: 0.0
-        data_max: 1.0
+    # local_traversability_slope_grid:
+    #   type: occupancy_grid
+    #   params:
+    #     layer: traversability_slope
+    #     data_min: 0.0
+    #     data_max: 1.0
 
-    elevation_points:
+    local_elevation_points:
       type: point_cloud
       params:
         layer: elevation
 
-    map_region:
+    local_map_region:
+      type: map_region
+      params:
+        color: 3289650
+        line_width: 0.003
+
+global_map_visualization:
+  ros__parameters:
+    grid_map_topic: /global_map
+    # grid_map_topic: /grid_map
+    # grid_map_visualizations: [elevation_points, map_region] 
+    grid_map_visualizations:
+    - global_elevation_points
+    - global_map_region
+    - global_surface_normals
+    - global_traversability_grid
+    # - traversability_step_grid
+    # - traversability_slope_grid
+    global_surface_normals:
+      type: vectors
+      params:
+        layer_prefix: normal_vectors_
+        position_layer: elevation
+        scale: 0.06
+        line_width: 0.005
+        color: 15600153 # red
+    global_traversability_grid:
+      type: occupancy_grid
+      params:
+        layer: traversability
+        data_min: 0.0
+        data_max: 1.0
+
+    global_elevation_points:
+      type: point_cloud
+      params:
+        layer: elevation
+
+    global_map_region:
       type: map_region
       params:
         color: 3289650

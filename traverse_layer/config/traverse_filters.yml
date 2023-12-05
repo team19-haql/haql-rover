@@ -2,11 +2,20 @@ traverse_layer:
   ros__parameters:
 
     input_topic: /grid_map
-    output_topic: /filtered_map
+    local_map_topic: /local_map
+    global_map_topic: /global_map
 
     publish_latency: true
 
+    map:
+      map_frame_id: map
+      local_length: 20.0
+      movement_update_threshold: 5.0
+      movement_update_threshold: 5.0
+      downscaled_resolution: 0.40
+
     costmap:
+      enabled: false
       topic: /costmap
       layer: traversability
       min: 0.0

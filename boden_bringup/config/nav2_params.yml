@@ -152,19 +152,19 @@ local_costmap:
       global_frame: odom
       robot_base_frame: base_link
       rolling_window: true
-      width: 3
-      height: 3
+      width: 10
+      height: 10
       resolution: 0.15
       robot_radius: 0.22
       plugins: ["static_layer", "inflation_layer"]
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         enabled: True
-        map_topic: /traversability_grid
+        map_topic: /local_traversability_grid
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
-        inflation_radius: 1.00
+        inflation_radius: 0.30
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
@@ -202,15 +202,15 @@ global_costmap:
       # fit on a big static costmap. Thus it is recommended to use a rolling global costmap large enough to 
       # contain each pair of successive waypoints. See: https://github.com/ros-planning/navigation2/issues/2174
       rolling_window: True
-      width: 50
-      height: 50
+      width: 100
+      height: 100
       track_unknown_space: true
       # no static map
       plugins: ["static_layer", inflation_layer]
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         enabled: True
-        map_topic: /traversability_grid
+        map_topic: /global_traversability_grid
       obstacle_layer:
         plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
@@ -230,7 +230,7 @@ global_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
-        inflation_radius: 1.0
+        inflation_radius: 0.3
       always_send_full_costmap: True
 
 # The yaml_filename does not need to be specified since it going to be set by defaults in launch.

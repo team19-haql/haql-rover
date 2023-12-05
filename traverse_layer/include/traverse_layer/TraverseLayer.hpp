@@ -20,22 +20,40 @@ public:
     bool readParameters();
 
     void callback(const grid_map_msgs::msg::GridMap::SharedPtr msg);
+    void update_downscaled_map(grid_map::GridMap& input_map);
+    void update_map(grid_map::GridMap& input_map);
 
 private:
     // Topic names
     std::string input_topic_;
-    std::string output_topic_;
+    std::string local_map_topic_;
+    std::string global_map_topic_;
     std::string costmap_topic_;
     
     // Costmap parameters
     std::string costmap_layer_;
     double costmap_min_;
     double costmap_max_;
+    bool publish_costmap_;
     bool publish_latency_;
+
+    // map parameters
+    double map_resolution_;
+    double map_local_length_;
+    double movement_update_threshold_;
+    double downscaled_map_resolution_;
+    std::string map_frame_id_;
+    bool map_initialized_;
+
+    // saved maps
+    grid_map::GridMap map_;
+    grid_map::GridMap downscaled_map_;
+    grid_map::Position last_position_;
 
     // Pub/Sub handles
     rclcpp::Subscription<grid_map_msgs::msg::GridMap>::SharedPtr subscriber_;
-    rclcpp::Publisher<grid_map_msgs::msg::GridMap>::SharedPtr publisher_;
+    rclcpp::Publisher<grid_map_msgs::msg::GridMap>::SharedPtr local_publisher_;
+    rclcpp::Publisher<grid_map_msgs::msg::GridMap>::SharedPtr global_publisher_;
     rclcpp::Publisher<nav2_msgs::msg::Costmap>::SharedPtr costmap_publisher_;
 
     // latency
