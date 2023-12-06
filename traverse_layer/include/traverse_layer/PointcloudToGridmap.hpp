@@ -35,8 +35,6 @@ private:
     std::string map_frame_id_;
     std::string center_frame_id_;
 
-    double process_noise_;
-
     bool publish_latency_;
 
     // resolution
@@ -48,9 +46,18 @@ private:
     double publish_rate_;
     rclcpp::TimerBase::SharedPtr publish_timer_;
 
+    rclcpp::Time initial_time_;
 
     // grid map
+    grid_map::GridMap raw_map_;
     grid_map::GridMap map_;
+
+    // parameters
+    double min_variance_;
+    double max_variance_;
+    double mahalanobis_distance_threshold_;
+    double multi_height_noise_;
+    double scanning_duration_;
 
 
     // Pub/Sub handles

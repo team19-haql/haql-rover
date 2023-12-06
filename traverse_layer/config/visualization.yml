@@ -63,6 +63,29 @@ local_map_visualization:
         color: 3289650
         line_width: 0.003
 
+# global_map_visualization:
+#   ros__parameters:
+#     grid_map_topic: /grid_map
+#     # grid_map_topic: /grid_map
+#     # grid_map_visualizations: [elevation_points, map_region] 
+#     grid_map_visualizations:
+#     - map_elevation_points
+#     - map_upper_bound_points
+#     - map_lower_bound_points
+#     map_elevation_points:
+#       type: point_cloud
+#       params:
+#         layer: elevation
+#     map_upper_bound_points:
+#       type: point_cloud
+#       params:
+#         layer: upper_bound
+#     map_lower_bound_points:
+#       type: point_cloud
+#       params:
+#         layer: lower_bound
+    
+
 global_map_visualization:
   ros__parameters:
     grid_map_topic: /global_map
