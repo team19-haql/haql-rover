@@ -25,13 +25,15 @@ namespace traverse_layer
 
 PointcloudToGridmap::PointcloudToGridmap() : Node("pointcloud_to_gridmap"),
     raw_map_({"elevation", "variance","time",
-              "lowest_scan_point"}),
+              "lowest_scan_point", "sensor_x_at_lowest_scan", "sensor_y_at_lowest_scan", "sensor_z_at_lowest_scan"}),
     map_({"elevation", "lower_bound", "upper_bound"}),
-    min_variance_(0.000009),
-    max_variance_(0.0009),
+    min_variance_(0.003 * 0.003),
+    // max_variance_(0.03 * 0.03),
+    max_variance_(100.0),
     mahalanobis_distance_threshold_(2.5),
-    multi_height_noise_(0.000009),
-    scanning_duration_(0.05)
+    multi_height_noise_(0.00002),
+    scanning_duration_(0.05),
+    enable_visibility_cleanup_(true)
 {
     if (!read_parameters()) {
         RCLCPP_ERROR(this->get_logger(), "Failed to read parameters.");
@@ -159,6 +161,10 @@ bool PointcloudToGridmap::read_parameters() {
 
 void PointcloudToGridmap::timer_callback() {
     // RCLCPP_INFO(this->get_logger(), "Publishing grid map.");
+    if (enable_visibility_cleanup_) {
+        visibility_cleanup();
+    }
+
     for (grid_map::GridMapIterator iterator(raw_map_); !iterator.isPastEnd(); ++iterator) {
         grid_map::Index index;
         grid_map::Position position;
@@ -232,6 +238,9 @@ void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPt
     auto& variance_layer = raw_map_["variance"];
     auto& time_layer = raw_map_["time"];
     auto& lowest_scan_point_layer = raw_map_["lowest_scan_point"];
+    auto& sensor_x_at_lowest_scan_layer = raw_map_["sensor_x_at_lowest_scan"];
+    auto& sensor_y_at_lowest_scan_layer = raw_map_["sensor_y_at_lowest_scan"];
+    auto& sensor_z_at_lowest_scan_layer = raw_map_["sensor_z_at_lowest_scan"];
 
     // create cloudpoint2 iterator
     sensor_msgs::PointCloud2ConstIterator<float> iter_x(cloud, "x");
@@ -253,20 +262,22 @@ void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPt
             continue; // skip this point outside of map
         }
 
-        double distance = sqrt(dx * dx + dy * dy + dz * dz);
-        double R = distance / 40.0; // sensor covariance
+        double distance_squared = dx * dx + dy * dy + dz * dz;
+        double R = distance_squared * 0.006518; // sensor covariance model for zed 2i camera
         R = R * R; // variance
 
         auto& elevation = elevation_layer(index(0), index(1));
         auto& variance = variance_layer(index(0), index(1));
         auto& time = time_layer(index(0), index(1));
         auto& lowest_scan_point = lowest_scan_point_layer(index(0), index(1));
+        auto& sensor_x_at_lowest_scan = sensor_x_at_lowest_scan_layer(index(0), index(1));
+        auto& sensor_y_at_lowest_scan = sensor_y_at_lowest_scan_layer(index(0), index(1));
+        auto& sensor_z_at_lowest_scan = sensor_z_at_lowest_scan_layer(index(0), index(1));
 
         if (std::isnan(elevation)) {
             elevation = pz;
             variance = R;
             time = time_since_start;
-            lowest_scan_point = pz;
             continue;
         }
 
@@ -286,8 +297,11 @@ void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPt
 
         // point + 3 sigma
         const double point_height_plus_uncertainty = pz + 3.0 * sqrt(variance);
-        if (point_height_plus_uncertainty < lowest_scan_point) {
+        if (std::isnan(lowest_scan_point) || point_height_plus_uncertainty < lowest_scan_point) {
             lowest_scan_point = point_height_plus_uncertainty;
+            sensor_x_at_lowest_scan = transform.transform.translation.x;
+            sensor_y_at_lowest_scan = transform.transform.translation.y;
+            sensor_z_at_lowest_scan = transform.transform.translation.z;
         }
     }
 
@@ -308,6 +322,81 @@ void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPt
         latency.data = duration.count() / 1000.0;
         latency_publisher_->publish(latency);
     }
+}
+
+void PointcloudToGridmap::visibility_cleanup() {
+    const rclcpp::Time current_time = this->get_clock()->now();
+    const double time_since_start = (current_time - initial_time_).seconds();
+
+    // max height used for cleanup.
+    raw_map_.add("max_height");
+
+    // create max height layer with ray tracing
+    for (grid_map::GridMapIterator iterator(raw_map_); !iterator.isPastEnd(); ++iterator) {
+        if (!raw_map_.isValid(*iterator)) {
+            continue;
+        }
+        auto& lowest_scan_point = raw_map_.at("lowest_scan_point", *iterator);
+        auto& sensor_x = raw_map_.at("sensor_x_at_lowest_scan", *iterator);
+        auto& sensor_y = raw_map_.at("sensor_y_at_lowest_scan", *iterator);
+        auto& sensor_z = raw_map_.at("sensor_z_at_lowest_scan", *iterator);
+
+        if (std::isnan(lowest_scan_point)) {
+            continue;
+        }
+
+        grid_map::Index index_at_sensor;
+        if (!raw_map_.getIndex(grid_map::Position(sensor_x, sensor_y), index_at_sensor)) {
+            continue;
+        }
+
+        grid_map::Position point;
+        raw_map_.getPosition(*iterator, point);
+        double point_dx = point.x() - sensor_x;
+        double point_dy = point.y() - sensor_y;
+        double point_distance = sqrt(point_dx * point_dx + point_dy * point_dy);
+
+        // ray trace to find max height
+        for (grid_map::LineIterator iterator(raw_map_, index_at_sensor, *iterator); !iterator.isPastEnd(); ++iterator) {
+            grid_map::Position cell_position;
+            raw_map_.getPosition(*iterator, cell_position);
+            double cell_dx = cell_position.x() - sensor_x;
+            double cell_dy = cell_position.y() - sensor_y;
+            double cell_distance = point_distance - sqrt(cell_dx * cell_dx + cell_dy * cell_dy);
+            double max_height = lowest_scan_point + (sensor_z - lowest_scan_point) / point_distance * cell_distance;
+            auto& cell_max_height = raw_map_.at("max_height", *iterator);
+            if (std::isnan(cell_max_height) || cell_max_height > max_height) {
+                cell_max_height = max_height;
+            }
+        }
+    }
+
+    // clean map
+    for (grid_map::GridMapIterator iterator(raw_map_); !iterator.isPastEnd(); ++iterator) {
+        if (!raw_map_.isValid(*iterator)) {
+            continue;
+        }
+        const auto& time = raw_map_.at("time", *iterator);
+        if (time_since_start - time > scanning_duration_) {
+            // Only remove cells that have not been updated during the last scan duration.
+            // This prevents a.o. removal of overhanging objects.
+            const auto& elevation = raw_map_.at("elevation", *iterator);
+            const auto& variance = raw_map_.at("variance", *iterator);
+            const auto& max_height = raw_map_.at("max_height", *iterator);
+            if (!std::isnan(max_height) && elevation - 3.0 * sqrt(variance) > max_height) {
+                raw_map_.at("elevation", *iterator) = NAN;
+            }
+        }
+    }
+
+    // remove layers
+    raw_map_.clear("lowest_scan_point");
+    raw_map_.clear("sensor_x_at_lowest_scan");
+    raw_map_.clear("sensor_y_at_lowest_scan");
+    raw_map_.clear("sensor_z_at_lowest_scan");
+
+    // remove layer used for cleanup.
+    raw_map_.erase("max_height");
 }
 
 

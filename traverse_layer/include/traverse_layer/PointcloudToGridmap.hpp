@@ -23,6 +23,7 @@ public:
     bool read_parameters();
 
     void callback(const sensor_msgs::msg::PointCloud2::SharedPtr msg);
+    void visibility_cleanup();
 
     void timer_callback();
 
@@ -58,6 +59,7 @@ private:
     double mahalanobis_distance_threshold_;
     double multi_height_noise_;
     double scanning_duration_;
+    bool enable_visibility_cleanup_;
 
 
     // Pub/Sub handles
