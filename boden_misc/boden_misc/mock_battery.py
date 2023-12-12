@@ -8,7 +8,6 @@ from rclpy.lifecycle import TransitionCallbackReturn
 from rclpy.timer import Timer
 
 from sensor_msgs.msg import BatteryState
-from std_msgs.msg import Float32
 from std_srvs.srv import SetBool
 
 class MockBattery(Node):
