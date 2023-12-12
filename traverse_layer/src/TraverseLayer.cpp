@@ -182,11 +182,11 @@ void TraverseLayer::update_map(grid_map::GridMap& input_map) {
     double dx = last_position_.x() - input_map.getPosition().x();
     double dy = last_position_.y() - input_map.getPosition().y();
     
-    // if (dx * dx + dy * dy > movement_update_threshold_ * movement_update_threshold_) {
+    if (dx * dx + dy * dy > movement_update_threshold_ * movement_update_threshold_) {
         RCLCPP_INFO(this->get_logger(), "Updating downscaled map.");
         update_downscaled_map(local_map);
         last_position_ = input_map.getPosition();
-    // }
+    }
 
     std::unique_ptr<grid_map_msgs::msg::GridMap> outputMessage;
     outputMessage = grid_map::GridMapRosConverter::toMessage(local_map);

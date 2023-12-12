@@ -19,7 +19,7 @@ public:
 
     bool readParameters();
 
-    void callback(const grid_map_msgs::msg::GridMap::SharedPtr msg);
+    void callback(grid_map_msgs::msg::GridMap::SharedPtr msg);
     void update_downscaled_map(grid_map::GridMap& input_map);
     void update_map(grid_map::GridMap& input_map);
 

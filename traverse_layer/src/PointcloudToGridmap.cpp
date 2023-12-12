@@ -33,7 +33,8 @@ PointcloudToGridmap::PointcloudToGridmap() : Node("pointcloud_to_gridmap"),
     mahalanobis_distance_threshold_(2.5),
     multi_height_noise_(0.00002),
     scanning_duration_(0.05),
-    enable_visibility_cleanup_(true)
+    enable_visibility_cleanup_(true),
+    visibility_cleanup_rate_(1.0)
 {
     if (!read_parameters()) {
         RCLCPP_ERROR(this->get_logger(), "Failed to read parameters.");
@@ -78,7 +79,7 @@ PointcloudToGridmap::PointcloudToGridmap() : Node("pointcloud_to_gridmap"),
         this->get_node_logging_interface(),
         this->get_node_clock_interface(), buffer_timeout);
 
-    tf_filter_->registerCallback(&PointcloudToGridmap::callback, this);
+    tf_filter_->registerCallback(&PointcloudToGridmap::add_sensor_data, this);
 
     // subscriber_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
     //     input_topic_, rclcpp::SensorDataQoS(),
@@ -89,7 +90,13 @@ PointcloudToGridmap::PointcloudToGridmap() : Node("pointcloud_to_gridmap"),
 
     publish_timer_ = this->create_wall_timer(
         std::chrono::milliseconds(static_cast<int>(1000.0 / publish_rate_)),
-        std::bind(&PointcloudToGridmap::timer_callback, this));
+        std::bind(&PointcloudToGridmap::publish_pointcloud, this));
+
+    if (enable_visibility_cleanup_) {
+        visibility_cleanup_timer_ = this->create_wall_timer(
+            std::chrono::milliseconds(static_cast<int>(1000.0 / visibility_cleanup_rate_)),
+            std::bind(&PointcloudToGridmap::visibility_cleanup, this));
+    }
 
     latency_publisher_ = this->create_publisher<std_msgs::msg::Float64>(
         "point_to_grid/latency", rclcpp::QoS(1).transient_local());
@@ -159,11 +166,8 @@ bool PointcloudToGridmap::read_parameters() {
     return true;
 }
 
-void PointcloudToGridmap::timer_callback() {
-    // RCLCPP_INFO(this->get_logger(), "Publishing grid map.");
-    if (enable_visibility_cleanup_) {
-        visibility_cleanup();
-    }
+void PointcloudToGridmap::update_map_from_raw() {
+    auto method_start = std::chrono::high_resolution_clock::now();
 
     for (grid_map::GridMapIterator iterator(raw_map_); !iterator.isPastEnd(); ++iterator) {
         grid_map::Index index;
@@ -185,9 +189,11 @@ void PointcloudToGridmap::timer_callback() {
         map_.at("lower_bound", index) = elevation - 2 * sigma;
     }
 
-    std::unique_ptr<grid_map_msgs::msg::GridMap> message;
-    message = grid_map::GridMapRosConverter::toMessage(map_);
-    publisher_->publish(std::move(message));
+    std::chrono::duration<double> method_duration = std::chrono::high_resolution_clock::now() - method_start;
+    RCLCPP_DEBUG(this->get_logger(), "update_map_from_raw took %f ms", method_duration.count() * 1000.0);
+}
+
+void PointcloudToGridmap::update_map_center() {
     try {
         geometry_msgs::msg::TransformStamped transform;
         transform = tf_buffer_->lookupTransform(
@@ -209,7 +215,18 @@ void PointcloudToGridmap::timer_callback() {
     }
 }
 
-void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPtr msg) {
+void PointcloudToGridmap::publish_pointcloud() {
+    // RCLCPP_INFO(this->get_logger(), "Publishing grid map.");
+    update_map_from_raw();
+
+    std::unique_ptr<grid_map_msgs::msg::GridMap> message;
+    message = grid_map::GridMapRosConverter::toMessage(map_);
+    publisher_->publish(std::move(message));
+
+    update_map_center();
+}
+
+void PointcloudToGridmap::add_sensor_data(const sensor_msgs::msg::PointCloud2::SharedPtr msg) {
     // Convert point cloud to grid map frame
     sensor_msgs::msg::PointCloud2 cloud;
     geometry_msgs::msg::TransformStamped transform;
@@ -317,6 +334,8 @@ void PointcloudToGridmap::callback(const sensor_msgs::msg::PointCloud2::SharedPt
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    RCLCPP_DEBUG(this->get_logger(), "add_sensor_data took %f ms", duration.count() / 1000.0);
+
     if (publish_latency_) {
         std_msgs::msg::Float64 latency;
         latency.data = duration.count() / 1000.0;

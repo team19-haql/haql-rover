@@ -22,10 +22,12 @@ public:
 
     bool read_parameters();
 
-    void callback(const sensor_msgs::msg::PointCloud2::SharedPtr msg);
+    void add_sensor_data(const sensor_msgs::msg::PointCloud2::SharedPtr msg);
     void visibility_cleanup();
+    void update_map_from_raw();
+    void update_map_center();
 
-    void timer_callback();
+    void publish_pointcloud();
 
 private:
     // Topic names
@@ -46,6 +48,7 @@ private:
     // publish timer
     double publish_rate_;
     rclcpp::TimerBase::SharedPtr publish_timer_;
+    rclcpp::TimerBase::SharedPtr visibility_cleanup_timer_;
 
     rclcpp::Time initial_time_;
 
@@ -60,6 +63,7 @@ private:
     double multi_height_noise_;
     double scanning_duration_;
     bool enable_visibility_cleanup_;
+    double visibility_cleanup_rate_;
 
 
     // Pub/Sub handles
