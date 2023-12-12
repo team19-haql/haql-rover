@@ -280,6 +280,11 @@ void PointcloudToGridmap::add_sensor_data(const sensor_msgs::msg::PointCloud2::S
         }
 
         double distance_squared = dx * dx + dy * dy + dz * dz;
+
+        if (distance_squared < (0.5 * 0.5)) {
+            continue; // skip this point too close to sensor
+        }
+
         double R = distance_squared * 0.006518; // sensor covariance model for zed 2i camera
         R = R * R; // variance
 

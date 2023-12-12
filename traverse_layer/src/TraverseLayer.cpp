@@ -193,6 +193,12 @@ void TraverseLayer::update_map(grid_map::GridMap& input_map) {
     local_publisher_->publish(std::move(outputMessage));
 }
 
+static void clear_footprint(grid_map::GridMap& map, const double radius) {
+    for (grid_map::CircleIterator it(map, map.getPosition(), radius); !it.isPastEnd(); ++it) {
+        map.at("traversability", *it) = 0.0;
+    }
+}
+
 void TraverseLayer::callback(const grid_map_msgs::msg::GridMap::SharedPtr msg) {
     grid_map::GridMap inputMap;
     grid_map::GridMapRosConverter::fromMessage(*msg, inputMap);
@@ -205,6 +211,8 @@ void TraverseLayer::callback(const grid_map_msgs::msg::GridMap::SharedPtr msg) {
         RCLCPP_ERROR(this->get_logger(), "Failed to update filter chain.");
         return;
     }
+
+    clear_footprint(outputMap, 1.0);
     // RCLCPP_INFO(this->get_logger(), "Filter chain has been updated.");
 
     update_map(outputMap);
