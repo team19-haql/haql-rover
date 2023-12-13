@@ -304,7 +304,7 @@ PROTO Sojourner [
                           device [
                             RotationalMotor {
                               name "BackLeftWheel"
-                              maxVelocity 10.6
+                              maxVelocity 30.0
                               maxTorque 2
                             }
                             PositionSensor {
@@ -434,7 +434,7 @@ PROTO Sojourner [
                     device [
                       RotationalMotor {
                         name "MiddleLeftWheel"
-                        maxVelocity 10.6
+                        maxVelocity 30.0
                         maxTorque 2
                       }
                       PositionSensor {
@@ -663,7 +663,7 @@ PROTO Sojourner [
                     device [
                       RotationalMotor {
                         name "FrontLeftWheel"
-                        maxVelocity 10.6
+                        maxVelocity 30.0
                         maxTorque 2
                       }
                       PositionSensor {
@@ -826,7 +826,7 @@ PROTO Sojourner [
                           device [
                             RotationalMotor {
                               name "BackRightWheel"
-                              maxVelocity 10.6
+                              maxVelocity 30.0
                               maxTorque 2
                             }
                             PositionSensor {
@@ -904,7 +904,7 @@ PROTO Sojourner [
                     device [
                       RotationalMotor {
                         name "MiddleRightWheel"
-                        maxVelocity 10.6
+                        maxVelocity 30.0
                         maxTorque 2
                       }
                       PositionSensor {
@@ -1159,7 +1159,7 @@ PROTO Sojourner [
                     device [
                       RotationalMotor {
                         name "FrontRightWheel"
-                        maxVelocity 10.6
+                        maxVelocity 30.0
                         maxTorque 2
                       }
                       PositionSensor {
