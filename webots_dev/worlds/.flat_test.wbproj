@@ -8,4 +8,4 @@ orthographicViewHeight: 1
 textFiles: -1
 consoles: Console:All:All
 renderingDevicePerspectives: Sojourner:kinect_color;1;1;0;0
-renderingDevicePerspectives: Sojourner:kinect_range;1;1;0;0
+renderingDevicePerspectives: Sojourner:kinect_range;1;0.671875;0;0

@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'loader = boden_misc.loader:main',
+            'i2c_bus = boden_misc.i2c_bus:main',
             'mock_battery = boden_misc.mock_battery:main',
         ],
     },
