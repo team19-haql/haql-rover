@@ -1,3 +1,0 @@
-Instantiated with filepath=None->None, scale=[1.0000001192092896, 1.0000001192092896, 1.0], mesh=<bpy_struct, Mesh("LongMotorAssem_V4 - Rough Shaft_V2-1") at 0x0000023041B22088>, meshname=LongMotorAssem_V4 - Rough Shaft_V2-1, material=None, mesh_orientation=None, {}
-->trying export of <bpy_struct, Mesh("LongMotorAssem_V4 - Rough Shaft_V2-1") at 0x0000023041B22088> to C:\Users\jun12\OneDrive\Desktop\School\SeniorDesign\URDF\assem\meshes\dae\LongMotorAssem_V4 - Rough Shaft_V2-1.dae
-->wrote dae to C:\Users\jun12\OneDrive\Desktop\School\SeniorDesign\URDF\assem\meshes\dae\LongMotorAssem_V4 - Rough Shaft_V2-1.dae from bpy_types.Mesh

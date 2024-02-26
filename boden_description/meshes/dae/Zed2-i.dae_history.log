@@ -1,3 +1,0 @@
-Instantiated with filepath=None->None, scale=[1.0, 1.0, 1.0], mesh=<bpy_struct, Mesh("Zed2-i") at 0x0000023041B1AB08>, meshname=Zed2-i, material=None, mesh_orientation=None, {}
-->trying export of <bpy_struct, Mesh("Zed2-i") at 0x0000023041B1AB08> to C:\Users\jun12\OneDrive\Desktop\School\SeniorDesign\URDF\assem\meshes\dae\Zed2-i.dae
-->wrote dae to C:\Users\jun12\OneDrive\Desktop\School\SeniorDesign\URDF\assem\meshes\dae\Zed2-i.dae from bpy_types.Mesh
