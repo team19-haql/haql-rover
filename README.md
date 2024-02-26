@@ -47,7 +47,7 @@ To start the simulation, run the following command.
 ros2 launch webots_dev robot_launch.py 
 ```
 
-To start the localization node, run the following command. You can find different launch files in `src/haql-rover/boden_bringup/launch`
+To start the localization node, run the following command. You can find different launch files in `src/haql-rover/boden_navigation/launch`
 ```bash
-ros2 launch boden_bringup ekf_launch.py 
+ros2 launch boden_navigation ekf_launch.py 
 ```
