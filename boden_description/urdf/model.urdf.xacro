@@ -1,4 +1,6 @@
-<robot name="assem" version="1.0">
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
   <joint name="Cube_link_joint" type="fixed">
     <origin rpy="0.00000 0.00000 0.00000" xyz="0.01837 -0.07980 -0.04656"/>
     <parent link="chassisAssembly_-_electronicsHousing-1_Rough_6_Pin_Pannel_C.002"/>
@@ -111,7 +113,7 @@
       <origin rpy="-3.14159 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <material name="Metal10"/>
       <geometry>
-        <mesh filename="package://meshes/dae/LongMotorAssem_V4 - Rough Shaft_V2-1.001.dae" scale="1.00000 1.00000 1.00000"/>
+          <mesh filename="file://$(find boden_description)/meshes/dae/LongMotorAssem_V4-RoughShaft_V2-1.001.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -131,7 +133,7 @@
       <origin rpy="3.14159 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="Metal10"/>
       <geometry>
-        <mesh filename="package://meshes/dae/LongMotorAssem_V4 - Rough Shaft_V2-1.002.dae" scale="1.00000 1.00000 1.00000"/>
+          <mesh filename="file://$(find boden_description)/meshes/dae/LongMotorAssem_V4-RoughShaft_V2-1.002.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -151,7 +153,7 @@
       <origin rpy="0.00000 -0.00000 -0.00000" xyz="-0.00000 0.00000 0.00000"/>
       <material name="Metal10"/>
       <geometry>
-        <mesh filename="package://meshes/dae/LongMotorAssem_V4 - Rough Shaft_V2-1.003.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/LongMotorAssem_V4-RoughShaft_V2-1.003.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -171,7 +173,7 @@
       <origin rpy="0.00000 0.00000 0.00000" xyz="-0.00000 -0.00000 -0.00000"/>
       <material name="Metal10"/>
       <geometry>
-        <mesh filename="package://meshes/dae/LongMotorAssem_V4 - Rough Shaft_V2-1.004.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/LongMotorAssem_V4-RoughShaft_V2-1.004.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -191,7 +193,7 @@
       <origin rpy="1.57080 -0.00000 -0.00000" xyz="0.00000 -0.00000 -0.00000"/>
       <material name="Metal10"/>
       <geometry>
-        <mesh filename="package://meshes/dae/LongMotorAssem_V4 - Rough Shaft_V2-1.006.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/LongMotorAssem_V4-RoughShaft_V2-1.006.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -211,7 +213,7 @@
       <origin rpy="-3.14159 0.00000 0.00000" xyz="-0.00000 0.00000 0.00000"/>
       <material name="Metal10"/>
       <geometry>
-        <mesh filename="package://meshes/dae/LongMotorAssem_V4 - Rough Shaft_V2-1.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/LongMotorAssem_V4-RoughShaft_V2-1.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -225,7 +227,7 @@
       <origin rpy="0.00000 1.57080 0.00000" xyz="0.00000 0.00000 -0.00000"/>
       <material name="Glass"/>
       <geometry>
-        <mesh filename="package://meshes/dae/Zed2-i.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/Zed2-i.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -239,7 +241,7 @@
       <origin rpy="1.57080 0.00000 0.00000" xyz="0.00000 0.00000 0.29224"/>
       <material name="Metal28"/>
       <geometry>
-        <mesh filename="package://meshes/dae/chassisAssembly - chassisFrameShort-2.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/chassisAssembly-chassisFrameShort-2.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -253,7 +255,7 @@
       <origin rpy="1.57080 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="Plastic03"/>
       <geometry>
-        <mesh filename="package://meshes/dae/chassisAssembly - electronicsHousing-1 Rough 6 Pin Pannel C.001.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/chassisAssembly-electronicsHousing-1-Rough-6-Pin-Pannel-C.001.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -267,7 +269,7 @@
       <origin rpy="1.57080 0.00000 0.00000" xyz="0.00000 0.00000 -0.00000"/>
       <material name="Plastic04"/>
       <geometry>
-        <mesh filename="package://meshes/dae/chassisAssembly - roverBattery-1.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/chassisAssembly-roverBattery-1.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -281,7 +283,7 @@
       <origin rpy="-1.57080 0.00000 0.00000" xyz="0.00000 -0.00000 0.00000"/>
       <material name="Plastic04"/>
       <geometry>
-        <mesh filename="package://meshes/dae/chassisAssembly - sensorPackageEnclosure-1.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/chassisAssembly-sensorPackageEnclosure-1.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -295,7 +297,7 @@
       <origin rpy="3.14159 0.00000 0.00000" xyz="0.00000 0.00000 -0.00000"/>
       <material name="Metal28"/>
       <geometry>
-        <mesh filename="package://meshes/dae/suspensionAssemblyMirror - RockerArmBack-7.001.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/suspensionAssemblyMirror-RockerArmBack-7.001.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -309,7 +311,7 @@
       <origin rpy="-0.00000 0.00000 -0.00000" xyz="0.00000 -0.00000 -0.00000"/>
       <material name="Metal28"/>
       <geometry>
-        <mesh filename="package://meshes/dae/suspensionAssemblyMirror - RockerArmBack-7.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/suspensionAssemblyMirror-RockerArmBack-7.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -323,7 +325,7 @@
       <origin rpy="3.14159 -0.00000 -0.00000" xyz="0.00000 -0.00000 -0.00000"/>
       <material name="Metal28"/>
       <geometry>
-        <mesh filename="package://meshes/dae/suspensionAssemblyMirror - bogieCenterBracket_Outside-6.001.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/suspensionAssemblyMirror-bogieCenterBracket_Outside-6.001.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -337,7 +339,7 @@
       <origin rpy="-0.00000 -0.00000 0.00000" xyz="-0.00000 0.00000 -0.00000"/>
       <material name="Metal28"/>
       <geometry>
-        <mesh filename="package://meshes/dae/suspensionAssemblyMirror - bogieCenterBracket_Outside-6.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="file://$(find boden_description)/meshes/dae/suspensionAssemblyMirror-bogieCenterBracket_Outside-6.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -356,4 +358,5 @@
   <material name="Plastic04">
     <color rgba="0.80000 0.80000 0.80000 1.00000"/>
   </material>
+
 </robot>
