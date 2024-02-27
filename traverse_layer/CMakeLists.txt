@@ -72,7 +72,7 @@ add_executable(
 add_executable(
     pointcloud_to_gridmap_node
     src/pointcloud_to_gridmap_node.cpp
-    src/PointcloudToGridMap.cpp
+    src/PointcloudToGridmap.cpp
 )
 
 ament_target_dependencies(
