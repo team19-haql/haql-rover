@@ -4,9 +4,6 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/garden/protos/PicketFence.proto"
-EXTERNPROTO "../protos/Sojourner.proto"
-EXTERNPROTO "../protos/Mpu-9250.proto"
-EXTERNPROTO "../protos/Kinect.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/UnevenTerrain.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/obstacles/protos/Ramp30deg.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/stairs/protos/StraightStairs.proto"
@@ -21,6 +18,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/Wall.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/OsbWood.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/geometries/protos/TexturedBox.proto"
+EXTERNPROTO "../protos/Bodenbot.proto"
+EXTERNPROTO "../protos/Tools.proto"
 
 WorldInfo {
   basicTimeStep 16
@@ -29,32 +28,12 @@ WorldInfo {
 }
 Viewpoint {
   orientation -0.3180423664361789 -0.08064997313528954 0.9446399499200488 3.5774427346813487
-  position 2.7806386855062364 1.2494901116186612 2.7373293322917154
+  position 2.6528126717440395 1.4907986848194257 2.7485178108353625
   followType "None"
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
-}
-Sojourner {
-  extensionSlot [
-    GPS {
-      translation 0.23 -0.2 0.64
-      rotation 0 0 1 1.01503e-06
-    }
-    Mpu-9250 {
-      translation 0 0 0.09
-      rotation 0 0 1 7.33682e-06
-      name "imu"
-      includeInertialUnit TRUE
-    }
-    Kinect {
-      translation 0.257764 -2.15654e-06 0.108978
-      rotation 0.5773499358549824 -0.5773519358547601 -0.5773489358550934 2.0944
-      maxRange 5
-      foot FALSE
-    }
-  ]
 }
 RectangleArena {
   floorSize 200 200
@@ -64,6 +43,15 @@ RectangleArena {
   }
   wallThickness 0.2
   wallHeight 0.2
+}
+Bodenbot {
+  translation 0 0 0.28
+  rotation 0 0 1 3.14159
+  controller "<generic>"
+  toolSlot [
+    Tools {
+    }
+  ]
 }
 PicketFence {
   translation -3.46 2.95 0
