@@ -32,7 +32,7 @@ PROTO Bodenbot [
         rotation 1.000000 0.000000 0.000000 1.570800
         children [
           DEF main-plate_visual CadShape {
-            url "./meshes/dae/main-plate.dae"
+            url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/main-plate.dae"
           }
         ]
       }
@@ -43,7 +43,7 @@ PROTO Bodenbot [
             rotation 1.000000 0.000000 0.000000 1.570800
             children [
               DEF battery_visual CadShape {
-                url "./meshes/dae/battery.dae"
+                url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/battery.dae"
               }
             ]
           }
@@ -66,7 +66,7 @@ PROTO Bodenbot [
             rotation 1.000000 0.000000 0.000000 1.570800
             children [
               DEF electronics_visual CadShape {
-                url "./meshes/dae/electronics.dae"
+                url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/electronics.dae"
               }
             ]
           }
@@ -78,7 +78,7 @@ PROTO Bodenbot [
                 rotation 0.000000 1.000000 0.000000 1.570803
                 children [
                   DEF Zed2i_visual CadShape {
-                    url "./meshes/dae/Zed2i.dae"
+                    url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/Zed2i.dae"
                   }
                 ]
               }
@@ -117,7 +117,7 @@ PROTO Bodenbot [
             rotation -1.000000 0.000000 0.000000 1.570800
             children [
               DEF sensor-package_visual CadShape {
-                url "./meshes/dae/sensor-package.dae"
+                url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/sensor-package.dae"
               }
             ]
           }
@@ -158,7 +158,7 @@ PROTO Bodenbot [
               rotation 1.000000 0.000000 0.000000 3.141590
               children [
                 DEF suspension-left_visual CadShape {
-                  url "./meshes/dae/suspension-left.dae"
+                  url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/suspension-left.dae"
                 }
               ]
             }
@@ -182,7 +182,7 @@ PROTO Bodenbot [
                 rotation 0.000000 0.000000 1.000000 2.050760
                 children [
                   DEF wheel-left_visual CadShape {
-                    url "./meshes/dae/wheel-left.dae"
+                    url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/wheel-left.dae"
                   }
                 ]
                 name "left_wheel_1_link"
@@ -231,7 +231,7 @@ PROTO Bodenbot [
                     rotation 1.000000 -0.000000 0.000000 3.141590
                     children [
                       DEF suspension-left-sub_visual CadShape {
-                        url "./meshes/dae/suspension-left-sub.dae"
+                        url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/suspension-left-sub.dae"
                       }
                     ]
                   }
@@ -368,7 +368,7 @@ PROTO Bodenbot [
           rotation 0.000001 0.707108 0.707105 3.141591
           children [
             DEF suspension-right_visual CadShape {
-              url "./meshes/dae/suspension-right.dae"
+              url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/suspension-right.dae"
             }
             HingeJoint {
               jointParameters HingeJointParameters {
@@ -393,7 +393,7 @@ PROTO Bodenbot [
                     rotation -1.000000 -0.000000 0.000000 3.141590
                     children [
                       DEF wheel-right_visual CadShape {
-                        url "./meshes/dae/wheel-right.dae"
+                        url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/wheel-right.dae"
                       }
                     ]
                   }
@@ -442,7 +442,7 @@ PROTO Bodenbot [
                 rotation -0.000000 0.000000 1.000000 0.269660
                 children [
                   DEF suspension-right-sub_visual CadShape {
-                    url "./meshes/dae/suspension-right-sub.dae"
+                    url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/suspension-right-sub.dae"
                   }
                   HingeJoint {
                     jointParameters HingeJointParameters {
