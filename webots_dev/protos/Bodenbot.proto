@@ -140,11 +140,12 @@ PROTO Bodenbot [
         }
         device [
           RotationalMotor {
-            name "suspension_left_main_link_joint"
+            name "suspension_main_link_joint::left"
             maxVelocity 0.015
             minPosition -0.5
             maxPosition 0.5
-            maxTorque 1.5
+            maxTorque 1000
+            multiplier -1
           }
           PositionSensor {
             name "suspension_left_main_link_joint_sensor"
@@ -217,7 +218,7 @@ PROTO Bodenbot [
                   maxVelocity 0.015
                   minPosition -0.5
                   maxPosition 0.5
-                  maxTorque 5.0
+                  maxTorque 10
                 }
                 PositionSensor {
                   name "suspension_left_sub_link_joint_sensor"
@@ -353,7 +354,7 @@ PROTO Bodenbot [
         }
         device [
           RotationalMotor {
-            name "suspension_right_main_link_joint"
+            name "suspension_main_link_joint::right"
             maxVelocity 0.015
             minPosition -0.5
             maxPosition 0.5
@@ -377,9 +378,10 @@ PROTO Bodenbot [
               }
               device [
                 RotationalMotor {
-                  name "right_wheel_3_joint"
+                  name "right_wheel_3_link_joint"
                   maxVelocity 10.0
                   maxTorque 1000.0
+                  multiplier -1
                 }
                 PositionSensor {
                   name "right_wheel_3_joint_sensor"
@@ -431,7 +433,7 @@ PROTO Bodenbot [
                   maxVelocity 0.015
                   minPosition -0.5
                   maxPosition 0.5
-                  maxTorque 5.0
+                  maxTorque 10
                 }
                 PositionSensor {
                   name "suspension_right_sub_link_joint_sensor"
@@ -454,6 +456,7 @@ PROTO Bodenbot [
                         name "right_wheel_1_link_joint"
                         maxVelocity 10.0
                         maxTorque 1000.0
+                        multiplier -1
                       }
                       PositionSensor {
                         name "right_wheel_1_link_joint_sensor"
@@ -502,6 +505,7 @@ PROTO Bodenbot [
                         name "right_wheel_2_link_joint"
                         maxVelocity 10.0
                         maxTorque 1000.0
+                        multiplier -1
                       }
                       PositionSensor {
                         name "right_wheel_2_link_joint_sensor"

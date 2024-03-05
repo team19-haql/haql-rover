@@ -119,7 +119,7 @@
       <origin rpy="3.14159 1.57079 3.14159" xyz="0.00000 0.00000 0.00000"/>
       <material name="Glass"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/Zed2i.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/Zed2i.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -140,7 +140,7 @@
       <origin rpy="1.57080 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="Rubber"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/battery.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/battery.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -154,7 +154,7 @@
       <origin rpy="1.57080 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="Plastic"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/electronics.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/electronics.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -174,7 +174,7 @@
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 -0.00000"/>
       <material name="Metal"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/wheel-left.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/wheel-left.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -194,7 +194,7 @@
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 -0.00000"/>
       <material name="Rubber"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/wheel-left.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/wheel-left.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -214,7 +214,7 @@
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 0.00000 -0.00000"/>
       <material name="Rubber"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/wheel-left.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/wheel-left.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -228,7 +228,7 @@
       <origin rpy="1.57080 0.00000 0.00000" xyz="0.00000 0.00000 0.00674"/>
       <material name="Metal"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/main-plate.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/main-plate.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -248,7 +248,7 @@
       <origin rpy="-3.14159 -0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="Rubber"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/wheel-right.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/wheel-right.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -268,7 +268,7 @@
       <origin rpy="3.14159 0.00000 0.00000" xyz="-0.00000 -0.00000 0.00000"/>
       <material name="Rubber"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/wheel-right.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/wheel-right.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -288,7 +288,7 @@
       <origin rpy="-3.14159 -0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="Rubber"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/wheel-right.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/wheel-right.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -302,7 +302,7 @@
       <origin rpy="-1.57080 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="Plastic"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/sensor-package.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/sensor-package.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -316,7 +316,7 @@
       <origin rpy="3.14159 0.00000 0.00000" xyz="0.00000 0.00000 -0.00000"/>
       <material name="Rubber"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/suspension-left.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/suspension-left.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -330,7 +330,7 @@
       <origin rpy="3.14159 -0.00000 -0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="Rubber"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/suspension-left-sub.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/suspension-left-sub.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -344,7 +344,7 @@
       <origin rpy="0.00000 0.00000 -0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="Rubber"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/suspension-right.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/suspension-right.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>
@@ -358,7 +358,7 @@
       <origin rpy="-0.00000 0.00000 0.00000" xyz="-0.00000 -0.00000 0.00000"/>
       <material name="Metal"/>
       <geometry>
-        <mesh filename="../bodenbot_description/meshes/dae/suspension-right-sub.dae" scale="1.00000 1.00000 1.00000"/>
+        <mesh filename="../boden_description/meshes/dae/suspension-right-sub.dae" scale="1.00000 1.00000 1.00000"/>
       </geometry>
     </visual>
   </link>

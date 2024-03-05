@@ -36,29 +36,28 @@
             <plugin>webots_ros2_control::Ros2ControlSystem</plugin>
         </hardware>
 
-        <joint name="BackLeftWheel">
+        <joint name="left_wheel_1_link_joint">
             <state_interface name="position"/>
             <command_interface name="velocity"/>
         </joint>
-        <joint name="BackRightWheel">
+        <joint name="left_wheel_2_link_joint">
             <state_interface name="position"/>
             <command_interface name="velocity"/>
         </joint>
-
-        <joint name="MiddleLeftWheel">
-            <state_interface name="position"/>
-            <command_interface name="velocity"/>
-        </joint>
-        <joint name="MiddleRightWheel">
+        <joint name="left_wheel_3_link_joint">
             <state_interface name="position"/>
             <command_interface name="velocity"/>
         </joint>
 
-        <joint name="FrontLeftWheel">
+        <joint name="right_wheel_1_link_joint">
             <state_interface name="position"/>
             <command_interface name="velocity"/>
         </joint>
-        <joint name="FrontRightWheel">
+        <joint name="right_wheel_2_link_joint">
+            <state_interface name="position"/>
+            <command_interface name="velocity"/>
+        </joint>
+        <joint name="right_wheel_3_link_joint">
             <state_interface name="position"/>
             <command_interface name="velocity"/>
         </joint>

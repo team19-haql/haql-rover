@@ -7,5 +7,5 @@ centralWidgetVisible: 1
 orthographicViewHeight: 1
 textFiles: -1
 consoles: Console:All:All
-renderingDevicePerspectives: Bodenbot:zed2i_color;1;0.525;0.825779;0.24196
-renderingDevicePerspectives: Bodenbot:zed2i_range;1;0.513298;0.831313;0
+renderingDevicePerspectives: Bodenbot:zed2i_color;1;0.350536;0.825779;0.24196
+renderingDevicePerspectives: Bodenbot:zed2i_range;1;0.339233;0.831313;0

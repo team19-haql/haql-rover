@@ -212,7 +212,7 @@
       <pose relative_to="Zed2i_link">0.00000 0.00000 0.00000 3.14159 1.57079 3.14159</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/Zed2i.dae</uri>
+          <uri>package://boden_description/meshes/dae/Zed2i.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -254,7 +254,7 @@
       <pose relative_to="battery_link">0.00000 0.00000 0.00000 1.57080 0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/battery.dae</uri>
+          <uri>package://boden_description/meshes/dae/battery.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -282,7 +282,7 @@
       <pose relative_to="electronics_link">0.00000 0.00000 0.00000 1.57080 0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/electronics.dae</uri>
+          <uri>package://boden_description/meshes/dae/electronics.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -322,7 +322,7 @@
       <pose relative_to="left_wheel_1_link">0.00000 -0.00000 -0.00000 0.00000 0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/wheel-left.dae</uri>
+          <uri>package://boden_description/meshes/dae/wheel-left.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -362,7 +362,7 @@
       <pose relative_to="left_wheel_2_link">0.00000 -0.00000 -0.00000 0.00000 0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/wheel-left.dae</uri>
+          <uri>package://boden_description/meshes/dae/wheel-left.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -402,7 +402,7 @@
       <pose relative_to="left_wheel_3_link">0.00000 0.00000 -0.00000 0.00000 0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/wheel-left.dae</uri>
+          <uri>package://boden_description/meshes/dae/wheel-left.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -430,7 +430,7 @@
       <pose relative_to="main_plate_link">0.00000 0.00000 0.00674 1.57080 0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/main-plate.dae</uri>
+          <uri>package://boden_description/meshes/dae/main-plate.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -470,7 +470,7 @@
       <pose relative_to="right_wheel_1_link">0.00000 0.00000 0.00000 -3.14159 -0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/wheel-right.dae</uri>
+          <uri>package://boden_description/meshes/dae/wheel-right.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -510,7 +510,7 @@
       <pose relative_to="right_wheel_2_link">-0.00000 -0.00000 0.00000 3.14159 0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/wheel-right.dae</uri>
+          <uri>package://boden_description/meshes/dae/wheel-right.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -550,7 +550,7 @@
       <pose relative_to="right_wheel_3_link">0.00000 0.00000 0.00000 -3.14159 -0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/wheel-right.dae</uri>
+          <uri>package://boden_description/meshes/dae/wheel-right.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -578,7 +578,7 @@
       <pose relative_to="sensor_package_link">0.00000 0.00000 0.00000 -1.57080 0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/sensor-package.dae</uri>
+          <uri>package://boden_description/meshes/dae/sensor-package.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -606,7 +606,7 @@
       <pose relative_to="suspension_left_main_link">0.00000 0.00000 -0.00000 3.14159 0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/suspension-left.dae</uri>
+          <uri>package://boden_description/meshes/dae/suspension-left.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -634,7 +634,7 @@
       <pose relative_to="suspension_left_sub_link">0.00000 0.00000 0.00000 3.14159 -0.00000 -0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/suspension-left-sub.dae</uri>
+          <uri>package://boden_description/meshes/dae/suspension-left-sub.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -662,7 +662,7 @@
       <pose relative_to="suspension_right_main_link">0.00000 0.00000 0.00000 0.00000 0.00000 -0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/suspension-right.dae</uri>
+          <uri>package://boden_description/meshes/dae/suspension-right.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
@@ -690,7 +690,7 @@
       <pose relative_to="suspension_right_sub_link">-0.00000 -0.00000 0.00000 -0.00000 0.00000 0.00000</pose>
       <geometry>
         <mesh>
-          <uri>package://bodenbot_description/meshes/dae/suspension-right-sub.dae</uri>
+          <uri>package://boden_description/meshes/dae/suspension-right-sub.dae</uri>
           <scale>1.00000 1.00000 1.00000</scale>
         </mesh>
       </geometry>
