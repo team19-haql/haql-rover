@@ -25,6 +25,15 @@ WorldInfo {
   basicTimeStep 16
   gpsCoordinateSystem "WGS84"
   gpsReference 40.015 -105.27 0
+  contactProperties [
+    ContactProperties {
+      material2 "rubber"
+      coulombFriction [
+        0.6
+      ]
+      maxContactJoints 12
+    }
+  ]
 }
 Viewpoint {
   orientation -0.17251033543373823 0.08678941407764387 0.981176733199783 2.1598143985092246

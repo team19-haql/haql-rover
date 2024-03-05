@@ -34,6 +34,7 @@ def generate_launch_description():
     mode = LaunchConfiguration('mode')
     world = LaunchConfiguration('world')
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
+    use_foxglove = LaunchConfiguration('use_foxglove', default=False)
 
     webots = WebotsLauncher(
         world=PathJoinSubstitution([package_dir, 'worlds', world]),
@@ -103,6 +104,16 @@ def generate_launch_description():
         target_driver=bodenbot_driver,
         nodes_to_start=ros_control_spawners,
     )
+    
+    foxglove_bridge = Node(
+        package='foxglove_bridge',
+        executable='foxglove_bridge',
+        output='screen',
+        parameters=[{
+            'use_sim_time': use_sim_time,
+        }],
+        condition=launch.conditions.IfCondition(use_foxglove),
+    )
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -123,6 +134,7 @@ def generate_launch_description():
 
         bodenbot_driver,
         waiting_nodes,
+        foxglove_bridge,
 
         # This action will kill all nodes once the Webots simulation has exited
         launch.actions.RegisterEventHandler(

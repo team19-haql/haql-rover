@@ -187,6 +187,7 @@ PROTO Bodenbot [
                   }
                 ]
                 name "left_wheel_1_link"
+                contactMaterial "rubber"
                 boundingObject Pose {
                   translation -0.000060 -0.000020 0.066220
                   children [
@@ -258,6 +259,7 @@ PROTO Bodenbot [
                         USE wheel-left_visual
                       ]
                       name "left_wheel_2_link"
+                      contactMaterial "rubber"
                       boundingObject Pose {
                         translation -0.000060 -0.000020 0.066220
                         children [
@@ -300,6 +302,7 @@ PROTO Bodenbot [
                         USE wheel-left_visual
                       ]
                       name "left_wheel_3_link"
+                      contactMaterial "rubber"
                       boundingObject Pose {
                         translation 0.000040 0.000050 0.066220
                         rotation -1.000000 0.000000 0.000000 3.141590
@@ -401,6 +404,7 @@ PROTO Bodenbot [
                   }
                 ]
                 name "right_wheel_3_link"
+                contactMaterial "rubber"
                 boundingObject Pose {
                   translation 0.000010 0.000000 0.066220
                   rotation -1.000000 -0.000000 0.000000 3.141590
@@ -474,6 +478,7 @@ PROTO Bodenbot [
                         }
                       ]
                       name "right_wheel_1_link"
+                      contactMaterial "rubber"
                       boundingObject Pose {
                         translation 0.000060 -0.000020 0.066220
                         rotation -1.000000 -0.000000 0.000000 3.141590
@@ -523,6 +528,7 @@ PROTO Bodenbot [
                         }
                       ]
                       name "right_wheel_2_link"
+                      contactMaterial "rubber"
                       boundingObject Pose {
                         translation 0.000060 -0.000020 0.066220
                         rotation 1.000000 0.000000 0.000000 3.141590
