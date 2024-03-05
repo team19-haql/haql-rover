@@ -1,3 +1,0 @@
-Instantiated with filepath=None->None, scale=[1.0, 1.0, 1.0], mesh=<bpy_struct, Mesh("sensor-package") at 0x16986c008>, meshname=sensor-package, material=None, mesh_orientation=None, {}
-->trying export of <bpy_struct, Mesh("sensor-package") at 0x16986c008> to /Users/deweykai/Downloads/assem/bodenbot/meshes/dae/sensor-package.dae
-->wrote dae to /Users/deweykai/Downloads/assem/bodenbot/meshes/dae/sensor-package.dae from bpy_types.Mesh

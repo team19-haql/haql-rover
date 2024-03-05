@@ -1,3 +1,0 @@
-Instantiated with filepath=None->None, scale=[0.9999998807907104, 0.9999998807907104, 1.0], mesh=<bpy_struct, Mesh("suspension-right-sub") at 0x169aa2408>, meshname=suspension-right-sub, material=None, mesh_orientation=None, {}
-->trying export of <bpy_struct, Mesh("suspension-right-sub") at 0x169aa2408> to /Users/deweykai/Downloads/assem/bodenbot/meshes/dae/suspension-right-sub.dae
-->wrote dae to /Users/deweykai/Downloads/assem/bodenbot/meshes/dae/suspension-right-sub.dae from bpy_types.Mesh

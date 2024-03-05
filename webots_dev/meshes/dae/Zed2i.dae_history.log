@@ -1,3 +1,0 @@
-Instantiated with filepath=None->None, scale=[1.0, 1.0, 1.0], mesh=<bpy_struct, Mesh("Zed2i") at 0x169b01208>, meshname=Zed2i, material=None, mesh_orientation=None, {}
-->trying export of <bpy_struct, Mesh("Zed2i") at 0x169b01208> to /Users/deweykai/Downloads/assem/bodenbot/meshes/dae/Zed2i.dae
-->wrote dae to /Users/deweykai/Downloads/assem/bodenbot/meshes/dae/Zed2i.dae from bpy_types.Mesh

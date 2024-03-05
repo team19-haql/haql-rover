@@ -13,8 +13,6 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob('*.py')),
-        (os.path.join('share', package_name), glob('urdf/*.urdf')),
-        (os.path.join('share', package_name, 'meshes', 'dae'), glob('meshes/dae/*.dae')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

@@ -31,27 +31,60 @@ from webots_ros2_driver.wait_for_controller_connection import WaitForControllerC
 
 def generate_launch_description():
     package_dir = get_package_share_directory('webots_dev')
+    mode = LaunchConfiguration('mode')
     world = LaunchConfiguration('world')
-    use_sim_time = LaunchConfiguration('use_sim_time', default=False)
+    use_sim_time = LaunchConfiguration('use_sim_time', default=True)
 
-    simulation_server_ip = 'host.docker.internal' if 'ROS_DOCKER_MAC' in os.environ else None
     webots = WebotsLauncher(
-        gui=False,
         world=PathJoinSubstitution([package_dir, 'worlds', world]),
-        simulation_server_ip=simulation_server_ip,
+        mode=mode,
         ros2_supervisor=True,
     )
 
-    robot_description_path = os.path.join(package_dir, 'resource', 'rbot.urdf')
+    robot_state_publisher = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        output='screen',
+        parameters=[{
+            'robot_description': '<robot name=""><link name=""/></robot>'
+        }],
+    )
+
+    footprint_publisher = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        output='screen',
+        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'base_footprint'],
+    )
+
+    # ROS control spawners
+    controller_manager_timeout = ['--controller-manager-timeout', '500']
+    controller_manager_prefix = 'python.exe' if os.name == 'nt' else ''
+    diffdrive_controller_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        output='screen',
+        prefix=controller_manager_prefix,
+        arguments=['diffdrive_controller'] + controller_manager_timeout,
+    )
+    joint_state_broadcaster_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        output='screen',
+        prefix=controller_manager_prefix,
+        arguments=['joint_state_broadcaster'] + controller_manager_timeout,
+    )
+    ros_control_spawners = [diffdrive_controller_spawner, joint_state_broadcaster_spawner]
+
+
+    robot_description_path = os.path.join(package_dir, 'resource', 'bodenbot_webots.urdf')
     ros2_control_params = os.path.join(package_dir, 'resource', 'ros2_control.yml')
     mappings = [
         ('/diffdrive_controller/cmd_vel_unstamped', '/cmd_vel'),
         ('/diffdrive_controller/odom', '/odometry/wheel'),
-        ('/imu', '/imu_no_noise'),
     ]
-    rbot_driver = WebotsController(
-        robot_name='Sojourner',
-        ip_address=simulation_server_ip,
+    bodenbot_driver = WebotsController(
+        robot_name='Bodenbot',
         parameters=[
             {
                 'robot_description': robot_description_path,
@@ -63,62 +96,11 @@ def generate_launch_description():
         remappings=mappings,
         respawn=True
     )
-    imu_noise = Node(
-        package='webots_dev',
-        executable='add_noise_imu',
-        output='screen',
-        parameters=[{
-            'orientation_cov_factor': 0.05,
-            'angular_velocity_cov_factor': 0.01,
-            'linear_acceleration_cov_factor': 0.15,
-        }],
-    )
 
-    robot_state_publisher = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        output='screen',
-        parameters=[{
-            'use_sim_time': use_sim_time,
-            'robot_description': '<robot name=""><link name=""/></robot>'
-        }],
-    )
-
-    footprint_publisher = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        output='screen',
-        parameters=[{'use_sim_time': use_sim_time}],
-        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'base_footprint'],
-    )
-
-    controller_manager_timeout = ['--controller-manager-timeout', '50']
-    controller_manager_prefix = 'python.exe' if os.name == 'nt' else ''
-    diffdrive_controller_spawner = Node(
-        package='controller_manager',
-        executable='spawner',
-        output='screen',
-        prefix=controller_manager_prefix,
-        arguments=['diffdrive_controller'] + controller_manager_timeout,
-        parameters=[
-            {'use_sim_time': use_sim_time},
-        ],
-    )
-    joint_state_broadcaster_spawner = Node(
-        package='controller_manager',
-        executable='spawner',
-        output='screen',
-        prefix=controller_manager_prefix,
-        arguments=['joint_state_broadcaster'] + controller_manager_timeout,
-        parameters=[
-            {'use_sim_time': use_sim_time},
-        ],
-    )
-    ros_control_spawners = [diffdrive_controller_spawner, joint_state_broadcaster_spawner]
 
     # Wait for the simulation to be ready to start the tools and spawners
     waiting_nodes = WaitForControllerConnection(
-        target_driver=rbot_driver,
+        target_driver=bodenbot_driver,
         nodes_to_start=ros_control_spawners,
     )
 
@@ -129,17 +111,17 @@ def generate_launch_description():
             description='Choose one of the world files from `/webots_dev/worlds` directory',
         ),
         DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='false',
-        ),
-        TimerAction(
-            period=3.0,
-            actions=[robot_state_publisher, footprint_publisher],
+            'mode',
+            default_value='realtime',
+            description='Webots startup mode'
         ),
         webots,
         webots._supervisor,
-        rbot_driver,
-        imu_noise,
+        
+        robot_state_publisher,
+        footprint_publisher,
+
+        bodenbot_driver,
         waiting_nodes,
 
         # This action will kill all nodes once the Webots simulation has exited

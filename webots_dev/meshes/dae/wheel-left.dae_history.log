@@ -1,3 +1,0 @@
-Instantiated with filepath=None->None, scale=[1.0, 1.0, 1.0], mesh=<bpy_struct, Mesh("wheel-left") at 0x169abc408>, meshname=wheel-left, material=None, mesh_orientation=None, {}
-->trying export of <bpy_struct, Mesh("wheel-left") at 0x169abc408> to /Users/deweykai/Downloads/assem/bodenbot/meshes/dae/wheel-left.dae
-->wrote dae to /Users/deweykai/Downloads/assem/bodenbot/meshes/dae/wheel-left.dae from bpy_types.Mesh
