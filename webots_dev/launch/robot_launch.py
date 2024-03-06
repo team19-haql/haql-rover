@@ -35,11 +35,13 @@ def generate_launch_description():
     world = LaunchConfiguration('world')
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
     use_foxglove = LaunchConfiguration('use_foxglove', default=False)
+    show_gui = LaunchConfiguration('gui', default=False)
 
     webots = WebotsLauncher(
         world=PathJoinSubstitution([package_dir, 'worlds', world]),
         mode=mode,
         ros2_supervisor=True,
+        gui=show_gui,
     )
 
     robot_state_publisher = Node(
@@ -124,7 +126,12 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'mode',
             default_value='realtime',
-            description='Webots startup mode'
+            description='Webots startup mode',
+        ),
+        DeclareLaunchArgument(
+            'gui',
+            default_value='false',
+            description='Webots show gui',
         ),
         webots,
         webots._supervisor,

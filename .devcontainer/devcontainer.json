@@ -25,13 +25,10 @@
     },
     "containerEnv": {
         "DISPLAY": "unix:0",
-        "ROS_LOCALHOST_ONLY": "1",
-        "ROS_DOMAIN_ID": "42",
         "WEBOTS_SHARED_FOLDER": "/Users/deweykai/repos/ws_dev/tmp:/home/ws/tmp",
-        "ROS_DOCKER_MAC": "1"
     },
     "runArgs": [
-        "--net=host",
+        "--network=ros2",
         "-e",
         "DISPLAY=${env:DISPLAY}"
     ],
