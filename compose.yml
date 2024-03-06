@@ -1,11 +1,12 @@
 version: "3.8"
 services:
-  devcontainer:
+  webots:
     build:
-      context: .
+      context: .devcontainer
       target: devcontainer
+    ports:
+      - 1234:1234
     environment:
-      - DISPLAY=unix:0
       - WEBOTS_SHARED_FOLDER=/Users/deweykai/repos/ws_dev/src/tmp:/home/ws/src/tmp
     volumes:
       - .:/home/ws/src/haql-rover
