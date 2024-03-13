@@ -3,7 +3,7 @@
 #include <utility>
 #include <chrono>
 
-#include <traverse_layer/TraverseLayer.hpp>
+#include <traverse_layer/traverse_layer_component.hpp>
 #include <grid_map_cv/grid_map_cv.hpp>
 
 namespace traverse_layer

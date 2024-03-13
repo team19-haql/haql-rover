@@ -66,13 +66,13 @@ include_directories(
 add_executable(
     traverse_layer_node
     src/traverse_layer_node.cpp
-    src/TraverseLayer.cpp
+    src/traverse_layer_component.cpp
 )
 
 add_executable(
     pointcloud_to_gridmap_node
     src/pointcloud_to_gridmap_node.cpp
-    src/PointcloudToGridmap.cpp
+    src/pointcloud_to_gridmap_component.cpp
 )
 
 ament_target_dependencies(

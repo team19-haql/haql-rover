@@ -3,7 +3,7 @@
 #include <utility>
 #include <string>
 
-#include <traverse_layer/PointcloudToGridmap.hpp>
+#include <traverse_layer/pointcloud_to_gridmap_component.hpp>
 #include <sensor_msgs/point_cloud2_iterator.hpp>
 #include <message_filters/subscriber.h>
 #include <tf2_ros/buffer.h>

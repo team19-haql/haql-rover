@@ -45,7 +45,6 @@ RUN /bin/bash /home/webots_ws/build-webots.bash
 
 # create tmp directory for webots
 WORKDIR /home/ws
-RUN mkdir -p src/tmp
 # [Optional] Set the default user. Omit if you want to keep the default as root.
 
 FROM webots as devcontainer

@@ -1,6 +1,6 @@
 #include<rclcpp/rclcpp.hpp>
 #include<memory>
-#include<traverse_layer/TraverseLayer.hpp>
+#include<traverse_layer/traverse_layer_component.hpp>
 
 int main(int argc, char ** argv) {
     rclcpp::init(argc, argv);
