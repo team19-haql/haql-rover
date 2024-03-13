@@ -1,18 +1,3 @@
-pointcloud_to_gridmap:
-  ros__parameters:
-    input_topic: /Sojourner/kinect_range/point_cloud # pointcloud2
-    output_topic: /grid_map # gridmap
-    map_frame_id: map
-    center_frame_id: base_link
-    publish_latency: true
-
-    resolution: 0.15 # m/cell
-    world_size:
-      length: 30.0
-      width: 30.0
-
-    publish_rate: 1.0 # Hz
-
 local_map_visualization:
   ros__parameters:
     grid_map_topic: /local_map

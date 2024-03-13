@@ -90,7 +90,7 @@ ament_target_dependencies(
     ${dependencies}
 )
 rclcpp_components_register_node(
-    traverse_layer_component
+    pointcloud_to_gridmap_component
     PLUGIN "traverse_layer::PointcloudToGridmap"
     EXECUTABLE pointcloud_to_gridmap
 )

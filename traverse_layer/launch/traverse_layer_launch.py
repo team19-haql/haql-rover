@@ -6,6 +6,8 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch_ros.actions import ComposableNodeContainer
+from launch_ros.descriptions import ComposableNode
 
 
 def generate_launch_description():
@@ -30,20 +32,27 @@ def generate_launch_description():
         description='Full path to the Gridmap visualization config file to use')
 
     # Declare node actions
-    traverse_layer_node = Node(
-        package='traverse_layer',
-        executable='traverse_layer',
-        name='traverse_layer',
-        output='screen',
-        parameters=[filters_config_file]
-    )
-
-    pointcloud_to_gridmap_node = Node(
-        package='traverse_layer',
-        executable='pointcloud_to_gridmap',
-        name='pointcloud_to_gridmap',
-        output='screen',
-        parameters=[visualization_config_file],
+    composable_nodes = ComposableNodeContainer(
+        name='traverse_nodes',
+        namespace='',
+        package='rclcpp_components',
+        executable='component_container',
+        composable_node_descriptions=[
+            ComposableNode(
+                package='traverse_layer',
+                plugin='traverse_layer::TraverseLayer',
+                name='traverse_layer',
+                parameters=[filters_config_file],
+                # extra_arguments=[{'use_intra_process_comms': True}],
+            ),
+            ComposableNode(
+                package='traverse_layer',
+                plugin='traverse_layer::PointcloudToGridmap',
+                name='pointcloud_to_gridmap',
+                parameters=[filters_config_file],
+                # extra_arguments=[{'use_intra_process_comms': True}],
+            ),
+        ],
     )
 
     local_map_visualization_node = Node(
@@ -70,8 +79,7 @@ def generate_launch_description():
     ld.add_action(declare_visualization_config_file_cmd)
 
     # Add node actions to the launch description
-    ld.add_action(traverse_layer_node)
-    ld.add_action(pointcloud_to_gridmap_node)
+    ld.add_action(composable_nodes)
     ld.add_action(local_map_visualization_node)
     ld.add_action(global_map_visualization_node)
 
