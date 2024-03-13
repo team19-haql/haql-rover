@@ -22,6 +22,7 @@
   <depend>grid_map_visualization</depend>
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
+  <depend>rclcpp_components</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

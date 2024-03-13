@@ -17,7 +17,7 @@ namespace traverse_layer
 class PointcloudToGridmap : public rclcpp::Node
 {
 public:
-    PointcloudToGridmap();
+    PointcloudToGridmap(const rclcpp::NodeOptions & options);
     virtual ~PointcloudToGridmap();
 
     bool read_parameters();

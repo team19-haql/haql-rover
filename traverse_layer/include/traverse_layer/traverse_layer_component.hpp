@@ -14,7 +14,7 @@ namespace traverse_layer
 class TraverseLayer : public rclcpp::Node
 {
 public:
-    TraverseLayer();
+    TraverseLayer(const rclcpp::NodeOptions & options);
     virtual ~TraverseLayer();
 
     bool readParameters();

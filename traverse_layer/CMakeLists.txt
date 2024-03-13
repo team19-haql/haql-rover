@@ -21,6 +21,7 @@ find_package(message_filters REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(map_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(rclcpp_components REQUIRED)
 # grid_map_packages()
 
 if(TARGET tf2_geometry_msgs::tf2_geometry_msgs)
@@ -47,6 +48,7 @@ set(dependencies
     map_msgs
     geometry_msgs
     cv_bridge
+    rclcpp_components
     rclcpp)
 
 
@@ -63,35 +65,39 @@ include_directories(
     ${EIGEN3_INCLUDE_DIRS}
 )
 
-add_executable(
-    traverse_layer_node
-    src/traverse_layer_node.cpp
+# TraverseLayer
+add_library(
+    traverse_layer_component SHARED
     src/traverse_layer_component.cpp
 )
+ament_target_dependencies(
+    traverse_layer_component SYSTEM
+    ${dependencies}
+)
+rclcpp_components_register_node(
+    traverse_layer_component
+    PLUGIN "traverse_layer::TraverseLayer"
+    EXECUTABLE traverse_layer
+)
 
-add_executable(
-    pointcloud_to_gridmap_node
-    src/pointcloud_to_gridmap_node.cpp
+# PointcloudToGridmap
+add_library(
+    pointcloud_to_gridmap_component SHARED
     src/pointcloud_to_gridmap_component.cpp
 )
-
 ament_target_dependencies(
-    traverse_layer_node SYSTEM
+    pointcloud_to_gridmap_component SYSTEM
     ${dependencies}
 )
-
-ament_target_dependencies(
-    pointcloud_to_gridmap_node SYSTEM
-    ${dependencies}
+rclcpp_components_register_node(
+    traverse_layer_component
+    PLUGIN "traverse_layer::PointcloudToGridmap"
+    EXECUTABLE pointcloud_to_gridmap
 )
-
-if(EXISTS ${TF2_CPP_HEADERS})
-  target_compile_definitions(pointcloud_to_gridmap_node PUBLIC -DTF2_CPP_HEADERS)
-endif()
 
 set(targets_list
-    traverse_layer_node
-    pointcloud_to_gridmap_node
+    traverse_layer_component
+    pointcloud_to_gridmap_component
 )
 
 # foreach(target ${targets_list})
@@ -107,10 +113,10 @@ set(targets_list
 
 # Mark executables and/or libraries for installation
 install(
-  TARGETS ${targets_list}
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION lib/${PROJECT_NAME}
+    TARGETS ${targets_list}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
 )
 
 # Mark other files for installation

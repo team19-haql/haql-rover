@@ -11,19 +11,13 @@
 #include <tf2_ros/message_filter.h>
 #include <tf2_ros/transform_listener.h>
 #include <geometry_msgs/msg/point_stamped.h>
-#ifdef TF2_CPP_HEADERS
-  #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
-  #include <tf2_sensor_msgs/tf2_sensor_msgs.hpp>
-#else
-  #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
-  #include <tf2_sensor_msgs/tf2_sensor_msgs.h>
-#endif
+#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
+#include <tf2_sensor_msgs/tf2_sensor_msgs.hpp>
 #include <chrono>
-
 namespace traverse_layer
 {
 
-PointcloudToGridmap::PointcloudToGridmap() : Node("pointcloud_to_gridmap"),
+PointcloudToGridmap::PointcloudToGridmap(const rclcpp::NodeOptions & options) : Node("pointcloud_to_gridmap", options),
     raw_map_({"elevation", "variance","time",
               "lowest_scan_point", "sensor_x_at_lowest_scan", "sensor_y_at_lowest_scan", "sensor_z_at_lowest_scan"}),
     map_({"elevation", "lower_bound", "upper_bound"}),
@@ -425,3 +419,6 @@ void PointcloudToGridmap::visibility_cleanup() {
 
 
 } // namespace traverse_layer
+
+#include <rclcpp_components/register_node_macro.hpp>
+RCLCPP_COMPONENTS_REGISTER_NODE(traverse_layer::PointcloudToGridmap)

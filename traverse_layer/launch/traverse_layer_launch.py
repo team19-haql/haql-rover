@@ -32,7 +32,7 @@ def generate_launch_description():
     # Declare node actions
     traverse_layer_node = Node(
         package='traverse_layer',
-        executable='traverse_layer_node',
+        executable='traverse_layer',
         name='traverse_layer',
         output='screen',
         parameters=[filters_config_file]
@@ -40,7 +40,7 @@ def generate_launch_description():
 
     pointcloud_to_gridmap_node = Node(
         package='traverse_layer',
-        executable='pointcloud_to_gridmap_node',
+        executable='pointcloud_to_gridmap',
         name='pointcloud_to_gridmap',
         output='screen',
         parameters=[visualization_config_file],

@@ -9,8 +9,8 @@
 namespace traverse_layer
 {
 
-TraverseLayer::TraverseLayer() : 
-    Node("traverse_layer"),
+TraverseLayer::TraverseLayer(const rclcpp::NodeOptions & options) : 
+    Node("traverse_layer", options),
     map_({"elevation", "traversability"}),
     downscaled_map_({"elevation", "traversability"}),
     filter_chain_("grid_map::GridMap")
@@ -236,3 +236,6 @@ void TraverseLayer::callback(const grid_map_msgs::msg::GridMap::SharedPtr msg) {
 
 
 } // namespace traverse_layer
+
+#include <rclcpp_components/register_node_macro.hpp>
+RCLCPP_COMPONENTS_REGISTER_NODE(traverse_layer::TraverseLayer)
