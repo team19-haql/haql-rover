@@ -29,16 +29,16 @@ TraverseLayer::TraverseLayer(const rclcpp::NodeOptions & options) :
         std::bind(&TraverseLayer::callback, this, std::placeholders::_1));
 
     local_publisher_ = this->create_publisher<grid_map_msgs::msg::GridMap>(
-        local_map_topic_, rclcpp::QoS(1).transient_local());
+        local_map_topic_, 5);
 
     global_publisher_ = this->create_publisher<grid_map_msgs::msg::GridMap>(
-        global_map_topic_, rclcpp::QoS(1).transient_local());
+        global_map_topic_, 5);
 
     costmap_publisher_ = this->create_publisher<nav2_msgs::msg::Costmap>(
-        costmap_topic_, rclcpp::QoS(1).transient_local());
+        costmap_topic_, 5);
 
     latency_publisher_ = this->create_publisher<std_msgs::msg::Float64>(
-        "traverse_layer/latency", rclcpp::QoS(1).transient_local());
+        "traverse_layer/latency", 10);
 
     // setup filter chain
     if (filter_chain_.configure(

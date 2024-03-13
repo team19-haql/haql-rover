@@ -43,14 +43,14 @@ def generate_launch_description():
                 plugin='traverse_layer::TraverseLayer',
                 name='traverse_layer',
                 parameters=[filters_config_file],
-                # extra_arguments=[{'use_intra_process_comms': True}],
+                extra_arguments=[{'use_intra_process_comms': True}],
             ),
             ComposableNode(
                 package='traverse_layer',
                 plugin='traverse_layer::PointcloudToGridmap',
                 name='pointcloud_to_gridmap',
                 parameters=[filters_config_file],
-                # extra_arguments=[{'use_intra_process_comms': True}],
+                extra_arguments=[{'use_intra_process_comms': True}],
             ),
         ],
     )

@@ -80,7 +80,7 @@ PointcloudToGridmap::PointcloudToGridmap(const rclcpp::NodeOptions & options) : 
     //     std::bind(&PointcloudToGridmap::callback, this, std::placeholders::_1));
 
     publisher_ = this->create_publisher<grid_map_msgs::msg::GridMap>(
-        output_topic_, rclcpp::QoS(1).transient_local());
+        output_topic_, 5);
 
     publish_timer_ = this->create_wall_timer(
         std::chrono::milliseconds(static_cast<int>(1000.0 / publish_rate_)),
@@ -93,7 +93,7 @@ PointcloudToGridmap::PointcloudToGridmap(const rclcpp::NodeOptions & options) : 
     }
 
     latency_publisher_ = this->create_publisher<std_msgs::msg::Float64>(
-        "point_to_grid/latency", rclcpp::QoS(1).transient_local());
+        "point_to_grid/latency", rclcpp::QoS(1).durability_volatile());
 }
 
 PointcloudToGridmap::~PointcloudToGridmap()
