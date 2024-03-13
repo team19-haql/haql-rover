@@ -175,8 +175,8 @@ void TraverseLayer::update_map(grid_map::GridMap& input_map) {
         }
     }
 
-    RCLCPP_INFO(this->get_logger(), "Number of NAN values in traversability: %d", nan_count_traversability);
-    RCLCPP_INFO(this->get_logger(), "Number of NAN values in elevation: %d", nan_count_elevation);
+    RCLCPP_DEBUG(this->get_logger(), "Number of NAN values in traversability: %d", nan_count_traversability);
+    RCLCPP_DEBUG(this->get_logger(), "Number of NAN values in elevation: %d", nan_count_elevation);
 
     // update downscaled map
     double dx = last_position_.x() - input_map.getPosition().x();
