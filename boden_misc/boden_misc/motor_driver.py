@@ -55,6 +55,11 @@ class MotorDriver(Node):
         wheel_radius = self.get_parameter('wheel_radius').value
         self.get_logger().info(f'wheel_separation = {wheel_separation}, wheel_radius = {wheel_radius}')
 
+        # log velocities
+        self.declare_parameter('update_rate', 1)
+        update_rate = self.get_parameter('update_rate').value
+        self.create_timer(1 / update_rate, self.log_velocities)
+
     def cmd_vel_callback(self, msg):
         wheel_separation = self.get_parameter('wheel_separation').value
         wheel_radius = self.get_parameter('wheel_radius').value
@@ -75,6 +80,13 @@ class MotorDriver(Node):
         for wheel in self.right_wheels:
             v = -right_w if wheel['reversed'] else right_w
             motor_controller.write_motor_value(wheel['id'], v)
+
+    def log_velocities(self):
+        for wheel in self.left_wheels + self.right_wheels:
+            value = motor_controller.read_motor_value(wheel['id'])
+            if wheel['reversed']:
+                value = -value
+            wheel['pub'].publish(Float32(data=value))
 
 
 def main(args=None):
