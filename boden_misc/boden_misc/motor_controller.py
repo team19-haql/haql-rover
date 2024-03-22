@@ -23,7 +23,7 @@ def read_motor_value(reg):
 
 def write_motor_value(reg, value):
     value = int(value * (1 << 15))
-    value = value.to_bytes(4, byteorder='little')
+    value = value.to_bytes(4, byteorder='little', signed=True)
 
     i2c.try_lock()
     i2c.writeto(ADDR, bytearray([reg]) + value)
