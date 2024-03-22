@@ -12,7 +12,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name, 'launch'), glob('*.py')),
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
+        (os.path.join('share', package_name, 'config'), glob('config/*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -26,6 +27,7 @@ setup(
             'loader = boden_misc.loader:main',
             'i2c_bus = boden_misc.i2c_bus:main',
             'mock_battery = boden_misc.mock_battery:main',
+            'motor_driver = boden_misc.motor_driver:main',
         ],
     },
 )

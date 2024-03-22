@@ -17,14 +17,12 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Pavement.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/Wall.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/OsbWood.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/geometries/protos/TexturedBox.proto"
 EXTERNPROTO "../protos/Bodenbot.proto"
 EXTERNPROTO "../protos/Tools.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/shapes/protos/TexturedBoxShape.proto"
 
 WorldInfo {
-  basicTimeStep 16
-  gpsCoordinateSystem "WGS84"
-  gpsReference 40.015 -105.27 0
+  basicTimeStep 20
   contactProperties [
     ContactProperties {
       material2 "rubber"
@@ -36,8 +34,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation -0.17251033543373823 0.08678941407764387 0.981176733199783 2.1598143985092246
-  position 3.905843470953464 -2.5944117136360907 1.2447840089925744
+  orientation -0.34331473588149425 0.11870645928906702 0.9316886650859678 2.486152019824571
+  position 4.781671047668977 -3.0860402693383224 4.55072746367306
   followType "None"
 }
 TexturedBackground {
@@ -59,6 +57,7 @@ Bodenbot {
   controller "<extern>"
   toolSlot [
     Tools {
+      rotation 0 1 0 0
     }
   ]
 }
@@ -343,17 +342,17 @@ Wall {
 Solid {
   translation -0.69 0 0.47
   children [
-    Shape {
-      appearance PBRAppearance {
-        baseColorMap ImageTexture {
-          url [
-            "../resource/marker_diamond_0123.png"
-          ]
-        }
-      }
-      geometry TexturedBox {
-        size 0.1 0.2 0.2
-      }
+    TexturedBoxShape {
+      size 0.1 0.3 0.3
+      textureUrl [
+        "../resource/tag41_12_00000.jpeg"
+      ]
+      textureFiltering 0
+      backFace FALSE
+      leftFace FALSE
+      rightFace FALSE
+      topFace FALSE
+      bottomFace FALSE
     }
   ]
 }

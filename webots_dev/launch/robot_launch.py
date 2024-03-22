@@ -49,6 +49,7 @@ def generate_launch_description():
         executable='robot_state_publisher',
         output='screen',
         parameters=[{
+            'use_sim_time': use_sim_time,
             'robot_description': '<robot name=""><link name=""/></robot>'
         }],
     )
@@ -58,6 +59,9 @@ def generate_launch_description():
         executable='static_transform_publisher',
         output='screen',
         arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'base_footprint'],
+        parameters=[{
+            'use_sim_time': use_sim_time,
+        }],
     )
 
     # ROS control spawners
@@ -85,6 +89,8 @@ def generate_launch_description():
     mappings = [
         ('/diffdrive_controller/cmd_vel_unstamped', '/cmd_vel'),
         ('/diffdrive_controller/odom', '/odometry/wheel'),
+        ('/imu', '/imu_no_cov'),
+        ('/gps', '/gps_point'),
     ]
     bodenbot_driver = WebotsController(
         robot_name='Bodenbot',
@@ -99,12 +105,33 @@ def generate_launch_description():
         remappings=mappings,
         respawn=True
     )
+    imu_covariance = Node(
+        package='webots_dev',
+        executable='add_noise_imu',
+        output='screen',
+        name='add_imu_covariance',
+        remappings=[
+            ('/imu_no_noise', '/imu_no_cov'),
+            ('imu', 'imu'),
+        ]
+    )
+    gps_odom = Node(
+        package='webots_dev',
+        executable='gps_odom',
+        output='screen',
+        name='gps_odom',
+        parameters=[
+            {
+                'use_sim_time': use_sim_time,
+            }
+        ]
+    )
 
 
     # Wait for the simulation to be ready to start the tools and spawners
     waiting_nodes = WaitForControllerConnection(
         target_driver=bodenbot_driver,
-        nodes_to_start=ros_control_spawners,
+        nodes_to_start=ros_control_spawners+[imu_covariance, gps_odom],
     )
     
     foxglove_bridge = Node(

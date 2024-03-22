@@ -19,7 +19,7 @@ diffdrive_controller:
         - "left_wheel_2_link_joint"
         - "left_wheel_3_link_joint"
 
-    wheel_separation: 0.65
+    wheel_separation: 0.75
     wheel_radius: 0.13
 
     wheels_per_side: 3

@@ -14,13 +14,13 @@ class ImuNoiseNode(Node):
         self.publisher = self.create_publisher(Imu, 'imu', 10)
 
         # declare parameter for orientation_cov_factor
-        self.declare_parameter('orientation_cov_factor', 0.01)
+        self.declare_parameter('orientation_cov_factor', 0.1)
         
         # declare parameter for angular_velocity_cov_factor
-        self.declare_parameter('angular_velocity_cov_factor', 0.1)
+        self.declare_parameter('angular_velocity_cov_factor', 0.2)
         
         # declare parameter for linear_acceleration_cov_factor
-        self.declare_parameter('linear_acceleration_cov_factor', 0.1)
+        self.declare_parameter('linear_acceleration_cov_factor', 0.2)
         
 
     def imu_noise_callback(self, msg):

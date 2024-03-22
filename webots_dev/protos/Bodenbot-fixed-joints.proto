@@ -2,7 +2,7 @@
 # license: Apache License 2.0
 # license url: http://www.apache.org/licenses/LICENSE-2.0
 # This is a proto file for Webots for the Bodenbot
-# Extracted from: /Users/deweykai/repos/ws_dev/src/haql-rover/boden_description/urdf/boden_description_relpath.urdf
+# Extracted from: /Users/deweykai/Downloads/urdf/boden_description/urdf/boden_description.urdf
 
 PROTO Bodenbot [
   field  SFVec3f     translation     0 0 0
@@ -32,9 +32,22 @@ PROTO Bodenbot [
         rotation 0.000001 -0.707108 -0.707105 3.141591
         children [
           DEF main-plate_visual CadShape {
-            url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/main-plate.dae"
+            url "../meshes/dae/main-plate.dae"
           }
         ]
+      }
+      Solid {
+        translation 0.000000 0.000000 -0.238990
+        name "base_link"
+        physics Physics {
+          density -1
+          mass 0.000010
+          centerOfMass [ 0.000000 0.000000 0.000000 ]
+          inertiaMatrix [
+            1.000000e-05 1.000000e-05 1.000000e-05
+            0.000000e+00 0.000000e+00 0.000000e+00
+          ]
+        }
       }
       Solid {
         translation -0.092860 -0.002140 0.056270
@@ -44,7 +57,7 @@ PROTO Bodenbot [
             rotation 1.000000 0.000000 0.000000 1.570800
             children [
               DEF battery_visual CadShape {
-                url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/battery.dae"
+                url "../meshes/dae/battery.dae"
               }
             ]
           }
@@ -68,7 +81,7 @@ PROTO Bodenbot [
             rotation 1.000000 0.000000 0.000000 1.570800
             children [
               DEF electronics_visual CadShape {
-                url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/electronics.dae"
+                url "../meshes/dae/electronics.dae"
               }
             ]
           }
@@ -80,7 +93,7 @@ PROTO Bodenbot [
                 rotation 0.000001 0.707108 0.707105 3.141591
                 children [
                   DEF Zed2i_visual CadShape {
-                    url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/Zed2i.dae"
+                    url "../meshes/dae/Zed2i.dae"
                   }
                 ]
               }
@@ -119,7 +132,7 @@ PROTO Bodenbot [
             rotation -1.000000 0.000000 0.000000 1.570800
             children [
               DEF sensor-package_visual CadShape {
-                url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/sensor-package.dae"
+                url "/dae/sensor-package.dae"
               }
             ]
           }
@@ -142,12 +155,11 @@ PROTO Bodenbot [
         }
         device [
           RotationalMotor {
-            name "suspension_main_link_joint::left"
+            name "suspension_left_main_link_joint"
             maxVelocity 0.015
             minPosition -0.5
             maxPosition 0.5
-            maxTorque 1000
-            multiplier -1
+            maxTorque 1.5
           }
           PositionSensor {
             name "suspension_left_main_link_joint_sensor"
@@ -161,7 +173,7 @@ PROTO Bodenbot [
               rotation 1.000000 0.000000 0.000000 3.141590
               children [
                 DEF suspension-left_visual CadShape {
-                  url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/suspension-left.dae"
+                  url "../meshes/dae/suspension-left.dae"
                 }
               ]
             }
@@ -185,11 +197,10 @@ PROTO Bodenbot [
                 rotation 0.000000 0.000000 1.000000 2.050760
                 children [
                   DEF wheel-left_visual CadShape {
-                    url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/wheel-left.dae"
+                    url "../meshes/dae/wheel-left.dae"
                   }
                 ]
                 name "left_wheel_1_link"
-                contactMaterial "rubber"
                 boundingObject Pose {
                   translation -0.000060 -0.000020 0.066220
                   children [
@@ -221,7 +232,7 @@ PROTO Bodenbot [
                   maxVelocity 0.015
                   minPosition -0.5
                   maxPosition 0.5
-                  maxTorque 10
+                  maxTorque 5.0
                 }
                 PositionSensor {
                   name "suspension_left_sub_link_joint_sensor"
@@ -232,10 +243,10 @@ PROTO Bodenbot [
                 rotation 0.000000 0.000000 -1.000000 0.269660
                 children [
                   Pose {
-                    rotation 1.000000 -0.000000 0.000000 3.141590
+                    rotation 1.000000 0.000000 -0.000000 3.141590
                     children [
                       DEF suspension-left-sub_visual CadShape {
-                        url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/suspension-left-sub.dae"
+                        url "../meshes/dae/suspension-left-sub.dae"
                       }
                     ]
                   }
@@ -261,7 +272,6 @@ PROTO Bodenbot [
                         USE wheel-left_visual
                       ]
                       name "left_wheel_2_link"
-                      contactMaterial "rubber"
                       boundingObject Pose {
                         translation -0.000060 -0.000020 0.066220
                         children [
@@ -304,7 +314,6 @@ PROTO Bodenbot [
                         USE wheel-left_visual
                       ]
                       name "left_wheel_3_link"
-                      contactMaterial "rubber"
                       boundingObject Pose {
                         translation 0.000040 0.000050 0.066220
                         rotation -1.000000 0.000000 0.000000 3.141590
@@ -359,7 +368,7 @@ PROTO Bodenbot [
         }
         device [
           RotationalMotor {
-            name "suspension_main_link_joint::right"
+            name "suspension_right_main_link_joint"
             maxVelocity 0.015
             minPosition -0.5
             maxPosition 0.5
@@ -374,16 +383,16 @@ PROTO Bodenbot [
           rotation 1.000000 -0.000000 0.000000 1.570800
           children [
             DEF suspension-right_visual CadShape {
-              url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/suspension-right.dae"
+              url "../meshes/dae/suspension-right.dae"
             }
             HingeJoint {
               jointParameters HingeJointParameters {
-                axis 0.000000 -0.000000 -1.000000
+                axis 0.000000 -0.000000 1.000000
                 anchor 0.295120 -0.209320 0.090710
               }
               device [
                 RotationalMotor {
-                  name "right_wheel_3_link_joint"
+                  name "right_wheel_3_joint"
                   maxVelocity 10.0
                   maxTorque 1000.0
                 }
@@ -399,15 +408,14 @@ PROTO Bodenbot [
                     rotation -1.000000 -0.000000 0.000000 3.141590
                     children [
                       DEF wheel-right_visual CadShape {
-                        url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/wheel-right.dae"
+                        url "../meshes/dae/wheel-right.dae"
                       }
                     ]
                   }
                 ]
                 name "right_wheel_3_link"
-                contactMaterial "rubber"
                 boundingObject Pose {
-                  translation 0.000010 0.000000 0.066220
+                  translation 0.000010 -0.000000 0.066220
                   rotation -1.000000 -0.000000 0.000000 3.141590
                   children [
                     Cylinder {
@@ -419,7 +427,7 @@ PROTO Bodenbot [
                 physics Physics {
                   density -1
                   mass 0.300000
-                  centerOfMass [ 0.000010 0.000000 0.066220 ]
+                  centerOfMass [ 0.000010 -0.000000 0.066220 ]
                   inertiaMatrix [
                     1.620000e-03 2.670000e-03 1.620000e-03
                     0.000000e+00 0.000000e+00 0.000000e+00
@@ -438,7 +446,7 @@ PROTO Bodenbot [
                   maxVelocity 0.015
                   minPosition -0.5
                   maxPosition 0.5
-                  maxTorque 10
+                  maxTorque 5.0
                 }
                 PositionSensor {
                   name "suspension_right_sub_link_joint_sensor"
@@ -449,11 +457,11 @@ PROTO Bodenbot [
                 rotation -0.000000 0.000000 1.000000 0.269660
                 children [
                   DEF suspension-right-sub_visual CadShape {
-                    url "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/suspension-right-sub.dae"
+                    url "../meshes/dae/suspension-right-sub.dae"
                   }
                   HingeJoint {
                     jointParameters HingeJointParameters {
-                      axis 0.000000 -0.000000 -1.000000
+                      axis 0.000000 -0.000000 1.000000
                       anchor 0.120320 -0.189080 0.026380
                     }
                     device [
@@ -478,7 +486,6 @@ PROTO Bodenbot [
                         }
                       ]
                       name "right_wheel_1_link"
-                      contactMaterial "rubber"
                       boundingObject Pose {
                         translation 0.000060 -0.000020 0.066220
                         rotation -1.000000 -0.000000 0.000000 3.141590
@@ -502,7 +509,7 @@ PROTO Bodenbot [
                   }
                   HingeJoint {
                     jointParameters HingeJointParameters {
-                      axis 0.000000 0.000000 -1.000000
+                      axis 0.000000 0.000000 1.000000
                       anchor -0.178660 -0.065370 0.026380
                     }
                     device [
@@ -527,7 +534,6 @@ PROTO Bodenbot [
                         }
                       ]
                       name "right_wheel_2_link"
-                      contactMaterial "rubber"
                       boundingObject Pose {
                         translation 0.000060 -0.000020 0.066220
                         rotation 1.000000 0.000000 0.000000 3.141590
@@ -580,7 +586,7 @@ PROTO Bodenbot [
     physics Physics {
       density -1
       mass 2.000000
-      centerOfMass [ -0.039280 0.000000 -0.009040 ]
+      centerOfMass [ -0.001500 -0.002140 -0.009040 ]
       inertiaMatrix [
         1.000000e-03 1.000000e-03 1.000000e-03
         0.000000e+00 0.000000e+00 0.000000e+00

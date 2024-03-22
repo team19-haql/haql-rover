@@ -27,15 +27,15 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     package_dir = get_package_share_directory('boden_navigation')
-    use_sim_time = LaunchConfiguration('use_sim_time')
+    use_sim_time = LaunchConfiguration('use_sim_time', default=True)
 
     robot_localization_params = os.path.join(package_dir, 'config', 'localization.yml')
     return LaunchDescription([
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='False',
-            description='Use simulation clock if true',
-        ),
+        # DeclareLaunchArgument(
+        #     'use_sim_time',
+        #     default_value='True',
+        #     description='Use simulation clock if true',
+        # ),
         Node(
             package='robot_localization',
             executable='ekf_node',
@@ -43,8 +43,7 @@ def generate_launch_description():
             parameters=[
                 {'use_sim_time': use_sim_time },
                 robot_localization_params],
-            remappings=[('odometry/filtered', 'odometry/local'),
-                        ('imu/data', 'imu')]
+            remappings=[('odometry/filtered', 'odometry/local')],
         ),
         Node(
             package='robot_localization',
@@ -53,20 +52,19 @@ def generate_launch_description():
             parameters=[
                 {'use_sim_time': use_sim_time },
                 robot_localization_params],
-            remappings=[('odometry/filtered', 'odometry/global'),
-                        ('imu/data', 'imu')]
+            remappings=[('odometry/filtered', 'odometry/global')],
         ),
-        Node(
-            package='robot_localization',
-            executable='navsat_transform_node',
-            name='navsat_transform',
-            parameters=[
-                {'use_sim_time': use_sim_time },
-                robot_localization_params],
-            remappings=[('imu/data', 'imu'),
-                        ('gps/fix', 'gps'), 
-                        ('gps/filtered', 'gps/filtered'),
-                        ('odometry/gps', 'odometry/gps'),
-                        ('odometry/filtered', 'odometry/global')]
-        )
+        # Node(
+        #     package='robot_localization',
+        #     executable='navsat_transform_node',
+        #     name='navsat_transform',
+        #     parameters=[
+        #         {'use_sim_time': use_sim_time },
+        #         robot_localization_params],
+        #     remappings=[('imu/data', 'imu/data'),
+        #                 ('gps/fix', 'gps/fix'), 
+        #                 ('gps/filtered', 'gps/filtered'),
+        #                 ('odometry/gps', 'odometry/gps'),
+        #                 ('odometry/filtered', 'odometry/global')]
+        # )
     ])

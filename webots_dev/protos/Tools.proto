@@ -24,7 +24,7 @@ PROTO Tools [
     children [
       Camera {
         translation 0.0 0.0 -0.0127
-        rotation 0.577351 -0.577351 -0.577351 -2.09439
+        # rotation 0.577351 -0.577351 -0.577351 -2.09439
         name %<= '"' + fields.cameraName.value + '_color"' >%
         fieldOfView 1.91986
         width IS width
@@ -33,7 +33,7 @@ PROTO Tools [
       }
       RangeFinder {
         translation 0.0 0.0 -0.0127
-        rotation 0.577351 -0.577351 -0.577351 -2.09439
+        # rotation 0.577351 -0.577351 -0.577351 -2.09439
         name %<= '"' + fields.cameraName.value + '_range"' >%
         fieldOfView 1.0
         width IS width
@@ -69,11 +69,11 @@ PROTO Tools [
     ]
     name IS name
     boundingObject Pose {
-      rotation -0.5774 0.5773 0.5774 -2.0944
+      # rotation -0.5774 0.5773 0.5774 -2.0944
       translation 0 0 0.013
       children [
         Box {
-          size 0.024 0.027 0.168
+          size 0.024 0.168 0.027
         }
       ]
     }

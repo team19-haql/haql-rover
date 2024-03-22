@@ -87,6 +87,7 @@ PointcloudToGridmap::PointcloudToGridmap(const rclcpp::NodeOptions & options) : 
         std::bind(&PointcloudToGridmap::publish_pointcloud, this));
 
     if (enable_visibility_cleanup_) {
+        RCLCPP_INFO(this->get_logger(), "Starting visibility cleanup timer");
         visibility_cleanup_timer_ = this->create_wall_timer(
             std::chrono::milliseconds(static_cast<int>(1000.0 / visibility_cleanup_rate_)),
             std::bind(&PointcloudToGridmap::visibility_cleanup, this));
@@ -112,6 +113,8 @@ bool PointcloudToGridmap::read_parameters() {
     this->declare_parameter<double>("world_size.width", 10.0);
     this->declare_parameter<double>("publish_rate", 1.0);
     this->declare_parameter<bool>("publish_latency", false);
+    this->declare_parameter<bool>("visibility_cleanup.enabled", false);
+    this->declare_parameter<double>("visibility_cleanup.rate", 1.0);
 
     if (!this->get_parameter("input_topic", input_topic_)) {
         RCLCPP_ERROR(this->get_logger(), "Failed to get input_topic.");
@@ -156,6 +159,9 @@ bool PointcloudToGridmap::read_parameters() {
         RCLCPP_ERROR(this->get_logger(), "Failed to get center_frame_id.");
         return false;
     }
+    
+    this->get_parameter("visibility_cleanup.enabled", enable_visibility_cleanup_);
+    this->get_parameter("visibility_cleanup.rate", visibility_cleanup_rate_);
 
     return true;
 }

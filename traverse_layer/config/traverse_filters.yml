@@ -11,7 +11,11 @@ pointcloud_to_gridmap:
       length: 30.0
       width: 30.0
 
-    publish_rate: 1.0 # Hz
+    publish_rate: 20.0 # Hz
+    
+    visibility_cleanup:
+      enabled: false
+      rate: 1.0
 
 traverse_layer:
   ros__parameters:
