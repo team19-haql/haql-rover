@@ -91,6 +91,12 @@ def generate_launch_description():
         ('/diffdrive_controller/odom', '/odometry/wheel'),
         ('/imu', '/imu_no_cov'),
         ('/gps', '/gps_point'),
+        # remap camera stuff
+        ('/Bodenbot/zed2i_color/camera_info', '/zed2i/color/camera_info'),
+        ('/Bodenbot/zed2i_color/image_color', '/zed2i/color/image_color'),
+        ('/Bodenbot/zed2i_range/camera_info', '/zed2i/range/camera_info'),
+        ('/Bodenbot/zed2i_range/image', '/zed2i/range/image'),
+        ('/Bodenbot/zed2i_range/point_cloud', '/zed2i/range/point_cloud'),
     ]
     bodenbot_driver = WebotsController(
         robot_name='Bodenbot',
