@@ -105,21 +105,11 @@ def generate_launch_description():
         remappings=mappings,
         respawn=True
     )
-    imu_covariance = Node(
+    gps_pose = Node(
         package='webots_dev',
-        executable='add_noise_imu',
+        executable='gps_pose_publisher',
         output='screen',
-        name='add_imu_covariance',
-        remappings=[
-            ('/imu_no_noise', '/imu_no_cov'),
-            ('imu', 'imu'),
-        ]
-    )
-    gps_odom = Node(
-        package='webots_dev',
-        executable='gps_odom',
-        output='screen',
-        name='gps_odom',
+        name='gps_pose_publisher',
         parameters=[
             {
                 'use_sim_time': use_sim_time,
@@ -131,7 +121,7 @@ def generate_launch_description():
     # Wait for the simulation to be ready to start the tools and spawners
     waiting_nodes = WaitForControllerConnection(
         target_driver=bodenbot_driver,
-        nodes_to_start=ros_control_spawners+[imu_covariance, gps_odom],
+        nodes_to_start=ros_control_spawners+[gps_pose],
     )
     
     foxglove_bridge = Node(

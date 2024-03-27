@@ -38,6 +38,7 @@ setup(
         "console_scripts": [
             "add_noise_imu = webots_dev.add_noise_imu:main",
             "gps_odom = webots_dev.gps_odom:main",
+            "gps_pose_publisher = webots_dev.gps_pose_publisher:main",
         ],
     },
 )

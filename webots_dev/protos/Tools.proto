@@ -61,10 +61,10 @@ PROTO Tools [
       GPS {
         name "gps"
         type "satellite"
-        accuracy 0.03
-        resolution 0.05
-        speedNoise 0.02
-        speedResolution 0.10
+        # accuracy 0.03
+        # resolution 0.05
+        # speedNoise 0.02
+        # speedResolution 0.10
       }
     ]
     name IS name
