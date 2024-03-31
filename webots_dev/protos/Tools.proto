@@ -9,8 +9,8 @@ PROTO Tools [
   field SFVec3f    translation   0 0 0
   field SFRotation rotation      0 1 0 -3.14159
   field SFString   name          "Tools"
-  field SFInt32    width         376          # Defines the `width` field of the `RangeFinder` and `Camera` nodes.
-  field SFInt32    height        240          # Defines the `height` field of the `RangeFinder` and `Camera` nodes.
+  field SFInt32    width         564          # Defines the `width` field of the `RangeFinder` and `Camera` nodes.
+  field SFInt32    height        360          # Defines the `height` field of the `RangeFinder` and `Camera` nodes.
   field SFFloat    maxRange      15.0         # Defines the `maxRange` field of the `RangeFinder`.
   field SFFloat    colorNoise    0.0          # Defines the `noise` field of the `Camera`.
   field SFFloat    rangeNoise    0.0          # Defines the `noise` field of the `RangeFinder`.

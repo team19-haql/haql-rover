@@ -21,8 +21,8 @@ def generate_launch_description():
             apriltag_params,
         ],
         remappings=[
-            ('image_rect', '/zed2i/color/image_color'),
-            ('camera_info', '/zed2i/color/camera_info'),
+            ('/image_rect', '/zed2i/color/image_color'),
+            ('/camera_info', '/zed2i/color/camera_info'),
         ],
     )
 
