@@ -1,12 +1,12 @@
 pointcloud_to_gridmap:
   ros__parameters:
-    input_topic: /Sojourner/kinect_range/point_cloud # pointcloud2
+    input_topic: /zed2i/range/point_cloud # pointcloud2
     output_topic: /grid_map # gridmap
     map_frame_id: map
     center_frame_id: base_link
     publish_latency: true
 
-    resolution: 0.15 # m/cell
+    resolution: 0.10 # m/cell
     world_size:
       length: 30.0
       width: 30.0
@@ -28,9 +28,9 @@ traverse_layer:
 
     map:
       map_frame_id: map
-      local_length: 20.0
+      local_length: 10.0
       movement_update_threshold: 5.0
-      downscaled_resolution: 0.40
+      downscaled_resolution: 0.20
 
     costmap:
       enabled: false
@@ -105,7 +105,7 @@ traverse_layer:
           expression: maxOfFinites(elevation) - minOfFinites(elevation)
           compute_empty_cells: false
           edge_handling: crop
-          window_length: 1.0
+          window_length: 0.5
 
       filter7: # calculate traversability from slope
         name: traversability_slope

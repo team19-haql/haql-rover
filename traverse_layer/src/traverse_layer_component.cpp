@@ -182,8 +182,8 @@ void TraverseLayer::update_map(grid_map::GridMap& input_map) {
     double dx = last_position_.x() - input_map.getPosition().x();
     double dy = last_position_.y() - input_map.getPosition().y();
     
-    if (dx * dx + dy * dy > movement_update_threshold_ * movement_update_threshold_) {
-        RCLCPP_INFO(this->get_logger(), "Updating downscaled map.");
+    // if (dx * dx + dy * dy > movement_update_threshold_ * movement_update_threshold_) {
+    {
         update_downscaled_map(local_map);
         last_position_ = input_map.getPosition();
     }
@@ -212,7 +212,7 @@ void TraverseLayer::callback(const grid_map_msgs::msg::GridMap::SharedPtr msg) {
         return;
     }
 
-    clear_footprint(outputMap, 1.0);
+    clear_footprint(outputMap, 0.5);
     // RCLCPP_INFO(this->get_logger(), "Filter chain has been updated.");
 
     update_map(outputMap);
