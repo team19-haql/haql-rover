@@ -28,6 +28,7 @@ setup(
             'i2c_bus = boden_misc.i2c_bus:main',
             'mock_battery = boden_misc.mock_battery:main',
             'motor_driver = boden_misc.motor_driver:main',
+            'docking_server = boden_misc.docking_server:main',
         ],
     },
 )
