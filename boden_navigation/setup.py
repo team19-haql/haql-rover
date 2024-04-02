@@ -27,6 +27,8 @@ setup(
             'calibrate_striaght = boden_navigation.calibrate_straight:main',
             'calibrate_box = boden_navigation.calibrate_box:main',
             'gps_wpf = boden_navigation.gps_wpf:main',
+            'waypoint_recorder = boden_navigation.waypoint_recorder:main',
+            'demo_auto = boden_navigation.demo_auto:main',
         ],
     },
 )

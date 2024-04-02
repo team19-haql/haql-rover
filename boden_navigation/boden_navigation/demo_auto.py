@@ -1,17 +1,15 @@
 import rclpy
 from nav2_simple_commander.robot_navigator import BasicNavigator
 from ament_index_python.packages import get_package_share_directory
+from geometry_msgs.msg import PoseStamped
 import yaml
 import os
 import sys
 import time
 
-from boden_navigation.utils.gps_utils import latLonYaw2Geopose
-
-
 class YamlWaypointParser:
     """
-    Parse a set of gps waypoints from a yaml file
+    Parse a set of waypoints from a yaml file
     """
 
     def __init__(self, wps_file_path: str) -> None:
@@ -22,16 +20,23 @@ class YamlWaypointParser:
         """
         Get an array of geographic_msgs/msg/GeoPose objects from the yaml file
         """
-        gepose_wps = []
+        waypoints = []
+        print(self.wps_dict)
         for wp in self.wps_dict["waypoints"]:
-            latitude, longitude, yaw = wp["latitude"], wp["longitude"], wp["yaw"]
-            gepose_wps.append(latLonYaw2Geopose(latitude, longitude, yaw))
-        return gepose_wps
+            x, y, z = wp["x"], wp["y"], wp["z"]
+            pose = PoseStamped()
+            pose.header.frame_id = 'map'
+            pose.pose.position.x = x
+            pose.pose.position.y = y
+            pose.pose.position.z = z
+            waypoints.append(pose)
+
+        return waypoints
 
 
-class GpsWpCommander():
+class DemoAuto():
     """
-    Class to use nav2 gps waypoint follower to follow a set of waypoints logged in a yaml file
+    Class to use run demo autonomous code
     """
 
     def __init__(self, wps_file_path):
@@ -42,11 +47,12 @@ class GpsWpCommander():
         """
         Function to start the waypoint following
         """
-        self.navigator.waitUntilNav2Active(localizer='robot_localization')
         wps = self.wp_parser.get_wps()
-        self.navigator.followGpsWaypoints(wps)
+        self.navigator.followWaypoints(wps)
+
         while (not self.navigator.isTaskComplete()):
             time.sleep(0.1)
+
         print("wps completed successfully")
 
 
@@ -55,13 +61,13 @@ def main():
 
     # allow to pass the waypoints file as an argument
     default_yaml_file_path = os.path.join(get_package_share_directory(
-        "boden_navigation"), "config", "gps_waypoints.yml")
+        "boden_navigation"), "config", "waypoints.yml")
     if len(sys.argv) > 1:
         yaml_file_path = sys.argv[1]
     else:
         yaml_file_path = default_yaml_file_path
 
-    gps_wpf = GpsWpCommander(yaml_file_path)
+    gps_wpf = DemoAuto(yaml_file_path)
     gps_wpf.start_wpf()
 
 
