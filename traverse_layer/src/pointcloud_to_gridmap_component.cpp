@@ -26,7 +26,7 @@ PointcloudToGridmap::PointcloudToGridmap(const rclcpp::NodeOptions & options) : 
     max_variance_(100.0),
     mahalanobis_distance_threshold_(2.5),
     multi_height_noise_(0.00002),
-    scanning_duration_(0.05),
+    scanning_duration_(1.0),
     enable_visibility_cleanup_(true),
     visibility_cleanup_rate_(1.0)
 {
@@ -281,7 +281,8 @@ void PointcloudToGridmap::add_sensor_data(const sensor_msgs::msg::PointCloud2::S
 
         double distance_squared = dx * dx + dy * dy + dz * dz;
 
-        if (distance_squared < (0.5 * 0.5)) {
+        const double MIN_DIST = 0.25;
+        if (distance_squared < (MIN_DIST * MIN_DIST)) {
             continue; // skip this point too close to sensor
         }
 
@@ -325,6 +326,11 @@ void PointcloudToGridmap::add_sensor_data(const sensor_msgs::msg::PointCloud2::S
             sensor_y_at_lowest_scan = transform.transform.translation.y;
             sensor_z_at_lowest_scan = transform.transform.translation.z;
         }
+        
+        // fuse data into map
+        elevation = (variance * pz + R * elevation) / (variance + R);
+        variance = (variance * R) / (variance + R);
+        time = time_since_start;
     }
 
 
@@ -380,22 +386,25 @@ void PointcloudToGridmap::visibility_cleanup() {
         double point_dy = point.y() - sensor_y;
         double point_distance = sqrt(point_dx * point_dx + point_dy * point_dy);
 
-        // ray trace to find max height
-        for (grid_map::LineIterator iterator(raw_map_, index_at_sensor, *iterator); !iterator.isPastEnd(); ++iterator) {
-            grid_map::Position cell_position;
-            raw_map_.getPosition(*iterator, cell_position);
-            double cell_dx = cell_position.x() - sensor_x;
-            double cell_dy = cell_position.y() - sensor_y;
-            double cell_distance = point_distance - sqrt(cell_dx * cell_dx + cell_dy * cell_dy);
-            double max_height = lowest_scan_point + (sensor_z - lowest_scan_point) / point_distance * cell_distance;
-            auto& cell_max_height = raw_map_.at("max_height", *iterator);
-            if (std::isnan(cell_max_height) || cell_max_height > max_height) {
-                cell_max_height = max_height;
+        if (point_distance > 0.0) {
+            // ray trace to find max height
+            for (grid_map::LineIterator iterator(raw_map_, index_at_sensor, *iterator); !iterator.isPastEnd(); ++iterator) {
+                grid_map::Position cell_position;
+                raw_map_.getPosition(*iterator, cell_position);
+                double cell_dx = cell_position.x() - sensor_x;
+                double cell_dy = cell_position.y() - sensor_y;
+                double cell_distance = point_distance - sqrt(cell_dx * cell_dx + cell_dy * cell_dy);
+                double max_height = lowest_scan_point + (sensor_z - lowest_scan_point) / point_distance * cell_distance;
+                auto& cell_max_height = raw_map_.at("max_height", *iterator);
+                if (std::isnan(cell_max_height) || cell_max_height > max_height) {
+                    cell_max_height = max_height;
+                }
             }
         }
     }
 
     // clean map
+    std::vector<grid_map::Position> cells_to_remove;
     for (grid_map::GridMapIterator iterator(raw_map_); !iterator.isPastEnd(); ++iterator) {
         if (!raw_map_.isValid(*iterator)) {
             continue;
@@ -408,8 +417,20 @@ void PointcloudToGridmap::visibility_cleanup() {
             const auto& variance = raw_map_.at("variance", *iterator);
             const auto& max_height = raw_map_.at("max_height", *iterator);
             if (!std::isnan(max_height) && elevation - 3.0 * sqrt(variance) > max_height) {
-                raw_map_.at("elevation", *iterator) = NAN;
+                grid_map::Position position;
+                raw_map_.getPosition(*iterator, position);
+                cells_to_remove.push_back(position);
             }
+        }
+    }
+
+    for (auto& cell : cells_to_remove) {
+        grid_map::Index index;
+        if (!raw_map_.getIndex(cell, index)) {
+            continue;
+        }
+        if (raw_map_.isValid(index)) {
+            raw_map_.at("elevation", index) = NAN;
         }
     }
 
