@@ -50,7 +50,6 @@ local_map_visualization:
 
 # global_map_visualization:
 #   ros__parameters:
-#     grid_map_topic: /grid_map
 #     # grid_map_topic: /grid_map
 #     # grid_map_visualizations: [elevation_points, map_region] 
 #     grid_map_visualizations:

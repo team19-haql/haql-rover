@@ -281,7 +281,7 @@ void PointcloudToGridmap::add_sensor_data(const sensor_msgs::msg::PointCloud2::S
 
         double distance_squared = dx * dx + dy * dy + dz * dz;
 
-        const double MIN_DIST = 0.25;
+        const double MIN_DIST = 0.40;
         if (distance_squared < (MIN_DIST * MIN_DIST)) {
             continue; // skip this point too close to sensor
         }

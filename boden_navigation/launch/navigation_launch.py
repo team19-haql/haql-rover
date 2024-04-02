@@ -43,6 +43,7 @@ def generate_launch_description():
         package='rclcpp_components',
         executable='component_container_isolated',
         output='screen',
+        parameters=[{'use_sim_time': use_sim_time}],
     )
     navigation2_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
