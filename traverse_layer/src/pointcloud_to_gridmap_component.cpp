@@ -216,6 +216,8 @@ void PointcloudToGridmap::update_map_center() {
 }
 
 void PointcloudToGridmap::publish_pointcloud() {
+    std::lock_guard<std::mutex> raw_lock(raw_map_mutex_);
+    std::lock_guard<std::mutex> map_lock(map_mutex_);
     // RCLCPP_INFO(this->get_logger(), "Publishing grid map.");
     update_map_from_raw();
 
@@ -230,6 +232,8 @@ void PointcloudToGridmap::add_sensor_data(const sensor_msgs::msg::PointCloud2::S
     // Convert point cloud to grid map frame
     sensor_msgs::msg::PointCloud2 cloud;
     geometry_msgs::msg::TransformStamped transform;
+
+    std::lock_guard<std::mutex> lock(raw_map_mutex_);
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -279,7 +283,7 @@ void PointcloudToGridmap::add_sensor_data(const sensor_msgs::msg::PointCloud2::S
             continue; // skip this point outside of map
         }
 
-        double distance_squared = dx * dx + dy * dy + dz * dz;
+        double distance_squared = dx * dx + dy * dy;
 
         const double MIN_DIST = 0.40;
         if (distance_squared < (MIN_DIST * MIN_DIST)) {
@@ -357,6 +361,8 @@ void PointcloudToGridmap::add_sensor_data(const sensor_msgs::msg::PointCloud2::S
 void PointcloudToGridmap::visibility_cleanup() {
     const rclcpp::Time current_time = this->get_clock()->now();
     const double time_since_start = (current_time - initial_time_).seconds();
+
+    std::lock_guard<std::mutex> lock(raw_map_mutex_);
 
     // max height used for cleanup.
     raw_map_.add("max_height");

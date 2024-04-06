@@ -7,6 +7,7 @@
 #include <string>
 #include <nav2_msgs/msg/costmap.hpp>
 #include <std_msgs/msg/float64.hpp>
+#include <mutex>
 
 namespace traverse_layer
 {
@@ -48,6 +49,8 @@ private:
     // saved maps
     grid_map::GridMap map_;
     grid_map::GridMap downscaled_map_;
+    std::mutex map_mutex_;
+    std::mutex downscaled_map_mutex_;
     grid_map::Position last_position_;
 
     // Pub/Sub handles

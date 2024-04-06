@@ -178,9 +178,9 @@ void TraverseLayer::update_map(grid_map::GridMap& input_map) {
     RCLCPP_DEBUG(this->get_logger(), "Number of NAN values in traversability: %d", nan_count_traversability);
     RCLCPP_DEBUG(this->get_logger(), "Number of NAN values in elevation: %d", nan_count_elevation);
 
-    // update downscaled map
-    double dx = last_position_.x() - input_map.getPosition().x();
-    double dy = last_position_.y() - input_map.getPosition().y();
+    // // update downscaled map
+    // double dx = last_position_.x() - input_map.getPosition().x();
+    // double dy = last_position_.y() - input_map.getPosition().y();
     
     // if (dx * dx + dy * dy > movement_update_threshold_ * movement_update_threshold_) {
     {

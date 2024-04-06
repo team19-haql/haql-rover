@@ -10,6 +10,7 @@
 #include <tf2_ros/message_filter.h>
 #include <std_msgs/msg/float64.hpp>
 #include <message_filters/subscriber.h>
+#include <mutex>
 
 namespace traverse_layer
 {
@@ -55,6 +56,8 @@ private:
     // grid map
     grid_map::GridMap raw_map_;
     grid_map::GridMap map_;
+    std::mutex map_mutex_;
+    std::mutex raw_map_mutex_;
 
     // parameters
     double min_variance_;

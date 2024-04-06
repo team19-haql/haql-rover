@@ -36,7 +36,7 @@ def generate_launch_description():
         name='traverse_nodes',
         namespace='',
         package='rclcpp_components',
-        executable='component_container',
+        executable='component_container_isolated',
         composable_node_descriptions=[
             ComposableNode(
                 package='traverse_layer',
