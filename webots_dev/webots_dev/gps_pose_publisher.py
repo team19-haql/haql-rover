@@ -35,6 +35,7 @@ class GpsPoseNode(Node):
         self.transform = TransformStamped()
 
         # create timer
+        self.get_logger().info(f'Update rate: {update_rate}')
         self.create_timer(1.0 / update_rate, self.timer_callback)
 
     def gps_callback(self, msg):

@@ -118,6 +118,7 @@ def generate_launch_description():
         name='gps_pose_publisher',
         parameters=[
             {
+                'update_rate': 50,
                 'use_sim_time': use_sim_time,
             }
         ]
