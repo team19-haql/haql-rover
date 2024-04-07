@@ -33,9 +33,14 @@ def generate_launch_description():
 
     params_dir = os.path.join(boden_nav_dir, "config")
     nav2_params = os.path.join(params_dir, "nav2_params.yml")
+    lattice_filepath = os.path.join(params_dir, "smac.json")
+
+    param_substitutions = {
+        'planner_server.ros__parameters.GridBased.lattice_filepath': lattice_filepath,
+    }
 
     configured_params = RewrittenYaml(
-        source_file=nav2_params, root_key="", param_rewrites="", convert_types=True
+        source_file=nav2_params, root_key="", param_rewrites=param_substitutions, convert_types=True
     )
 
     container = Node(

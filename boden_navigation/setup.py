@@ -9,6 +9,7 @@ data_files.append(('share/ament_index/resource_index/packages', ['resource/' + p
 data_files.append((os.path.join('share', package_name), ['package.xml']))
 data_files.append((os.path.join('share', package_name, 'launch'), glob('launch/*.py')))
 data_files.append((os.path.join('share', package_name, 'config'), glob('config/*.yml')))
+data_files.append((os.path.join('share', package_name, 'config'), glob('config/*.json')))
 
 setup(
     name=package_name,
