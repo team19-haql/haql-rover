@@ -91,6 +91,8 @@ class DockActionServer(Node):
 
             rate.sleep()
 
+        self.get_logger().info('Docking Complete')
+
         goal_handle.succeed()
         result = Dock.Result()
         return result

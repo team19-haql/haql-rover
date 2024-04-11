@@ -4,12 +4,14 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import Command, PathJoinSubstitution
 from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
     # Get the package directory
     package_dir = get_package_share_directory("boden_bringup")
     apriltag_params= os.path.join(package_dir, 'config', 'apriltag.yml')
+    use_sim_time = LaunchConfiguration("use_sim_time", default=True)
 
     # Launch the robot_state_publisher
     apriltag= Node(
@@ -19,6 +21,7 @@ def generate_launch_description():
         output="screen",
         parameters=[
             apriltag_params,
+            use_sim_time,
         ],
         remappings=[
             ('/image_rect', '/zed2i/color/image_color'),
@@ -26,7 +29,17 @@ def generate_launch_description():
         ],
     )
 
-    return LaunchDescription([apriltag])
+    docking_server = Node(
+        package='boden_misc',
+        executable='docking_server',
+        name='docking_server',
+        output='screen',
+        parameters=[
+            use_sim_time,
+        ]
+    )
+
+    return LaunchDescription([apriltag, docking_server])
 
 
 if __name__ == "__main__":
