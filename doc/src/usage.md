@@ -7,7 +7,46 @@ cd ws_dev
 source install/setup.bash
 ```
 
-## Watching system from an external source (foxglove)
+## Launch Commands
+
+The navigation system is broken into several packages that can be run individually.
+
+### Bodenbot Bringup
+
+The main launch script is located in the bodenbot package and can be run
+with the following command. These should be good defaults for starting the rover.
+
+```bash
+ros2 launch bodenbot bodenbot.launch.py \
+    start_controller_node:=true \
+    start_navigation:=true \
+    start_traverse_layer:=true \
+    start_docking_server:=true \
+    start_webots:=false \
+    use_mock_hardware:=false \
+    debug_hardware:=false
+```
+
+#### Options
+
+- `start_controller_node` - The nodes necessary for hardware movement
+- `start_navigation` - Start the navigation system.
+- `start_traverse_layer` - Start the mapping system.
+- `start_docking_server` - Start the docking server used for dog house docking.
+- `start_webots` - Start the webots simulation.
+- `use_mock_hardware` - Use mock hardware instead of the real hardware.
+Useful for debugging.
+- `debug_hardware` - Print debug messages from the hardware (motor) interface.
+
+### [Simulation](./simulation.md)
+
+Start the webots simulation
+
+```bash
+ros2 launch webots_dev robot_launch.py 
+```
+
+### Watching system from an external source (foxglove)
 
 If you need to view the system from an external computer, I recommend installing
 foxglove studio. To enable connections to the robot system, you must launch the foxglove
@@ -19,40 +58,6 @@ ros2 launch foxglove_bridge foxglove_bridge_launch.xml
 
 Then you can connect to the computer using the foxglove application.
 
-## Launch individual packages
+## Bodenbot Scripts
 
-The navigation system is broken into several packages that can be run individually.
-
-### Simulation
-
-Start the webots simulation
-
-```bash
-ros2 launch webots_dev robot_launch.py 
-```
-
-### Navigation
-
-To run navigation, both the traversability mapping, and navigation
-system must be running.
-
-```bash
-ros2 launch boden_navigation navigation_launch.py
-ros2 launch traverse_layer traverse_layer_launch.py
-```
-
-### Docking Server
-
-```bash
-ros2 launch boden_bringup apriltag.launch.py
-```
-
-### Autonomous System
-
-To run the autonomous system, the docking server and navigation
-system must be running first.
-Then the autonomous script can be started.
-
-```bash
-ros2 run boden_navigation demo_auto
-```
+The [Bodenbot Scripts](./software/bodenbot_scripts.md) package contains utility, automation, and testing code for the rover. 
