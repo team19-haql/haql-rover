@@ -76,6 +76,7 @@ namespace bodenbot
 
         std::vector<double> hw_commands_;
         std::vector<double> hw_velocities_;
+        std::vector<double> hw_positions_;
         std::vector<size_t> motor_id_;
         std::vector<bool> reversed_;
     };

@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 1 # hz
+    update_rate: 50 # hz
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -36,22 +36,22 @@ bodenbot_controller:
     base_frame_id: base_link
     odom_frame_id: odom
     open_loop: false
-    position_feedback: false
+    position_feedback: true
     enable_odom_tf: false
 
     linear:
       x:
-        has_velocity_limits: true
-        has_acceleration_limits: true
+        has_velocity_limits: false
+        has_acceleration_limits: false
         max_velocity: 1.0
-        max_acceleration: 3.0
+        max_acceleration: 1.0
 
     angular:
       z:
-        has_velocity_limits: true
-        has_acceleration_limits: true
+        has_velocity_limits: false
+        has_acceleration_limits: false
         max_velocity: 1.0
-        max_acceleration: 2.5
+        max_acceleration: 1.0
 
 
     # cmd_vel_timeout: 500 # ms

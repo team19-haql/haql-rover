@@ -120,6 +120,7 @@ namespace bodenbot
 
         hw_velocities_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
         hw_commands_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
+        hw_positions_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
 
         for (hardware_interface::ComponentInfo& joint : info_.joints)
         {
@@ -141,11 +142,11 @@ namespace bodenbot
                     joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_VELOCITY);
                 return hardware_interface::CallbackReturn::ERROR;
             }
-            if (joint.state_interfaces.size() != 1)
+            if (joint.state_interfaces.size() != 2)
             {
                 RCLCPP_FATAL(
                     rclcpp::get_logger("SerialController"),
-                    "Joint '%s' has %zu state interface. 1 expected.", joint.name.c_str(),
+                    "Joint '%s' has %zu state interface. 2 expected.", joint.name.c_str(),
                     joint.state_interfaces.size());
                 return hardware_interface::CallbackReturn::ERROR;
             }
@@ -154,7 +155,15 @@ namespace bodenbot
                 RCLCPP_FATAL(
                     rclcpp::get_logger("SerialController"),
                     "Joint '%s' have '%s' as first state interface. '%s' expected.", joint.name.c_str(),
-                    joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
+                    joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_VELOCITY);
+                return hardware_interface::CallbackReturn::ERROR;
+            }
+            if (joint.state_interfaces[1].name != hardware_interface::HW_IF_POSITION)
+            {
+                RCLCPP_FATAL(
+                    rclcpp::get_logger("SerialController"),
+                    "Joint '%s' have '%s' as first state interface. '%s' expected.", joint.name.c_str(),
+                    joint.state_interfaces[1].name.c_str(), hardware_interface::HW_IF_POSITION);
                 return hardware_interface::CallbackReturn::ERROR;
             }
 
@@ -174,11 +183,11 @@ namespace bodenbot
         std::vector<hardware_interface::StateInterface> state_interfaces;
 
         for (auto i = 0u; i < info_.joints.size(); i++) {
-            hw_velocities_[i] = 0;
             state_interfaces.emplace_back(hardware_interface::StateInterface(
-                info_.joints[i].name,
-                hardware_interface::HW_IF_VELOCITY,
-                &hw_velocities_[i]
+                info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &hw_velocities_[i]
+            ));
+            state_interfaces.emplace_back(hardware_interface::StateInterface(
+                info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_positions_[i]
             ));
         }
 
@@ -195,7 +204,6 @@ namespace bodenbot
         std::vector<hardware_interface::CommandInterface> command_interfaces;
 
         for (auto i = 0u; i < info_.joints.size(); i++) {
-            hw_commands_[i] = 0;
             command_interfaces.emplace_back(hardware_interface::CommandInterface(
                 info_.joints[i].name,
                 hardware_interface::HW_IF_VELOCITY,
@@ -229,6 +237,12 @@ namespace bodenbot
             RCLCPP_INFO(rclcpp::get_logger("SerialController"), "Not writing to device");
         }
 
+        for (auto i = 0u; i < info_.joints.size(); i++) {
+            hw_commands_[i] = 0;
+            hw_velocities_[i] = 0;
+            hw_positions_[i] = 0;
+        }
+
         RCLCPP_INFO(rclcpp::get_logger("SerialController"), "Successfully activated!");
 
         return hardware_interface::CallbackReturn::SUCCESS;
@@ -257,18 +271,24 @@ namespace bodenbot
     {
         // update state interface for steer joint
         for (auto i = 0u; i < info_.joints.size(); i++) {
-            if (!serial_interface_) {
-                hw_velocities_[i] = hw_commands_[i];
-            }
-            else {
+            if (serial_interface_) {
+                // nothing
                 int id = motor_id_[i];
-                hw_velocities_[i] = serial_interface_->read_vel(id);
+                double velocity = serial_interface_->read_vel(id);
+
+                if (reversed_[i]) {
+                    velocity = -velocity;
+                }
+                hw_velocities_[i] = velocity;
             }
 
-            if (reversed_[i]) {
-                hw_velocities_[i] = -hw_velocities_[i];
+            hw_positions_[i] += hw_velocities_[i] * period.seconds();
+            hw_positions_[i] = std::fmod(hw_positions_[i], 2 * M_PI);
+
+            if (debug_) {
+                RCLCPP_INFO(rclcpp::get_logger("SerialController"),
+                    "Read [%ld] (%f) (%f)", motor_id_[i], hw_velocities_[i], hw_positions_[i]);
             }
-            // missing serial driver
         }
 
         return hardware_interface::return_type::OK;
@@ -290,10 +310,12 @@ namespace bodenbot
             }
 
             if (!serial_interface_) {
+                hw_velocities_[i] = velocity;
                 continue;
             }
-
-            serial_interface_->write_vel(id, velocity);
+            else {
+                serial_interface_->write_vel(id, velocity);
+            }
         }
 
         return hardware_interface::return_type::OK;

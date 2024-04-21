@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 <xacro:macro name="bodenbot" params="prefix">
   <joint name="Zed2i_link_joint" type="fixed">
-    <origin rpy="1.57080 0.00000 -1.57080" xyz="-0.08420 0.00894 0.08299"/>
+    <origin rpy="0.00000 0.00682 3.14159" xyz="-0.08420 0.00894 0.08299"/>
     <parent link="electronics_link"/>
     <child link="Zed2i_link"/>
   </joint>
@@ -12,12 +12,12 @@
     <child link="base_link"/>
   </joint>
   <joint name="battery_link_joint" type="fixed">
-    <origin rpy="0.00000 0.00000 0.00000" xyz="0.05208 0.00000 0.05627"/>
+    <origin rpy="0.00000 0.00000 -3.14159" xyz="-0.09286 -0.00214 0.05627"/>
     <parent link="main_plate_link"/>
     <child link="battery_link"/>
   </joint>
   <joint name="electronics_link_joint" type="fixed">
-    <origin rpy="0.00000 0.00000 0.00000" xyz="-0.08592 -0.00513 0.10698"/>
+    <origin rpy="0.00000 0.00000 -3.14159" xyz="0.04514 0.00299 0.10698"/>
     <parent link="main_plate_link"/>
     <child link="electronics_link"/>
   </joint>
@@ -64,14 +64,14 @@
     <axis xyz="0.00000 0.00000 1.00000"/>
   </joint>
   <joint name="sensor_package_link_joint" type="fixed">
-    <origin rpy="-3.14159 0.00000 0.00000" xyz="-0.07970 -0.00236 -0.02071"/>
+    <origin rpy="-3.14159 0.00000 -3.14159" xyz="0.03892 0.00022 -0.02071"/>
     <parent link="main_plate_link"/>
     <child link="sensor_package_link"/>
   </joint>
   <joint name="suspension_left_main_link_joint" type="revolute">
     <limit lower="-0.50000" upper="0.50000" effort="1.50000" velocity="0.01500"/>
     <mimic multiplier="-1.00000" offset="0.00000" joint="suspension_right_main_link_joint"/>
-    <origin rpy="1.57080 0.00000 0.00000" xyz="0.00500 -0.16509 0.09549"/>
+    <origin rpy="1.57080 0.00000 -3.14159" xyz="-0.04578 0.16295 0.09549"/>
     <parent link="main_plate_link"/>
     <child link="suspension_left_main_link"/>
     <axis xyz="0.00000 0.00000 1.00000"/>
@@ -85,7 +85,7 @@
   </joint>
   <joint name="suspension_right_main_link_joint" type="revolute">
     <limit lower="-0.50000" upper="0.50000" effort="1.50000" velocity="0.01500"/>
-    <origin rpy="1.57080 -0.00000 3.14159" xyz="0.00509 0.16510 0.09582"/>
+    <origin rpy="1.57080 -0.00000 -0.00000" xyz="-0.04587 -0.16724 0.09582"/>
     <parent link="main_plate_link"/>
     <child link="suspension_right_main_link"/>
     <axis xyz="0.00000 0.00000 1.00000"/>
@@ -98,27 +98,13 @@
     <axis xyz="0.00000 0.00000 1.00000"/>
   </joint>
   <link name="Zed2i_link">
-    <sensor name="zed2i_camera" type="camera">
-      <origin rpy="0.00000 -0.00000 -0.00000" xyz="0.00000 0.00000 0.00000"/>
-      <parent link="Zed2i_link"/>
-      <camera>
-        <image>
-          <width>662</width>
-          <height>376</height>
-          <hfov>1.57080</hfov>
-        </image>
-      </camera>
-    </sensor>
-    <sensor name="gps" type="GPS">
-      <parent link="Zed2i_link"/>
-    </sensor>
     <inertial>
       <inertia ixx="0.00048" ixy="0.00000" ixz="0.00000" iyy="0.00004" iyz="0.00000" izz="0.00050"/>
       <origin rpy="0.00000 0.00000 0.00000" xyz="0.00378 0.00106 -0.00564"/>
       <mass value="0.20000"/>
     </inertial>
     <visual name="Zed2i_visual">
-      <origin rpy="3.14159 1.57079 3.14159" xyz="0.00000 0.00000 0.00000"/>
+      <origin rpy="1.57080 -0.00000 3.14159" xyz="-0.00000 -0.00000 -0.00000"/>
       <material name="Glass"/>
       <geometry>
         <mesh filename="package://bodenbot/description/meshes/dae/Zed2i.dae" scale="1.00000 1.00000 1.00000"/>
@@ -153,7 +139,7 @@
       <mass value="0.50000"/>
     </inertial>
     <visual name="electronics_visual">
-      <origin rpy="1.57080 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+      <origin rpy="1.57080 0.00000 0.00000" xyz="-0.00000 0.00000 0.00000"/>
       <material name="Plastic"/>
       <geometry>
         <mesh filename="package://bodenbot/description/meshes/dae/electronics.dae" scale="1.00000 1.00000 1.00000"/>
@@ -162,7 +148,7 @@
   </link>
   <link name="left_wheel_1_link">
     <collision name="left_wheel_1_collision">
-      <origin rpy="0.00000 0.00000 0.00000" xyz="-0.00006 -0.00002 0.06622"/>
+      <origin rpy="-0.00000 0.00000 0.00000" xyz="-0.00006 -0.00002 0.06622"/>
       <geometry>
         <cylinder radius="0.13329" length="0.10744"/>
       </geometry>
@@ -173,7 +159,7 @@
       <mass value="0.30000"/>
     </inertial>
     <visual name="left_wheel_1_visual">
-      <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 -0.00000"/>
+      <origin rpy="-0.00000 0.00000 0.00000" xyz="-0.00000 0.00000 0.00000"/>
       <material name="Metal"/>
       <geometry>
         <mesh filename="package://bodenbot/description/meshes/dae/wheel_left.dae" scale="1.00000 1.00000 1.00000"/>
@@ -223,11 +209,11 @@
   <link name="main_plate_link">
     <inertial>
       <inertia ixx="0.00100" ixy="0.00000" ixz="0.00000" iyy="0.00100" iyz="0.00000" izz="0.00100"/>
-      <origin rpy="0.00000 0.00000 0.00000" xyz="-0.03928 0.00000 -0.00904"/>
+      <origin rpy="0.00000 0.00000 0.00000" xyz="-0.00150 -0.00214 -0.00904"/>
       <mass value="2.00000"/>
     </inertial>
     <visual name="main_plate_visual">
-      <origin rpy="1.57080 0.00000 0.00000" xyz="0.00000 0.00000 0.00674"/>
+      <origin rpy="1.57080 0.00000 -3.14159" xyz="-0.04078 -0.00214 0.00674"/>
       <material name="Metal"/>
       <geometry>
         <mesh filename="package://bodenbot/description/meshes/dae/main_plate.dae" scale="1.00000 1.00000 1.00000"/>
@@ -247,7 +233,7 @@
       <mass value="0.30000"/>
     </inertial>
     <visual name="right_wheel_1_visual">
-      <origin rpy="-3.14159 -0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
+      <origin rpy="-3.14159 -0.00000 0.00000" xyz="-0.00000 -0.00000 -0.00000"/>
       <material name="Rubber"/>
       <geometry>
         <mesh filename="package://bodenbot/description/meshes/dae/wheel_right.dae" scale="1.00000 1.00000 1.00000"/>
@@ -267,7 +253,7 @@
       <mass value="0.30000"/>
     </inertial>
     <visual name="right_wheel_2_visual">
-      <origin rpy="3.14159 0.00000 0.00000" xyz="-0.00000 -0.00000 0.00000"/>
+      <origin rpy="3.14159 0.00000 0.00000" xyz="0.00000 0.00000 -0.00000"/>
       <material name="Rubber"/>
       <geometry>
         <mesh filename="package://bodenbot/description/meshes/dae/wheel_right.dae" scale="1.00000 1.00000 1.00000"/>
@@ -276,14 +262,14 @@
   </link>
   <link name="right_wheel_3_link">
     <collision name="right_wheel_3_collision">
-      <origin rpy="-3.14159 -0.00000 0.00000" xyz="0.00001 0.00000 0.06622"/>
+      <origin rpy="-3.14159 -0.00000 0.00000" xyz="0.00001 -0.00000 0.06622"/>
       <geometry>
         <cylinder radius="0.13335" length="0.10744"/>
       </geometry>
     </collision>
     <inertial>
       <inertia ixx="0.00162" ixy="0.00000" ixz="0.00000" iyy="0.00267" iyz="0.00000" izz="0.00162"/>
-      <origin rpy="0.00000 0.00000 0.00000" xyz="0.00001 0.00000 0.06622"/>
+      <origin rpy="0.00000 0.00000 0.00000" xyz="0.00001 -0.00000 0.06622"/>
       <mass value="0.30000"/>
     </inertial>
     <visual name="right_wheel_3_visual">
@@ -315,7 +301,7 @@
       <mass value="2.00000"/>
     </inertial>
     <visual name="suspension_left_main_visual">
-      <origin rpy="3.14159 0.00000 0.00000" xyz="0.00000 0.00000 -0.00000"/>
+      <origin rpy="3.14159 0.00000 0.00000" xyz="0.00000 0.00000 0.00000"/>
       <material name="Rubber"/>
       <geometry>
         <mesh filename="package://bodenbot/description/meshes/dae/suspension_left.dae" scale="1.00000 1.00000 1.00000"/>
@@ -329,7 +315,7 @@
       <mass value="2.50000"/>
     </inertial>
     <visual name="suspension_left_sub_visual">
-      <origin rpy="3.14159 -0.00000 -0.00000" xyz="0.00000 0.00000 0.00000"/>
+      <origin rpy="3.14159 0.00000 -0.00000" xyz="-0.00000 -0.00000 0.00000"/>
       <material name="Rubber"/>
       <geometry>
         <mesh filename="package://bodenbot/description/meshes/dae/suspension_left_sub.dae" scale="1.00000 1.00000 1.00000"/>
@@ -357,7 +343,7 @@
       <mass value="2.50000"/>
     </inertial>
     <visual name="suspension_right_sub_visual">
-      <origin rpy="-0.00000 0.00000 0.00000" xyz="-0.00000 -0.00000 0.00000"/>
+      <origin rpy="-0.00000 0.00000 0.00000" xyz="0.00000 0.00000 -0.00000"/>
       <material name="Metal"/>
       <geometry>
         <mesh filename="package://bodenbot/description/meshes/dae/suspension_right_sub.dae" scale="1.00000 1.00000 1.00000"/>

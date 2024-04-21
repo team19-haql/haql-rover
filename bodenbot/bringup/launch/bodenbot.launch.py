@@ -51,6 +51,7 @@ def get_controller_nodes(use_mock_hardware, debug_hardware, use_sim_time, start_
         output='both',
         remappings=[
             ("~/robot_description", "/robot_description"),
+            ('/bodenbot_controller/cmd_vel_unstamped', "/cmd_vel"),
         ],
         condition=IfCondition(start_controller_node),
     )
@@ -61,9 +62,6 @@ def get_controller_nodes(use_mock_hardware, debug_hardware, use_sim_time, start_
         output='both',
         parameters=[robot_description],
         condition=IfCondition(start_controller_node),
-        remappings=[
-            ("/diff_drive_controller/cmd_vel_unstamped", "/cmd_vel"),
-        ],
     )
 
     joint_state_broadcaster_spawner = Node(
