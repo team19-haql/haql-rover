@@ -27,6 +27,10 @@ add_library(
   SHARED
   hardware/bodenbot.cpp
 )
+
+find_library(I2C_LIB i2c)
+target_link_libraries(bodenbot PRIVATE ${I2C_LIB})
+
 target_compile_features(bodenbot PUBLIC cxx_std_17)
 target_include_directories(bodenbot PUBLIC
 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
