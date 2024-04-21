@@ -185,10 +185,13 @@ def get_navigation_nodes(use_sim_time, start_navigation, start_traverse_layer, s
     ]
 
 def get_webots_nodes(use_sim_time, start_webots):
-    webots_dir = get_package_share_directory('webots_dev')
     webots_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(webots_dir, 'launch', 'robot_launch.py')
+            PathJoinSubstitution([
+                FindPackageShare('webots_dev'),
+                'launch',
+                'robot_launch.py',
+            ]),
         ),
         launch_arguments={
             "use_sim_time": use_sim_time,

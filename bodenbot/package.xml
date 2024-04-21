@@ -15,11 +15,10 @@
   <depend>rclcpp_lifecycle</depend>
   <depend>apriltag_ros</depend>
   <depend>nav2_bringup</depend>
-  <depend>navigation2</depend>
   <depend>rclcpp_components</depend>
 
   <exec_depend>robot_localization</exec_depend>
-  <exec_depend>tricycle_controller</exec_depend>
+  <exec_depend>diff_drive_controller</exec_depend>
   <exec_depend>depthimage_to_laserscan</exec_depend>
   <exec_depend>xacro</exec_depend>
   <exec_depend>ros2_control</exec_depend>
