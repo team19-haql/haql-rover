@@ -6,7 +6,6 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
-find_package(filters REQUIRED)
 find_package(grid_map_cmake_helpers REQUIRED)
 find_package(grid_map_core REQUIRED)
 find_package(grid_map_cv REQUIRED)
