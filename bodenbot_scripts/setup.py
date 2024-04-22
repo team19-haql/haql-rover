@@ -1,16 +1,21 @@
-from setuptools import find_packages, setup
-from glob import glob
 import os
+from glob import glob
+
+from setuptools import find_packages, setup
 
 package_name = 'bodenbot_scripts'
 
 
 data_files = []
-data_files.append(('share/ament_index/resource_index/packages', ['resource/' + package_name]))
+data_files.append(
+    ('share/ament_index/resource_index/packages', ['resource/' + package_name])
+)
 data_files.append((os.path.join('share', package_name), ['package.xml']))
 data_files.append((os.path.join('share', package_name, 'launch'), glob('launch/*.py')))
 data_files.append((os.path.join('share', package_name, 'config'), glob('config/*')))
-data_files.append((os.path.join('share', package_name, 'config'), glob('config/*.json')))
+data_files.append(
+    (os.path.join('share', package_name, 'config'), glob('config/*.json'))
+)
 
 setup(
     name=package_name,
@@ -27,7 +32,6 @@ setup(
     entry_points={
         'console_scripts': [
             'loader = bodenbot_scripts.loader:main',
-            'i2c_bus = bodenbot_scripts.i2c_bus:main',
             'mock_battery = bodenbot_scripts.mock_battery:main',
             'motor_driver = bodenbot_scripts.motor_driver:main',
             'docking_server = bodenbot_scripts.docking_server:main',
