@@ -144,7 +144,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             'world',
-            default_value='flat_test.wbt',
+            default_value='terrain.wbt',
             description='Choose one of the world files from `/webots_dev/worlds` directory',
         ),
         DeclareLaunchArgument(
