@@ -25,8 +25,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.3259839566888636 -0.32848822688092744 -0.8864704985401924 4.63397393134051
-  position -5.273904980687773 -112.23664243547707 86.2987743341
+  orientation 0.3644499692893855 -0.44252301276809203 -0.819359263727223 4.737847526463775
+  position -19.055760964982134 -93.65633616639798 92.46928584360295
   followType "None"
 }
 TexturedBackground {
@@ -58,7 +58,7 @@ Solid {
       }
       geometry DEF TERRAIN_MESH Mesh {
         url [
-          "../meshes/dae/terrain.dae"
+          "https://raw.githubusercontent.com/team19-haql/haql-rover/main/webots_dev/meshes/dae/terrain.dae"
         ]
       }
       castShadows FALSE

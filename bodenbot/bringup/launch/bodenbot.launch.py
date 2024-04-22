@@ -120,14 +120,14 @@ def get_navigation_nodes(use_sim_time, start_navigation, start_traverse_layer, s
         package='rclcpp_components',
         executable='component_container_isolated',
         output='screen',
-        parameters=[use_sim_time],
+        parameters=[{'use_sim_time': use_sim_time}],
         condition=IfCondition(start_navigation),
     )
     navigation2_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(bringup_dir, "launch", "navigation_launch.py")
         ),
-        launch_arguments={
+        launch_arguments = {
             "use_sim_time": use_sim_time,
             "params_file": configured_params,
             "autostart": 'True',
@@ -141,7 +141,7 @@ def get_navigation_nodes(use_sim_time, start_navigation, start_traverse_layer, s
         PythonLaunchDescriptionSource(
             os.path.join(traverse_layer, 'launch', 'traverse_layer_launch.py')
         ),
-        launch_arguments={
+        launch_arguments= {
             "use_sim_time": use_sim_time,
             "autostart": 'True',
         }.items(),
@@ -157,7 +157,7 @@ def get_navigation_nodes(use_sim_time, start_navigation, start_traverse_layer, s
         executable="apriltag_node",
         name="apriltag",
         output="screen",
-        parameters=[ apriltag_params, use_sim_time ],
+        parameters=[ apriltag_params, {'use_sim_time': use_sim_time}],
         remappings=[
             ('/image_rect', '/zed2i/color/image_color'),
             ('/camera_info', '/zed2i/color/camera_info'),
@@ -171,7 +171,7 @@ def get_navigation_nodes(use_sim_time, start_navigation, start_traverse_layer, s
         name='docking_server',
         output='screen',
         parameters=[
-            use_sim_time,
+            {'use_sim_time': use_sim_time},
         ],
         condition=IfCondition(start_docking_server),
     )
@@ -193,7 +193,7 @@ def get_webots_nodes(use_sim_time, start_webots):
                 'robot_launch.py',
             ]),
         ),
-        launch_arguments={
+        launch_arguments= {
             "use_sim_time": use_sim_time,
             "autostart": 'True',
         }.items(),
@@ -210,7 +210,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'use_mock_hardware',
-            default_value='false',
+            default_value='False',
             description='Run motor controller with mock hardware',
         )
     )
@@ -219,17 +219,17 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'start_controller_node',
-            default_value='true',
+            default_value='True',
             description='Start controller node',
         )
     )
 
-    use_sim_time = {'use_sim_time': LaunchConfiguration('use_sim_time')}
+    use_sim_time = LaunchConfiguration('use_sim_time', default='True')
     declared_arguments.append(
         DeclareLaunchArgument(
             'use_sim_time',
-            default_value='true',
-            description='Use simulation clock if true',
+            default_value='True',
+            description='Use simulation clock if True',
         )
     )
 
@@ -237,7 +237,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'debug_hardware',
-            default_value='false',
+            default_value='False',
             description='Print dubugging info for hardware',
         )
     )
@@ -246,7 +246,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'start_navigation',
-            default_value='true',
+            default_value='True',
             description='Start navigation stack',
         )
     )
@@ -255,7 +255,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'start_traverse_layer',
-            default_value='true',
+            default_value='True',
             description='Start Traversability Mapping',
         )
     )
@@ -264,7 +264,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'start_webots',
-            default_value='false',
+            default_value='False',
             description='Run in Webots',
         )
     )
@@ -273,7 +273,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'start_docking_server',
-            default_value='true',
+            default_value='True',
             description='Start docking server',
         )
     )

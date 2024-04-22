@@ -18,24 +18,42 @@ class YamlWaypointParser:
     """
 
     def __init__(self, wps_file_path: str) -> None:
-        with open(wps_file_path, 'r') as wps_file:
-            self.wps_dict = yaml.safe_load(wps_file)
-
-    def get_wps(self):
         """
         Get an array of geographic_msgs/msg/GeoPose objects from the yaml file
         """
-        waypoints = []
-        for wp in self.wps_dict['waypoints']:
-            x, y, z = wp['x'], wp['y'], wp['z']
-            pose = PoseStamped()
-            pose.header.frame_id = 'map'
-            pose.pose.position.x = x
-            pose.pose.position.y = y
-            pose.pose.position.z = z
-            waypoints.append(pose)
+        with open(wps_file_path, 'r') as wps_file:
+            self.wps_dict = yaml.safe_load(wps_file)
 
-        return waypoints
+        routes = []
+        for route in self.wps_dict['routes']:
+            routes.append(route)
+
+        route_waypoints = {}
+
+        for route in routes:
+            waypoints = []
+            for wp in self.wps_dict[route]:
+                x, y, z = wp['x'], wp['y'], wp['z']
+                pose = PoseStamped()
+                pose.header.frame_id = 'map'
+                pose.pose.position.x = x
+                pose.pose.position.y = y
+                pose.pose.position.z = z
+                waypoints.append(pose)
+
+            route_waypoints[route] = waypoints
+
+        self.routes = routes
+        self.route_waypoints = route_waypoints
+        self.index = 0
+
+    def get_wps(self):
+        route = self.routes[self.index]
+        self.index = (self.index + 1) % len(self.routes)
+        print(f'loaded route: {route}')
+
+        waypoints = self.route_waypoints[route]
+        return route, waypoints
 
 
 class DemoAuto:
@@ -83,7 +101,7 @@ class DemoAuto:
 
     def undock(self):
         # run navigation task
-        distance = 2.0
+        distance = 3.0
         speed = 0.15
         wait_time = distance / speed
         for _ in range(int(wait_time * 10)):
@@ -97,7 +115,8 @@ class DemoAuto:
         """
         Function to start the waypoint following
         """
-        wps = self.wp_parser.get_wps()
+        route, wps = self.wp_parser.get_wps()
+        self.navigator.get_logger().info(f'loading route: {route}')
         msg = Path()
         msg.header.stamp = self.navigator.get_clock().now().to_msg()
         msg.header.frame_id = 'map'
@@ -116,7 +135,7 @@ def main():
 
     # allow to pass the waypoints file as an argument
     default_yaml_file_path = os.path.join(
-        get_package_share_directory('boden_navigation'), 'config', 'waypoints.yml'
+        get_package_share_directory('bodenbot_scripts'), 'config', 'waypoints_mines.yml'
     )
     if len(sys.argv) > 1:
         yaml_file_path = sys.argv[1]
@@ -124,6 +143,8 @@ def main():
         yaml_file_path = default_yaml_file_path
 
     gps_wpf = DemoAuto(yaml_file_path)
+
+    gps_wpf.navigator.get_logger().info('STARTING AUTONOMOUS DEMO')
 
     for _ in range(3):
         gps_wpf.undock()
