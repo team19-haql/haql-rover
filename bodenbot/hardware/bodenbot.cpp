@@ -33,7 +33,7 @@
 
 extern "C" {
 #include <linux/i2c-dev.h>
-#include <i2c/smbus.h>
+#include <linux/i2c.h>
 }
 
 //////////////////////////////////////////////// 
@@ -47,39 +47,80 @@ namespace bodenbot
             address_ = address;
 
             if ((fd_ = open(device.c_str(), O_RDWR)) < 0) {
-                std::cerr << "Failed to open the i2c bus" << std::endl;
+                throw std::runtime_error("Failed to open the i2c bus");
             }
-        }
+			RCLCPP_INFO(rclcpp::get_logger("SerialController"),
+				"Opening I2C bus %s [%x]", device.c_str(), address);
+		}
 
         void write_vel(int id, double velocity) {
             if (ioctl(fd_, I2C_SLAVE, address_) < 0) {
-                std::cerr << "Failed to acquire bus access and/or talk to slave." << std::endl;
-                return;
+                throw std::runtime_error("Failed to acquire bus access and/or talk to slave.");
             }
 
             float vel = velocity;
+            unsigned char send[1] = { (unsigned char) id };
             unsigned char* buffer = (unsigned char*)&vel;
 
-            int res = i2c_smbus_write_block_data(fd_, id, 4, buffer);
+            struct i2c_msg msgs[2] = {
+                {
+                    .addr = (unsigned char) address_,
+                    .flags= 0,
+                    .len = 1,
+                    .buf = send,
+                },
+                {
+                    .addr = (unsigned char) address_,
+                    .flags= 0,
+                    .len = 4,
+                    .buf = buffer,
+                },
+            };
+
+            struct i2c_rdwr_ioctl_data data {
+                .msgs = msgs,
+                .nmsgs = 2,
+            };
+            int res = ioctl(fd_, I2C_RDWR, &data);
 
             if (res < 0) {
-                std::cerr << "Failed to write to the i2c bus" << std::endl;
+                throw std::runtime_error("Failed to write to the i2c bus");
             }
         }
 
         double read_vel(int id) {
             if (ioctl(fd_, I2C_SLAVE, address_) < 0) {
-                std::cerr << "Failed to acquire bus access and/or talk to slave." << std::endl;
-                return 0;
+                throw std::runtime_error("Failed to acquire bus access and/or talk to slave.");
             }
 
-            unsigned char buffer[32];
-            int res = i2c_smbus_read_block_data(fd_, id, buffer);
-            if (res < 0) {
-                std::cerr << "Failed to read from the i2c bus" << std::endl;
-                return 0;
-            }
+            unsigned char send[1] = { (unsigned char) id };
+            unsigned char buffer[4];
+
+            struct i2c_msg msgs[2] = {
+                {
+                    .addr = (unsigned char) address_,
+                    .flags= 0,
+                    .len = 1,
+                    .buf = send,
+                },
+                {
+                    .addr = (unsigned char) address_,
+                    .flags= I2C_M_RD,
+                    .len = 4,
+                    .buf = buffer,
+                },
+            };
+
+            struct i2c_rdwr_ioctl_data data {
+                .msgs = msgs,
+                .nmsgs = 2,
+            };
+            int res = ioctl(fd_, I2C_RDWR, &data);
             float vel = *((float*)buffer);
+
+            if (res < 0) {
+                throw std::runtime_error("Failed to read from the i2c bus");
+            }
             return vel;
         }
 
@@ -277,7 +318,6 @@ namespace bodenbot
                 // nothing
                 int id = motor_id_[i];
                 double velocity = serial_interface_->read_vel(id);
-
                 if (reversed_[i]) {
                     velocity = -velocity;
                 }
