@@ -1,4 +1,4 @@
-l# Overview
+# Overview
 
 Welcome to the documentation of the bodenbot rover. This document aims to be a guide in the usage of the bodenbot software, and also as an aid to any future developers. If you are interested in the more technical parts of this documentation, an understand of ros and basic robotics concepts is expected. 
 
