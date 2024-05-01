@@ -10,6 +10,7 @@ from geometry_msgs.msg import PoseStamped, Twist
 from nav2_simple_commander.robot_navigator import BasicNavigator
 from rclpy.action import ActionClient
 from nav_msgs.msg import Path
+import rclpy.qos
 
 
 class YamlWaypointParser:
@@ -147,12 +148,12 @@ def main():
     gps_wpf.navigator.get_logger().info('STARTING AUTONOMOUS DEMO')
 
     for _ in range(3):
-        gps_wpf.undock()
-        time.sleep(1)
+        # gps_wpf.undock()
+        # time.sleep(1)
         gps_wpf.start_wpf()
         time.sleep(1)
-        gps_wpf.dock()
-        time.sleep(10)
+        # gps_wpf.dock()
+        # time.sleep(10)
 
     gps_wpf.navigator.get_logger().info('EXIT')
 
