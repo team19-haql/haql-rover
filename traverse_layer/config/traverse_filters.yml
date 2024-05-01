@@ -13,14 +13,13 @@ pointcloud_to_gridmap:
       width: 10.0
 
     publish_rate: 2.0 # Hz
-    
+
     visibility_cleanup:
       enabled: true
       rate: 1.0
 
 traverse_layer:
   ros__parameters:
-
     input_topic: /grid_map
     local_map_topic: /local_map
     global_map_topic: /global_map
@@ -62,7 +61,7 @@ traverse_layer:
       #     output_layer: elevation_smooth
       #     radius: 0.16
 
-      filter2:  # Boxblur as an alternative to the inpaint and radial blurring filter above. # 170ms
+      filter2: # Boxblur as an alternative to the inpaint and radial blurring filter above. # 170ms
         name: boxblur
         type: gridMapFilters/SlidingWindowMathExpressionFilter
         params:
@@ -73,7 +72,7 @@ traverse_layer:
           edge_handling: crop # options: inside, crop, empty, mean
           window_length: 0.1 # optional
 
-      filter3:  # Compute surface normals. # 10ms
+      filter3: # Compute surface normals. # 10ms
         name: surface_normals
         type: gridMapFilters/NormalVectorsFilter
         params:
@@ -84,21 +83,21 @@ traverse_layer:
           radius: 0.166 # d = 0.33
           normal_vector_positive_axis: z
 
-      filter4:  # Add a color layer for visualization based on the surface normal. # 10ms
+      filter4: # Add a color layer for visualization based on the surface normal. # 10ms
         name: normal_color_map
         type: gridMapFilters/NormalColorMapFilter
         params:
           input_layers_prefix: normal_vectors_
           output_layer: normal_color
 
-      filter5:  # Compute slope from surface normal.
+      filter5: # Compute slope from surface normal.
         name: slope
         type: gridMapFilters/MathExpressionFilter
         params:
           output_layer: slope
           expression: acos(normal_vectors_z)
 
-      filter6:  # Compute slope from surface normal.
+      filter6: # Compute slope from surface normal.
         name: slope_min
         type: gridMapFilters/MinInRadiusFilter
         params:
@@ -148,7 +147,7 @@ traverse_layer:
           output_layer: traversability_raw
           expression: cwiseMax(traversability_slope, traversability_stepsize) #, 0.7 * traversability_slope + 0.3 traversability_stepsize)
 
-      filter12:  # Set lower threshold on traversability.
+      filter12: # Set lower threshold on traversability.
         name: traversability_lower_threshold
         type: gridMapFilters/ThresholdFilter
         params:
@@ -156,22 +155,22 @@ traverse_layer:
           lower_threshold: 0.0
           set_to: 0.0
 
-      filter13:  # Set upper threshold on traversability.
+      filter13: # Set upper threshold on traversability.
         name: traversability_upper_threshold
         type: gridMapFilters/ThresholdFilter
         params:
-          layer: traversability_raw
+          layer: traversability_lower_threshold
           upper_threshold: 1.0
           set_to: 1.0 # Other uses: .nan, .inf
 
-      filter13:  # Limit values that are not blurred
-        name: traversability_upper_threshold
+      filter14: # Limit values that are not blurred
+        name: traversability_valid
         type: gridMapFilters/MathExpressionFilter
         params:
           output_layer: traversability
-          expression: (elevation * 0) + traversability_raw
+          expression: (elevation * 0) + traversability_upper_threshold
 
-      filter14:  # max over 3x3 area to avoid data loss due to resizing
+      filter15: # max over 3x3 area to avoid data loss due to resizing
         name: max_pass
         type: gridMapFilters/SlidingWindowMathExpressionFilter
         params:
