@@ -1,5 +1,7 @@
 # Usage
 
+*Rover usage: everything should be automated with the configuration file. You should not need to run these commands manually*
+
 To run any of the packages, you must source the compiled workspace first.
 
 ```bash

@@ -1,5 +1,7 @@
 # Installation
 
+*The physical rover should have all software preinstalled and you can look at [jetson](./hardware/jetson.md#usage) for rover specific instructions*
+
 I highly recomend using ubuntu. If you are on windows, use the wsl subsystem.
 If you are on mac, you are on your own.
 

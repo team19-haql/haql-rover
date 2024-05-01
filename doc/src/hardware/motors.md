@@ -24,6 +24,10 @@ located on the PCB.
 
 The motors are connected to the controller with a single pin making it a single pulse encoder. As a result, the motor controller doesn't actually know the direction the wheels are spin, but estimates the direction based on the commands sent to the motor for what direction it should be spinning. 
 
+## Hardware info
+
+We use the [NFP-5840-31ZY-EN](https://microdcmotors.com/product/12v-24v-high-torque-low-speed-dc-motor-with-encoder-self-locking-model-nfp-5840-31zy-en) from microdcmotors. We are using the 12V 500 gear ratio motors. Originally the rover was designed for 100 ratio, but needed to be upgraded to 500 due to lacking torque. 
+
 ## Communication Protocol
 
 In the runtime for the pico, we run a PID loop for each motor.
