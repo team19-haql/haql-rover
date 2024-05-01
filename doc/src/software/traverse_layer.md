@@ -1,6 +1,8 @@
 # Traverse Layer
 
 [source](https://github.com/team19-haql/haql-rover/tree/main/traverse_layer)
+
+This package provides a system that reads pointcloud data and generates a navigation map. 
 ### Pointcloud to gridmap
 
 The pointcloud to gridmap node does some basic processing to convert a 3d pointcloud into a 2d map. The internal representation of a map uses the [grid maps](https://github.com/ANYbotics/grid_map) package. 

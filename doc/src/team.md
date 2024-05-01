@@ -8,4 +8,4 @@
 - Ethan Patel
 - Ian O'Neill
 - River Freeburg
-- Kai Dewey (deweykai5@gmail.com) - Software developer
+- Kai Dewey
