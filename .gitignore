@@ -2,3 +2,5 @@
 **/.DS_Store
 *.log
 /doc/book
+*.a
+*.o

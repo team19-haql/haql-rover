@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(traverse_layer)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic -O3)
+  add_compile_options(-Wall -Wextra -Wpedantic -O3 -g)
 endif()
 
 find_package(ament_cmake REQUIRED)
@@ -73,6 +73,11 @@ ament_target_dependencies(
     traverse_layer_component SYSTEM
     ${dependencies}
 )
+target_link_libraries(
+    traverse_layer_component
+    zigmaps
+)
+
 rclcpp_components_register_node(
     traverse_layer_component
     PLUGIN "traverse_layer::TraverseLayer"
@@ -88,6 +93,7 @@ ament_target_dependencies(
     pointcloud_to_gridmap_component SYSTEM
     ${dependencies}
 )
+
 rclcpp_components_register_node(
     pointcloud_to_gridmap_component
     PLUGIN "traverse_layer::PointcloudToGridmap"
