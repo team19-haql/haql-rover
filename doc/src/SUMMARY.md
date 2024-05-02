@@ -20,4 +20,5 @@
   - [Bodenbot Interface](./software/bodenbot_interface.md)
   - [Traverse Layer](./software/traverse_layer.md) 
   - [Webots dev](./software/webots.md)
+  - [Issues](./software/bugs.md)
 - [Team](./team.md)

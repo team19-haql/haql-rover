@@ -3,13 +3,15 @@
 [source](https://github.com/team19-haql/haql-rover/tree/main/traverse_layer)
 
 This package provides a system that reads pointcloud data and generates a navigation map. 
-### Pointcloud to gridmap
+## Pointcloud to gridmap
 
-The pointcloud to gridmap node does some basic processing to convert a 3d pointcloud into a 2d map. The internal representation of a map uses the [grid maps](https://github.com/ANYbotics/grid_map) package. 
+The pointcloud to gridmap node does some basic processing to convert a 3d pointcloud into a 2d map. The internal representation of a map uses the [grid maps](https://github.com/ANYbotics/grid_map) package. This processing is in the pointcloud to gridmap component. 
 
-### Traverse Map
+## Traverse Map
 
-Traverse layer does the processing to calculate traversability. The algorithm uses a 15 stage filter described below.
+Traverse layer does the processing to calculate traversability. The algorithm uses a 15 stage filter described below. This logic is in the traverse layer component. 
+
+This component also handles map storage, instead of throwing away map data after we leave its range, we store it in a global map. We store a high resolution global map which currently doesn't do anything, and a low resolution global map which is used for long distance path planning. 
 
 ### Filter
 
@@ -28,3 +30,7 @@ Traverse layer does the processing to calculate traversability. The algorithm us
 13. set upper limit of traversablity to 1
 14. remove cells that don't have actual measurements
 15. set traversability to be the max traversability within a radius. 
+
+### Zigmaps
+
+Due to the complexity of the filter, calculating the traversability purely in grid maps was causing performance issues. To combat this issue, I wrote the [zigmaps](https://github.com/deweykai/zigmaps) package. Inside the traverse layer component, we copy the data coming from the pointcloud to grid map component into a zigmaps layer. Zigmaps calculates the traversability. Finally, the the results are copied back into grid maps for further processing. 
