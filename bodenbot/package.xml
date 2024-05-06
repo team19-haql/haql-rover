@@ -17,6 +17,9 @@
   <depend>nav2_bringup</depend>
   <depend>rclcpp_components</depend>
 
+  <build_depend>libi2c-dev</build_depend>
+
+  <exec_depend>nmea_navsat_driver</exec_depend>
   <exec_depend>robot_localization</exec_depend>
   <exec_depend>diff_drive_controller</exec_depend>
   <exec_depend>depthimage_to_laserscan</exec_depend>
