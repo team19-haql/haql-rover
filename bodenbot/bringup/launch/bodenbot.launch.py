@@ -1,31 +1,41 @@
 import os
 
 from ament_index_python.packages import get_package_share_directory
-
-from launch.actions import DeclareLaunchArgument, RegisterEventHandler,\
-        IncludeLaunchDescription
 from launch import LaunchDescription
-from launch.conditions import IfCondition
-from launch.substitutions import LaunchConfiguration
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration
-from launch.substitutions import PathJoinSubstitution
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    RegisterEventHandler,
+)
+from launch.conditions import IfCondition, UnlessCondition
 from launch.event_handlers import OnProcessExit, OnProcessStart
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from nav2_common.launch import RewrittenYaml
 
-def get_controller_nodes(use_mock_hardware, debug_hardware, use_sim_time, start_controller_node):
+
+def get_controller_nodes(
+    use_mock_hardware, debug_hardware, use_sim_time, start_controller_node
+):
     # load URDF via xacro
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name='xacro')]),
             ' ',
-            PathJoinSubstitution([
-                FindPackageShare('bodenbot'),
-                'urdf',
-                'bodenbot.urdf.xacro',
-            ]),
+            PathJoinSubstitution(
+                [
+                    FindPackageShare('bodenbot'),
+                    'urdf',
+                    'bodenbot.urdf.xacro',
+                ]
+            ),
             ' ',
             'use_mock_hardware:=',
             use_mock_hardware,
@@ -44,14 +54,30 @@ def get_controller_nodes(use_mock_hardware, debug_hardware, use_sim_time, start_
         ]
     )
 
+    nmea_config = PathJoinSubstitution(
+        [
+            FindPackageShare('bodenbot'),
+            'config',
+            'nmea_config.yml',
+        ]
+    )
+
+    camera_config = PathJoinSubstitution(
+        [
+            FindPackageShare('bodenbot'),
+            'config',
+            'camera_config.yml',
+        ]
+    )
+
     control_node = Node(
         package='controller_manager',
         executable='ros2_control_node',
         parameters=[robot_controllers],
         output='both',
         remappings=[
-            ("~/robot_description", "/robot_description"),
-            ('/bodenbot_controller/cmd_vel_unstamped', "/cmd_vel"),
+            ('~/robot_description', '/robot_description'),
+            ('/bodenbot_controller/cmd_vel_unstamped', '/cmd_vel'),
         ],
         condition=IfCondition(start_controller_node),
     )
@@ -67,25 +93,55 @@ def get_controller_nodes(use_mock_hardware, debug_hardware, use_sim_time, start_
     joint_state_broadcaster_spawner = Node(
         package='controller_manager',
         executable='spawner',
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+        arguments=[
+            'joint_state_broadcaster',
+            '--controller-manager',
+            '/controller_manager',
+        ],
         condition=IfCondition(start_controller_node),
     )
 
     robot_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["bodenbot_controller", "--controller-manager", "/controller_manager"],
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            'bodenbot_controller',
+            '--controller-manager',
+            '/controller_manager',
+        ],
         condition=IfCondition(start_controller_node),
     )
 
-        # Delay start of robot_controller after `joint_state_broadcaster`
-    delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=joint_state_broadcaster_spawner,
-            on_exit=[robot_controller_spawner],
+    # Delay start of robot_controller after `joint_state_broadcaster`
+    delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = (
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=joint_state_broadcaster_spawner,
+                on_exit=[robot_controller_spawner],
+            )
         )
     )
 
+    nmea_driver_node = Node(
+        package='nmea_navsat_driver',
+        executable='nmea_serial_driver',
+        output='screen',
+        parameters=[nmea_config],
+        condition=UnlessCondition(use_mock_hardware),
+    )
+
+    # ZED Wrapper node
+    zed_wrapper_node = Node(
+        package='zed_wrapper',
+        executable='zed_wrapper',
+        name='zed_wrapper',
+        output='screen',
+        # prefix=['xterm -e valgrind --tools=callgrind'],
+        # prefix=['xterm -e gdb -ex run --args'],
+        # prefix=['gdbserver localhost:3000'],
+        parameters=[camera_config],
+        condition=UnlessCondition(use_mock_hardware),
+    )
 
     # Controller nodes
     controller_nodes = [
@@ -93,26 +149,33 @@ def get_controller_nodes(use_mock_hardware, debug_hardware, use_sim_time, start_
         robot_state_pub_node,
         joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
+        nmea_driver_node,
+        zed_wrapper_node,
     ]
 
     return controller_nodes
 
-def get_navigation_nodes(use_sim_time, start_navigation, start_traverse_layer, start_docking_server):
+
+def get_navigation_nodes(
+    use_sim_time, start_navigation, start_traverse_layer, start_docking_server
+):
     package_dir = get_package_share_directory('bodenbot')
     traverse_layer = get_package_share_directory('traverse_layer')
     bringup_dir = get_package_share_directory('nav2_bringup')
-    params_dir = os.path.join(package_dir, "config")
-    nav2_params = os.path.join(params_dir, "nav2_params.yml")
-
+    params_dir = os.path.join(package_dir, 'config')
+    nav2_params = os.path.join(params_dir, 'nav2_params.yml')
 
     # load navgation parameters
-    lattice_filepath = os.path.join(params_dir, "smac.json")
+    lattice_filepath = os.path.join(params_dir, 'smac.json')
     param_substitutions = {
         'planner_server.ros__parameters.GridBased.lattice_filepath': lattice_filepath,
     }
 
     configured_params = RewrittenYaml(
-        source_file=nav2_params, root_key="", param_rewrites=param_substitutions, convert_types=True
+        source_file=nav2_params,
+        root_key='',
+        param_rewrites=param_substitutions,
+        convert_types=True,
     )
 
     container = Node(
@@ -125,12 +188,12 @@ def get_navigation_nodes(use_sim_time, start_navigation, start_traverse_layer, s
     )
     navigation2_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(bringup_dir, "launch", "navigation_launch.py")
+            os.path.join(bringup_dir, 'launch', 'navigation_launch.py')
         ),
-        launch_arguments = {
-            "use_sim_time": use_sim_time,
-            "params_file": configured_params,
-            "autostart": 'True',
+        launch_arguments={
+            'use_sim_time': use_sim_time,
+            'params_file': configured_params,
+            'autostart': 'True',
             # 'use_composition': 'True',
             'container_name': 'nav2_container',
         }.items(),
@@ -141,23 +204,23 @@ def get_navigation_nodes(use_sim_time, start_navigation, start_traverse_layer, s
         PythonLaunchDescriptionSource(
             os.path.join(traverse_layer, 'launch', 'traverse_layer_launch.py')
         ),
-        launch_arguments= {
-            "use_sim_time": use_sim_time,
-            "autostart": 'True',
+        launch_arguments={
+            'use_sim_time': use_sim_time,
+            'autostart': 'True',
         }.items(),
         condition=IfCondition(start_traverse_layer),
     )
 
     # Get the package directory
-    apriltag_params= os.path.join(package_dir, 'config', 'apriltag.yml')
+    apriltag_params = os.path.join(package_dir, 'config', 'apriltag.yml')
 
     # Launch the robot_state_publisher
-    apriltag= Node(
-        package="apriltag_ros",
-        executable="apriltag_node",
-        name="apriltag",
-        output="screen",
-        parameters=[ apriltag_params, {'use_sim_time': use_sim_time}],
+    apriltag = Node(
+        package='apriltag_ros',
+        executable='apriltag_node',
+        name='apriltag',
+        output='screen',
+        parameters=[apriltag_params, {'use_sim_time': use_sim_time}],
         remappings=[
             ('/image_rect', '/zed2i/color/image_color'),
             ('/camera_info', '/zed2i/color/camera_info'),
@@ -184,18 +247,21 @@ def get_navigation_nodes(use_sim_time, start_navigation, start_traverse_layer, s
         docking_server,
     ]
 
+
 def get_webots_nodes(use_sim_time, start_webots):
     webots_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            PathJoinSubstitution([
-                FindPackageShare('webots_dev'),
-                'launch',
-                'robot_launch.py',
-            ]),
+            PathJoinSubstitution(
+                [
+                    FindPackageShare('webots_dev'),
+                    'launch',
+                    'robot_launch.py',
+                ]
+            ),
         ),
-        launch_arguments= {
-            "use_sim_time": use_sim_time,
-            "autostart": 'True',
+        launch_arguments={
+            'use_sim_time': use_sim_time,
+            'autostart': 'True',
         }.items(),
         condition=IfCondition(start_webots),
     )
@@ -278,10 +344,16 @@ def generate_launch_description():
         )
     )
 
-    controller_nodes = get_controller_nodes(use_mock_hardware, debug_hardware, use_sim_time, start_controller_node)
-    navigation_nodes = get_navigation_nodes(use_sim_time, start_navigation, start_traverse_layer, start_docking_server)
+    controller_nodes = get_controller_nodes(
+        use_mock_hardware, debug_hardware, use_sim_time, start_controller_node
+    )
+    navigation_nodes = get_navigation_nodes(
+        use_sim_time, start_navigation, start_traverse_layer, start_docking_server
+    )
     webots_nodes = get_webots_nodes(use_sim_time, start_webots)
 
-
     # Create the launch description and populate
-    return LaunchDescription(declared_arguments + controller_nodes + navigation_nodes + webots_nodes)
+    return LaunchDescription(
+        declared_arguments + controller_nodes + navigation_nodes + webots_nodes
+    )
+
