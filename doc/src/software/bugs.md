@@ -1,5 +1,6 @@
 # Issues
 
+
 The rover should not be left unchecked for long periods of time without further testing. The testing required to ensure reliable autonomous operation for months at a time is beyond the scope of this project. We do not have time to test what every possibility would happen and what could go wrong over that period. 
 
 The following is a list of issues that we will likely be unable to address due to the current design:
